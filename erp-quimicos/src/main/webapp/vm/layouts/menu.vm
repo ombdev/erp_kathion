@@ -501,6 +501,7 @@
 													<li><a href="../centrocostos/startup.agnux">Centros de Costos</a></li>
 													<li><a href="../conceptoscontables/startup.agnux">Conceptos Contables</a></li>
 													<li><a href="../tipopolizas/startup.agnux">Tipos de P&oacute;liza</a></li>
+													<li><a href="../ctbdefasientos/startup.agnux">Definici&oacute;n de Asientos</a></li>
 												</ul>
 											</li>
 											
@@ -510,22 +511,22 @@
 													<li class="topline"><a href="../ctbpolizacontable/startup.agnux">P&oacute;lizas Contables</a></li>
 												</ul>
 											</li>
-											
 											<li>
-												<a href="../ctbpar/startup.agnux">Configuraci&oacute;n</a>
+												<a href="#" class="sub">Electr&oacute;nica &raquo;</a>
+												<ul>
+													<li class="topline"><a href="../ctbxmlcuentascontables/startup.agnux">Cuentas Contables</a></li>
+													<li class="topline"><a href="../ctbxmlbalanzacomprobacion/startup.agnux">Balanza de Comprobaci&oacute;n</a></li>
+												</ul>
 											</li>
-											
 											<li>
 												<a href="#" class="sub">Reportes &raquo;</a>
 												<ul>
-													<li class="topline"><a href="../ctbrepauxcta/startup.agnux">Auxiliar de Cuentas</a></li>
-													<!--
 													<li class="topline"><a href="../ctbrepauxmovcta/startup.agnux">Auxiliar de Movimientos de Cuentas</a></li>
-													<li class="topline"><a href="../ctbrepbalancegnl/startup.agnux">Balance General</a></li>
-													-->
 													<li class="topline"><a href="../ctbrepbalanzacomp/startup.agnux">Balanza de Comprobaci&oacute;n</a></li>
-													<!--
+													<li class="topline"><a href="../ctbrepbalancegnl/startup.agnux">Balance General</a></li>
 													<li class="topline"><a href="../ctbrepestadoresult/startup.agnux">Estado de Resultados</a></li>
+													<!--
+													<li class="topline"><a href="../ctbrepauxcta/startup.agnux">Auxiliar de Cuentas</a></li>
 													<li class="topline"><a href="../ctbreppolizacont/startup.agnux">P&oacute;lizas Contables</a></li>
 													<li class="topline"><a href="../ctbrepestadoresultanual/startup.agnux">Estado de Resultados Anual</a></li>
 													<li class="topline"><a href="../ctbreplibromayor/startup.agnux">Libro de Mayor</a></li>
@@ -537,6 +538,8 @@
 											</li>
 										</ul>
 									</li>
+
+									
 
 									<li class="accessible" >
 										<a href="http://jdsharp.us" class="accessible">CRM &raquo;</a>
@@ -625,6 +628,7 @@
 													<li><a href="../graldeducciones/startup.agnux">Deduciones</a></li>
 													<li><a href="../gralperiodicidadpago/startup.agnux">Periodicidad de Pago</a></li>
 													<li><a href="../gralconfigperiodospago/startup.agnux">Periodos de Pago</a></li>
+													<li><a href="../gralmetodosdepago/startup.agnux">M&eacute;todos de Pago</a></li>
 												</ul>
 											</li>
 
