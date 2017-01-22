@@ -17,7 +17,7 @@ __captions = {
     'SPA': {
         'TL_DOC_LANG': 'ESPAÑOL',
         'TL_DOC_NAME': 'COTIZACIÓN',
-        'TL_DOC_DATE': 'FECHA EXPEDICION'
+        'TL_DOC_DATE': 'FECHA EXPEDICION',
         'TL_CUST_NAME': 'CLIENTE',
         'TL_CUST_ADDR': 'DIRECCIÓN',
         'TL_CUST_PHONE': 'TEL',
@@ -103,7 +103,7 @@ def __load_cot_items(conn, cot_id):
     except psycopg2.Error as e:
         raise DocBuilderStepError("an error happen when loading items data")
 
-def __load_cot_data(conn, cot_id, cust=true):
+def __load_cot_data(conn, cot_id, cust=True):
 
     __NON_CUST_SQL="""SELECT
         poc_cot.dias_vigencia,
@@ -236,7 +236,41 @@ def __format_cot_data(rows, cap):
 
     rd = {}
     for i in rows:
-        pass
+        rd["DAYS"] = i['dias_vigencia']
+        rd["TC_USD"] = i['tc_usd']
+        rd["SUBTOTAL"]= i['subtotal']
+        rd["TAX"]= i['impuesto']
+        rd["TOTAL"]= i['total']
+        rd["DATE"] = i['fecha']
+        rd["POLICIES"] = i['politicas']
+        rd["INCOTERMS"] = i['incoterms']
+        rd["STATEMENTS"] = i['condiciones']
+        rd["CURRENCY"] = i['moneda']
+        rd["RFC"] = i['rfc']
+        rd["RS"] = i['razon_social']
+        rd["CONTACT"] = i['contacto']
+        rd["STREET"] = i['calle']
+        rd["NUMBER"] = i['numero']
+        rd["COLONIA"] = i['colonia']
+        rd["TOWN"] = i['municipio']
+        rd["STATE"] = i['estado']
+        rd["COUNTRY"] = i['pais']
+        rd["ZIPC"] = i['cp']
+    return rd
+
+def __format_cot_items(rows, cap):
+
+    rd = {}
+    for i in rows:
+        rd["SKU"] = i['codigo']
+        rd["NAME"] = i['producto']
+        rd["DESC"] = i['descripcion_larga']
+        rd["UNIT"] = i['unidad']
+        rd["CONTAINER"] = i['presentacion']
+        rd["QUANTITY"] =  i['cantidad']
+        rd["UNIT_PRICE"] = i['precio_unitario']
+        rd["CURRENCY"] = i['moneda']
+        rd["AMOUNT"] = i['importe']
     return rd
 
 
@@ -245,13 +279,13 @@ def __h_acquisition(logger, conn, res_dirs, **kwargs):
     """
     dat = {
         'CAP_LOADED': None,
-        'FOOTER_ABOUT': ''
+        'FOOTER_ABOUT': 'xxx'
     }
 
     cap = kwargs.get('cap', 'SPA')
     if not cap in __captions:
         raise DocBuilderStepError("caption {0} not found".format(cap))
-    d:at['CAP_LOADED'] = __captions[cap]
+    dat['CAP_LOADED'] = __captions[cap]
 
     logo_filename = "{0}/{1}_logo.png".format(
         res_dirs['images'],
@@ -292,6 +326,15 @@ def __h_write_format(output_file, logger, dat):
     logo.drawHeight = 3.8*cm
     logo.drawWidth = 5.2*cm
 
+    story.append(
+        __top_table(
+            logo,
+            __create_emisor_table(dat),
+            __create_cotizacion_table(dat)
+        )
+    )
+    story.append(Spacer(1, 0.4 * cm))
+
     def fp_foot(c, d):
         c.saveState()
         width, height = letter
@@ -301,7 +344,7 @@ def __h_write_format(output_file, logger, dat):
 
     cot_frame = Frame(
         doc.leftMargin, doc.bottomMargin, doc.width, doc.height,
-        id='bill_frame'
+        id='cot_frame'
     )
 
     doc.addPageTemplates(
@@ -312,6 +355,158 @@ def __h_write_format(output_file, logger, dat):
     doc.build(story, canvasmaker=NumberedCanvas)
 
     return
+
+def __top_table(t0, t1, t3):
+
+    cont = [[t0, t1, t3]]
+
+    table = Table(cont,
+        [
+            5.5 * cm,
+            9.4 * cm,
+            5.5 * cm
+        ]
+    )
+
+    table.setStyle( TableStyle([
+        ('ALIGN', (0, 0),(0, 0), 'LEFT'),
+        ('ALIGN', (1, 0),(1, 0), 'CENTRE'),
+        ('ALIGN', (-1, 0),(-1, 0), 'RIGHT'),
+    ]))
+
+    return table
+
+def __create_emisor_table(dat):
+    st = ParagraphStyle(
+        name='info',
+        fontName='Helvetica',
+        fontSize=7,
+        leading = 9.7
+    )
+
+    context = {
+        'inceptor': 'KATHION CHEMIE DE MEXICO S. DE R.L.', #hardcode
+        'rfc': 'KCM081010I58',  #hardcode
+        'phone': '(1081)13340206', #hardcode
+        'www': 'www.kathionchemie.com.mx', #hardcode
+        'street': 'AV. IGNACIO SEPULVEDA', #hardcode
+        'number': '109', #hardcode
+        'settlement': 'LA ENCARNACION', #hardcode
+        'state': 'NUEVO LEÓN, MEXICO', #hardcode
+        'town': 'APODACA', #hardcode
+        'cp': '66633', #hardcode
+        'fontSize': '7', #hardcode
+        'fontName':'Helvetica' #hardcode
+    }
+
+    text = Paragraph(
+        '''
+        <para align=center spaceb=3>
+            <font name=%(fontName)s size=10 >
+                <b>%(inceptor)s</b>
+            </font>
+            <br/>
+            <font name=%(fontName)s size=%(fontSize)s >
+                <b>RFC: %(rfc)s</b>
+            </font>
+            <br/>
+            <font name=%(fontName)s size=%(fontSize)s >
+                <b>DOMICILIO FISCAL</b>
+            </font>
+            <br/>
+            %(street)s %(number)s %(settlement)s
+            <br/>
+            %(town)s, %(state)s C.P. %(cp)s
+            <br/>
+            TEL./FAX. %(phone)s
+            <br/>
+            %(www)s
+        </para>
+        ''' % context, st)
+
+    cont = [[text]]
+
+    table = Table(cont,
+        colWidths = [ 9.0 *cm]
+    )
+
+    table.setStyle(TableStyle(
+        [('VALIGN',(-1,-1),(-1,-1),'TOP')]
+    ))
+
+    return table
+
+
+def __create_cotizacion_table(dat):
+
+    st = ParagraphStyle(
+        name='info',
+        fontName='Helvetica',
+        fontSize=7,
+        leading = 8
+    )
+
+    cont = []
+
+    cont.append([ dat['CAP_LOADED']['TL_DOC_NAME'] ])
+    cont.append(['FOLIO.' ])
+    cont.append([ '7' ]) # hardcode
+
+    cont.append([ dat['CAP_LOADED']['TL_DOC_DATE'] ])
+    cont.append([ dat['DOC_DATA']['DATE'] ])
+
+    cont.append(['TIPO DE CAMBIO'])
+    cont.append([ Paragraph( '19.5965', st ) ])
+
+    cont.append(['NO. CERTIFICADO'])
+    cont.append(['nothing'])
+
+
+    table = Table(cont,
+        [
+           5  * cm,
+        ],
+        [
+            0.40 * cm,
+            0.37* cm,
+            0.37 * cm,
+            0.38 * cm,
+            0.38 * cm,
+            0.38 * cm,
+            0.70 * cm,
+            0.38 * cm,
+            0.38 * cm,
+        ] # rowHeights
+    )
+
+    table.setStyle( TableStyle([
+
+        #Body and header look and feel (common)
+        ('BOX', (0, 1), (-1, -1), 0.25, colors.black),
+        ('FONT', (0, 0), (0, 0), 'Helvetica-Bold', 10),
+
+        ('TEXTCOLOR', (0, 1),(-1, 1), colors.white),
+        ('FONT', (0, 1), (-1, 2), 'Helvetica-Bold', 7),
+
+        ('TEXTCOLOR', (0, 3),(-1, 3), colors.white),
+        ('FONT', (0, 3), (-1, 3), 'Helvetica-Bold', 7),
+        ('FONT', (0, 4), (-1, 4), 'Helvetica', 7),
+
+        ('TEXTCOLOR', (0, 5),(-1, 5), colors.white),
+        ('FONT', (0, 5), (-1, 5), 'Helvetica-Bold', 7),
+
+        ('FONT', (0, 7), (-1, 7), 'Helvetica-Bold', 7),
+        ('TEXTCOLOR', (0, 7),(-1, 7), colors.white),
+        ('FONT', (0, 8), (-1, 8), 'Helvetica', 7),
+
+        ('ROWBACKGROUNDS', (0, 1),(-1, -1), [colors.black, colors.white]),
+        ('ALIGN', (0, 0),(-1, -1), 'CENTER'),
+        ('VALIGN', (0, 1),(-1, -1), 'MIDDLE'),
+    ]))
+
+    return table
+
+
 
 def __h_data_release(logger, dat):
     """
