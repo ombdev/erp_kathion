@@ -3336,14 +3336,7 @@ public class CxcSpringDao implements CxcInterfaceDao{
         return hm_facturas;
     }
     
-    
-    
-    
-    
-    
-
-
-// obtiene el SQL de estadisticas anuales de ventas
+    // obtiene el SQL de estadisticas anuales de ventas
     @Override
     public ArrayList<HashMap<String, String>> getEstadisticaVentasProducto(Integer mes_in,Integer mes_fin,Integer tipo_producto, Integer familia,Integer subfamilia,Integer id_empresa, Integer anio) {
         String where="";
@@ -3438,6 +3431,9 @@ public class CxcSpringDao implements CxcInterfaceDao{
         return hm_facturas;
     }
 
+   
+    
+    
    //alimenta al select de familias
 
     @Override
@@ -3491,6 +3487,160 @@ public class CxcSpringDao implements CxcInterfaceDao{
         return html_subfamilia;
 
     }
+
+
+ // obtiene el SQL de estadisticas anuales de ventas por unidades
+    @Override
+    public ArrayList<HashMap<String, String>> getEstadisticaVentasUnidades(Integer mes_in,Integer mes_fin,Integer tipo_producto, Integer familia,Integer subfamilia,Integer id_empresa, Integer anio) {
+        String where="";
+
+        if(tipo_producto != 0){
+            where=" AND inv_prod.tipo_de_producto_id="+tipo_producto+" ";
+        }
+
+        if(familia != 0){
+            where=" AND inv_prod.inv_prod_familia_id="+familia+" ";
+        }
+
+        if(subfamilia != 0){
+            where=" AND inv_prod.subfamilia_id="+subfamilia+" ";
+        }
+
+       String sql_to_query=""+"SELECT descripcion, "
+                                    +"sum(enero) as enero, "
+                                    +"sum(febrero) as febrero, "
+                                    +"sum(marzo) as marzo, "
+                                    +"sum(abril) as abril, "
+                                    +"sum(mayo) as mayo, "
+                                    +"sum(junio) as junio, "
+                                    +"sum(julio) as julio, "
+                                    +"sum(agosto) as agosto, "
+                                    +"sum(septiembre) as septiembre, "
+                                    +"sum(octubre) as octubre, "
+                                    +"sum(noviembre) as noviembre, "
+                                    +"sum(diciembre) as diciembre, "
+                                    +"sum(enero)+sum(febrero)+sum(marzo)+sum(abril)+sum(mayo)+sum(junio)+sum(julio)+sum(agosto)+sum(septiembre)+sum(octubre)+sum(noviembre)+sum(diciembre)  as suma_total "
+                            +"FROM( SELECT descripcion, "
+                                        +"(CASE WHEN mes=1 THEN subtotal ELSE 0 END) AS enero, "
+                                        +"(CASE WHEN mes=2 THEN subtotal ELSE 0 END) AS febrero, "
+                                        +"(CASE WHEN mes=3 THEN subtotal ELSE 0 END) AS marzo, "
+                                        +"(CASE WHEN mes=4 THEN subtotal ELSE 0 END) AS abril, "
+                                        +"(CASE WHEN mes=5 THEN subtotal ELSE 0 END) AS mayo, "
+                                        +"(CASE WHEN mes=6 THEN subtotal ELSE 0 END) AS junio, "
+                                        +"(CASE WHEN mes=7 THEN subtotal ELSE 0 END) AS julio, "
+                                        +"(CASE WHEN mes=8 THEN subtotal ELSE 0 END) AS agosto, "
+                                        +"(CASE WHEN mes=9 THEN subtotal ELSE 0 END) AS septiembre, "
+                                        +"(CASE WHEN mes=10 THEN subtotal ELSE 0 END) AS octubre, "
+                                        +"(CASE WHEN mes=11 THEN subtotal ELSE 0 END) AS noviembre, "
+                                        +"(CASE WHEN mes=12 THEN subtotal ELSE 0 END) AS diciembre, "
+                                        +"subtotal "
+                                    +"FROM ("
+                                            +"SELECT inv_prod.descripcion, "
+                                                +"EXTRACT(MONTH FROM fac_docs.momento_creacion) as mes, "
+                                                +"(CASE WHEN fac_docs.moneda_id=1 THEN fac_docs_detalles.cantidad*1 ELSE (fac_docs_detalles.cantidad*1) END) as subtotal  "
+                                            +"FROM fac_docs "
+                                            +"join cxc_clie on cxc_clie.id=fac_docs.cxc_clie_id "
+                                            +"JOIN erp_proceso on erp_proceso.id=fac_docs.proceso_id "
+                                            +"JOIN fac_docs_detalles on fac_docs_detalles.fac_doc_id=fac_docs.id "
+                                            +"LEFT JOIN inv_prod on inv_prod.id= fac_docs_detalles.inv_prod_id "
+                                            +"LEFT JOIN inv_prod_familias on inv_prod_familias.id=inv_prod.inv_prod_familia_id "
+                                            +"WHERE erp_proceso.empresa_id ="+id_empresa + " "
+                                            +"AND fac_docs.cancelado=false "
+                                            +"AND EXTRACT(MONTH FROM fac_docs.momento_creacion) between "+mes_in+ " and "+mes_fin+ " "
+                                            + "AND EXTRACT(YEAR  FROM fac_docs.momento_creacion)="+anio+" "
+                                            //+ "AND EXTRACT(YEAR  FROM fac_docs.momento_creacion)=EXTRACT(YEAR FROM now()) "
+                                            +where+" "
+                                    +") AS sbt "
+                            +")as sbt2 "
+                            +"GROUP BY descripcion ORDER BY descripcion";
+
+        //System.out.println("Generando Consulta Estadisticas:"+sql_to_query+"");
+
+        ArrayList<HashMap<String, String>> hm_facturas = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
+            sql_to_query,
+            new Object[]{}, new RowMapper(){
+                @Override
+                public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    HashMap<String, String> row = new HashMap<String, String>();
+                    row.put("descripcion",rs.getString("descripcion"));
+                    row.put("enero",StringHelper.roundDouble(rs.getString("enero"),2));
+                    row.put("febrero",StringHelper.roundDouble(rs.getString("febrero"),2));
+                    row.put("marzo",StringHelper.roundDouble(rs.getString("marzo"),2));
+                    row.put("abril",StringHelper.roundDouble(rs.getString("abril"),2));
+                    row.put("mayo",StringHelper.roundDouble(rs.getString("mayo"),2));
+                    row.put("junio",StringHelper.roundDouble(rs.getString("junio"),2));
+                    row.put("julio",StringHelper.roundDouble(rs.getString("julio"),2));
+                    row.put("agosto",StringHelper.roundDouble(rs.getString("agosto"),2));
+                    row.put("septiembre",StringHelper.roundDouble(rs.getString("septiembre"),2));
+                    row.put("octubre",StringHelper.roundDouble(rs.getString("octubre"),2));
+                    row.put("noviembre",StringHelper.roundDouble(rs.getString("noviembre"),2));
+                    row.put("diciembre",StringHelper.roundDouble(rs.getString("diciembre"),2));
+                    row.put("suma_total",StringHelper.roundDouble(rs.getDouble("suma_total"), 2));
+
+                    return row;
+                }
+            }
+        );
+        return hm_facturas;
+    }
+
+     //alimenta al select de familias
+
+    @Override
+    public ArrayList<HashMap<String, String>> getFamilias2(Integer tipo_producto,Integer id_empresa){
+        String sql_to_query =""
+                + "SELECT "
+                    + "inv_prod_familias.id, "
+                    + "inv_prod_familias.descripcion "
+                +"FROM inv_prod_familias "
+                +"WHERE inv_prod_familias.inv_prod_tipo_id="+tipo_producto+" "
+                + "AND inv_prod_familias.gral_emp_id="+id_empresa+" "
+                + "AND inv_prod_familias.id=inv_prod_familias.identificador_familia_padre ";
+
+        ArrayList<HashMap<String,String>> html_familia2 =(ArrayList<HashMap<String,String>>) this.jdbcTemplate.query(
+            sql_to_query,new Object[]{},new RowMapper(){
+             @Override
+             public Object mapRow(ResultSet rs,int rowNum) throws SQLException{
+                 HashMap<String, String> row = new HashMap<String, String>();
+                    row.put("id",String.valueOf(rs.getInt("id")));
+                    row.put("descripcion",String.valueOf(rs.getString("descripcion")));
+                    return row;
+             }
+            }
+        );
+
+        return html_familia2;
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getSubFamilias2(Integer familia_id){
+        String sql_to_query =""
+                + "SELECT "
+                    + "inv_prod_familias.id, "
+                    + "inv_prod_familias.descripcion "
+                +"FROM inv_prod_familias "
+                +"WHERE inv_prod_familias.identificador_familia_padre="+familia_id+" "
+                +"AND inv_prod_familias.id != inv_prod_familias.identificador_familia_padre;";
+
+        ArrayList<HashMap<String,String>> html_subfamilia2 =(ArrayList<HashMap<String,String>>) this.jdbcTemplate.query(
+            sql_to_query,new Object[]{},new RowMapper(){
+             @Override
+             public Object mapRow(ResultSet rs,int rowNum) throws SQLException{
+                 HashMap<String, String> row = new HashMap<String, String>();
+                    row.put("id",String.valueOf(rs.getInt("id")));
+                    row.put("descripcion",String.valueOf(rs.getString("descripcion")));
+                    return row;
+             }
+            }
+        );
+
+        return html_subfamilia2;
+
+    }
+
+    
+    
+    
 
 
 

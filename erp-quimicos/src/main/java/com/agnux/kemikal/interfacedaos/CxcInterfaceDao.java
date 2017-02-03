@@ -134,6 +134,12 @@ public interface CxcInterfaceDao {
     public ArrayList<HashMap<String,String>> getFamilias(Integer tipo_producto, Integer id_empresa);
     public ArrayList<HashMap<String,String>> getSubFamilias(Integer familia_id);
 
+       //reporte de estadistico de ventas por unidades
+    public ArrayList<HashMap<String,String>> getEstadisticaVentasUnidades(Integer mes_in,Integer mes_fin,Integer tipo_producto, Integer familia,Integer subfamilia,Integer id_empresa, Integer anio);
+    public ArrayList<HashMap<String,String>> getFamilias2(Integer tipo_producto, Integer id_empresa);
+    public ArrayList<HashMap<String,String>> getSubFamilias2(Integer familia_id);
+
+    
     //Aplicativo de programacion de rutas
     public ArrayList<HashMap<String,String>>getProgramacionPagos_FacturasRevision(Integer cliente,String dia_fecha,Integer empresa_id);
     public ArrayList<HashMap<String,String>>getProgramacionPagos_FacturasCobro(Integer cliente,String dia_fecha,Integer empresa_id);
