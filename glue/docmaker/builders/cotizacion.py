@@ -10,6 +10,7 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT, TA_JUSTIFY
 import psycopg2
 import psycopg2.extras
 from docmaker.error import DocBuilderStepError
+from utils.numberformat import currency_format
 import re
 import os
 
@@ -23,10 +24,13 @@ __captions = {
         'TL_CUST_PHONE': 'TEL',
         'TL_CONTACT': 'CONTACTO',
         'TL_CONTACT_EMAIL': 'EMAIL',
-        'TL_ART_NAME': 'DESCRIPCIÓN',
+        'TL_ART_NAME': 'NOMBRE DEL PRODUCTO',
         'TL_ART_CONTAINER': 'PRESENTACIÓN',
-        'TL_ART_AMNT': 'PRECIO',
-        'TL_BILL_CURR': 'MONEDA',
+        'TL_ART_UNIT': 'UNIDAD',
+        'TL_ART_UP': 'P. UNITARIO',
+        'TL_ART_AMNT': 'IMPORTE',
+        'TL_ART_QUAN': 'CANTIDAD',
+        'TL_COT_CURR': 'MONEDA',
         'TL_PAY_POLICY': 'POLITICAS DE PAGO'
     },
     'ENG': {
@@ -40,8 +44,11 @@ __captions = {
         'TL_CONTACT_EMAIL': None,
         'TL_ART_NAME': None,
         'TL_ART_CONTAINER': None,
+        'TL_ART_UNIT': None,
+        'TL_ART_UP': None, 
         'TL_ART_AMNT': None,
-        'TL_BILL_CURR': None,
+        'TL_ART_QUAN': None,
+        'TL_COT_CURR': None,
         'TL_PAY_POLICY': None
     }
 }
@@ -70,6 +77,16 @@ class NumberedCanvas(canvas.Canvas):
         self.setFont("Helvetica", 7)
         self.drawCentredString(width / 2.0, 0.65*cm,
             "Pagina %d de %d" % (self._pageNumber, page_count))
+
+
+def __chomp_extra_zeroes(a):
+
+    if re.match("^\d+(\.\d{3})$", a):
+        return  a[:-1]
+    if re.match("^\d+(\.\d{4})$", a):
+        return a[:-2]
+    return a
+
 
 
 def __load_cot_items(conn, cot_id):
@@ -260,8 +277,9 @@ def __format_cot_data(rows, cap):
 
 def __format_cot_items(rows, cap):
 
-    rd = {}
+    l = []
     for i in rows:
+        rd = {}
         rd["SKU"] = i['codigo']
         rd["NAME"] = i['producto']
         rd["DESC"] = i['descripcion_larga']
@@ -271,7 +289,8 @@ def __format_cot_items(rows, cap):
         rd["UNIT_PRICE"] = i['precio_unitario']
         rd["CURRENCY"] = i['moneda']
         rd["AMOUNT"] = i['importe']
-    return rd
+        l.append(rd)
+    return l
 
 
 def __h_acquisition(logger, conn, res_dirs, **kwargs):
@@ -323,8 +342,8 @@ def __h_write_format(output_file, logger, dat):
     story = []
 
     logo = Image(dat['LOGO'])
-    logo.drawHeight = 3.8*cm
-    logo.drawWidth = 5.2*cm
+    logo.drawHeight = 2.8*cm
+    logo.drawWidth = 4.2*cm
 
     story.append(
         __top_table(
@@ -334,6 +353,9 @@ def __h_write_format(output_file, logger, dat):
         )
     )
     story.append(Spacer(1, 0.4 * cm))
+    story.append(__create_arts_section(dat))
+
+    story.append(__create_inco_table(dat))
 
     def fp_foot(c, d):
         c.saveState()
@@ -355,6 +377,130 @@ def __h_write_format(output_file, logger, dat):
     doc.build(story, canvasmaker=NumberedCanvas)
 
     return
+
+def __create_inco_table(dat):
+
+    cont = []
+    st = ParagraphStyle(name='seal',fontName='Helvetica', fontSize=6.5, leading = 8)
+    cont.append([ "INCOTERMS:" ])
+
+    inct = ""
+    for i in dat['DOC_DATA']['INCOTERMS']:
+        inct = inct + i + "\n"
+    cont.append([ Paragraph( inct, st ) ])
+
+    cont.append([ dat['DOC_DATA']['DAYS'] ])
+
+    sts = ""
+    for i in dat['DOC_DATA']['STATEMENTS']:
+        sts = sts + i + "<br\>"
+    cont.append([ Paragraph( sts, st ) ])
+
+    cont.append([ "POLITICAS DE PAGO:" ])
+    pp = ""
+    for i in dat['DOC_DATA']['POLICIES']:
+        pp = pp + i + "\n"
+    cont.append([ Paragraph( pp, st ) ])
+
+
+    t = Table(
+        cont,
+        [
+            20.4 * cm
+        ],
+        [
+            0.4*cm,
+            0.9*cm,
+            0.9*cm,
+            0.9*cm,
+            0.4*cm,
+            0.6*cm
+        ]
+    )
+
+    t.setStyle( TableStyle([
+        ('FONT', (0, 0), (0, 0), 'Helvetica-Bold', 6.5),
+        ('FONT', (0, 2), (0, 2), 'Helvetica-Bold', 6.5),
+        ('FONT', (0, 3), (0, 3), 'Helvetica-Bold', 6.5),
+    ]))
+
+    return t
+
+
+def __create_arts_section(dat):
+
+    add_currency_simbol = lambda c: '${0:>20}'.format(c)
+
+    st = ParagraphStyle(
+        name='info',
+        fontName='Helvetica',
+        fontSize=7,
+        leading = 8
+    )
+
+    header_concepts = (
+        dat['CAP_LOADED']['TL_ART_NAME'], dat['CAP_LOADED']['TL_ART_CONTAINER'],
+        dat['CAP_LOADED']['TL_ART_UNIT'], dat['CAP_LOADED']['TL_ART_QUAN'], dat['CAP_LOADED']['TL_ART_UP'],
+        dat['CAP_LOADED']['TL_ART_AMNT'], dat['CAP_LOADED']['TL_COT_CURR']
+    )
+
+    cont_concepts = []
+    for i in dat['DOC_ITEMS']:
+        row = [
+                Paragraph( i['NAME'], st),
+                i['CONTAINER'].upper(),
+                i['UNIT'].upper(),
+                i['QUANTITY'],
+                add_currency_simbol(i['UNIT_PRICE']), #add_currency_simbol(currency_format(__chomp_extra_zeroes(i['UNIT_PRICE']))),
+
+
+
+                add_currency_simbol(i['AMOUNT']),#add_currency_simbol(currency_format(__chomp_extra_zeroes(i['AMOUNT']))),
+                i['CURRENCY'].upper()
+        ]
+        cont_concepts.append(row)
+
+    cont = [header_concepts] + cont_concepts
+
+    table = Table(cont,
+        [
+            5.2 * cm,
+            3.6 * cm,
+            2.6 * cm,
+            2.0 * cm,
+            2.4 * cm,
+            2.4 * cm,
+            1.8 * cm
+        ]
+    )
+
+    table.setStyle( TableStyle([
+
+        #Body and header look and feel (common)
+        ('ALIGN', (0,0),(-1,0), 'LEFT'),
+        ('VALIGN', (0,0),(-1,-1), 'TOP'),
+        ('BOX', (0, 0), (-1, 0), 0.25, colors.black),
+        ('BACKGROUND', (0,0),(-1,0), colors.black),
+        ('TEXTCOLOR', (0,0),(-1,0), colors.white),
+        ('FONT', (0, 0), (-1, -1), 'Helvetica', 7),
+        ('FONT', (0, 0), (-1, 0), 'Helvetica-Bold', 7),
+        ('ROWBACKGROUNDS', (0, 1),(-1, -1), [colors.white, colors.sandybrown]),
+        ('ALIGN', (0, 1),(1, -1), 'LEFT'),
+#        ('ALIGN', (2, 0),(2, -1), 'CENTER'),
+        ('ALIGN', (3, 1),(-1, -1), 'RIGHT'),
+
+        ('BOX', (0, 1), (0, -1), 0.25, colors.black),
+        ('BOX', (1, 1), (1, -1), 0.25, colors.black),
+        ('BOX', (2, 1), (2, -1), 0.25, colors.black),
+        ('BOX', (3, 1),(3, -1), 0.25, colors.black),
+        ('BOX', (4, 1),(4, -1), 0.25, colors.black),
+        ('BOX', (5, 1),(5, -1), 0.25, colors.black),
+        ('BOX', (6, 1),(6, -1), 0.25, colors.black),
+        ('BOX', (7, 1),(7, -1), 0.25, colors.black),
+    ]))
+
+    return table
+
 
 def __top_table(t0, t1, t3):
 
@@ -414,9 +560,11 @@ def __create_emisor_table(dat):
                 <b>DOMICILIO FISCAL</b>
             </font>
             <br/>
-            %(street)s %(number)s %(settlement)s
+            %(street)s %(number)s
             <br/>
-            %(town)s, %(state)s C.P. %(cp)s
+            %(settlement)s, %(town)s
+            <br/>
+            %(state)s C.P. %(cp)s
             <br/>
             TEL./FAX. %(phone)s
             <br/>
@@ -456,26 +604,23 @@ def __create_cotizacion_table(dat):
     cont.append([ dat['DOC_DATA']['DATE'] ])
 
     cont.append(['TIPO DE CAMBIO'])
-    cont.append([ Paragraph( '19.5965', st ) ])
-
-    cont.append(['NO. CERTIFICADO'])
-    cont.append(['nothing'])
-
+    cont.append([ '19.5965' ])
+    cont.append([''])  
 
     table = Table(cont,
         [
            5  * cm,
         ],
         [
-            0.40 * cm,
-            0.37* cm,
-            0.37 * cm,
+            0.45 * cm,
             0.38 * cm,
             0.38 * cm,
             0.38 * cm,
-            0.70 * cm,
             0.38 * cm,
             0.38 * cm,
+            0.38 * cm,
+            0.055 * cm,
+            
         ] # rowHeights
     )
 
@@ -495,9 +640,9 @@ def __create_cotizacion_table(dat):
         ('TEXTCOLOR', (0, 5),(-1, 5), colors.white),
         ('FONT', (0, 5), (-1, 5), 'Helvetica-Bold', 7),
 
-        ('FONT', (0, 7), (-1, 7), 'Helvetica-Bold', 7),
-        ('TEXTCOLOR', (0, 7),(-1, 7), colors.white),
-        ('FONT', (0, 8), (-1, 8), 'Helvetica', 7),
+        ('FONT', (0, 6), (-1, 6), 'Helvetica', 7),
+#        ('TEXTCOLOR', (0, 7),(-1, 7), colors.white),
+#        ('FONT', (0, 8), (-1, 8), 'Helvetica', 7),
 
         ('ROWBACKGROUNDS', (0, 1),(-1, -1), [colors.black, colors.white]),
         ('ALIGN', (0, 0),(-1, -1), 'CENTER'),
