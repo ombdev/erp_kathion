@@ -104,9 +104,14 @@ public interface CrmInterfaceDao {
     public ArrayList<HashMap<String, Object>> getContactos_PaginaGrid(String data_string, int offset, int pageSize, String orderBy, String asc, Integer id_empresa);
     public ArrayList<HashMap<String, String>> getContacto_Datos(Integer id);
     
-    //CRM  Reporte
+    //CRM  Reportes
+    
     //CRM  Reporte de visitas
     public ArrayList<HashMap<String, String>> getVisitas(String fecha_inicial, String fecha_final,Integer id_empresa, Integer idAgente);
+    
+    //CRM  Reporte de Proyectos
+    public ArrayList<HashMap<String, String>> getProyectos(String fecha_inicial, String fecha_final,Integer id_empresa, Integer idAgente);
+    
     //fin de reportes de CRM
     
     //CRM  Configuracion de consultas
@@ -119,6 +124,7 @@ public interface CrmInterfaceDao {
     //Obtiene datos del proyecto
     public ArrayList<HashMap<String, Object>> getCrmRegistroProyectos_Datos(Integer id);
     public ArrayList<HashMap<String, Object>> getCrmRegistroProyectos_Competidores(Integer id);
+   
     //Obtener los diferentes estatus para registro de proyectos
     public ArrayList<HashMap<String, String>> getCrmRegistroProyectos_Estatus(Integer id_empresa);
     

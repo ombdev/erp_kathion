@@ -192,6 +192,11 @@
 													
                                                                                                         <li class="topline"><a href="../repestadisticaanualventasUM/startup.agnux">Estad&iacute;stico de Ventas Anuales Unidades</a></li>
 
+                                                                                <!--PRUEBA OPCION DE REPORTE DE KUPSA EXCEL -->
+
+                                                                                                        <li class="topline"><a href="../repventasanualescliente/startup.agnux">Rporte de Ventas Anuales Clientes XLS</a></li>
+
+
 													<li class="topline"><a href="../repcomparativoasventasanuales/startup.agnux">Comparativo de Ventas Anuales Cliente</a></li>
 													<li class="topline"><a href="../repcomparativoasventasanualesproducto/startup.agnux">Comparativo de Ventas Anuales Producto</a></li>
 													
@@ -578,6 +583,7 @@
 												<a href="#" class="sub">Reportes &raquo;</a>
 												<ul>
 													<li class="topline"><a href="../crmreportevisitas/startup.agnux">Visitas</a></li>
+                                                                                                        <li class="topline"><a href="../crmreporteproyectos/startup.agnux">Proyectos</a></li>
 												</ul>
 											</li>
 										</ul>

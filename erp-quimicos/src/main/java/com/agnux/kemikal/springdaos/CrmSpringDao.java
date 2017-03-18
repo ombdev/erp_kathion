@@ -1900,7 +1900,7 @@ public class CrmSpringDao implements CrmInterfaceDao{
         return dato_datos;
     }
     
-    //CRM  Reportes
+    //CRM  Reportes VISITAS
     @Override
     public ArrayList<HashMap<String, String>> getVisitas(String fecha_inicial, String fecha_final,Integer id_empresa, Integer idAgente) {
         String cadena_where = "";
@@ -1965,6 +1965,73 @@ public class CrmSpringDao implements CrmInterfaceDao{
         return hm;
     }
     //fin del reporte de visitas
+    
+ //CRM  Reportes PROYECTOS
+    @Override
+    public ArrayList<HashMap<String, String>> getProyectos(String fecha_inicial, String fecha_final,Integer id_empresa, Integer idAgente) {
+        String cadena_where = "";
+        
+        if(idAgente!=0){
+            cadena_where = "AND crm_registro_proyecto.gral_empleado_id="+idAgente+" ";
+        }
+        
+        String sql_to_query = ""
+                + "select "
+                    + "gral_empleados.clave,"
+                    + "crm_registro_proyecto.gral_empleado_id, "
+                    + "gral_empleados.nombre_pila||'  '||gral_empleados.apellido_paterno||'  '||gral_empleados.apellido_materno as nombre_empleado, "
+                    + "to_char(crm_registro_proyecto.fecha_inicio::timestamp with time zone, 'dd/mm/yyyy') AS fecha_inicio, "
+                    + "to_char(crm_registro_proyecto.fecha_fin::timestamp with time zone, 'dd/mm/yyyy') AS fecha_fin, "
+                    + "crm_registro_proyecto.titulo, "
+                    + "crm_registro_proyecto.observaciones, "
+                    + "crm_etapas_venta.descripcion, "
+                    + "to_char(crm_registro_proyecto.kg, 'FM999,999,999') as kg, "
+                    + "to_char(crm_registro_proyecto.precio, 'FM999,999,999.00') as precio, "
+                    + "to_char(crm_registro_proyecto.monto, 'FM999,999,999.00') as monto, "
+                    + "crm_contactos.nombre||'  '||crm_contactos.apellido_paterno||'  '||crm_contactos.apellido_materno AS nombre_contacto, "
+                    + "(CASE WHEN crm_contactos.tipo_contacto=1 THEN cxc_clie.razon_social WHEN crm_contactos.tipo_contacto=2 THEN crm_prospectos.razon_social ELSE '' END) AS cliente_prospecto "
+                +" from crm_registro_proyecto  "
+                +" join gral_empleados ON gral_empleados.id=crm_registro_proyecto.gral_empleado_id  "   
+                +" join crm_contactos ON crm_contactos.id=crm_registro_proyecto.crm_contacto_id  "
+                + "join crm_etapas_venta ON crm_etapas_venta.id=crm_registro_proyecto.crm_proyecto_estatus_id "
+                + "left join crm_contacto_cli ON crm_contacto_cli.crm_contactos_id=crm_contactos.id "
+                + "left join crm_contacto_pro ON crm_contacto_pro.crm_contactos_id=crm_contactos.id "
+                + "left join cxc_clie ON cxc_clie.id=crm_contacto_cli.cxc_clie_id "
+                + "left join crm_prospectos ON crm_prospectos.id=crm_contacto_pro.crm_prospectos_id "
+                +" WHERE to_char(crm_registro_proyecto.momento_creacion,'yyyymmdd')::integer between to_char('"+fecha_inicial+"'::timestamp with time zone,'yyyymmdd')::integer AND to_char('"+fecha_final+"'::timestamp with time zone,'yyyymmdd')::integer "
+                +" "+cadena_where+" "
+                + "ORDER BY gral_empleados.nombre_pila desc;";
+        
+        //System.out.println("DATOS del registro de PROYECTOS:  "+sql_to_query);
+        
+        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
+        ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
+            sql_to_query,
+            new Object[]{}, new RowMapper(){
+                @Override
+                public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    HashMap<String, String> row = new HashMap<String, String>();
+                    row.put("clave",rs.getString("clave"));
+                    row.put("gral_empleado_id",rs.getString("gral_empleado_id"));
+                    row.put("cliente_prospecto",rs.getString("cliente_prospecto"));
+                    row.put("nombre_empleado",rs.getString("nombre_empleado"));
+                    row.put("titulo",rs.getString("titulo"));                
+                    row.put("kg",rs.getString("kg"));
+                    row.put("precio",rs.getString("precio"));
+                    row.put("monto",rs.getString("monto"));
+                    row.put("descripcion",rs.getString("descripcion")); 
+                    row.put("fecha_inicio",rs.getString("fecha_inicio"));
+                    row.put("fecha_fin",rs.getString("fecha_fin"));
+                    row.put("observaciones",rs.getString("observaciones"));
+                    return row;
+                }
+            }
+        );
+        return hm;
+    }
+    //fin del reporte de PROYECTOS
+    
+    
     
     
      //obtiene todos los parametros de de acuerdo a el usuario ya  ala empresa
