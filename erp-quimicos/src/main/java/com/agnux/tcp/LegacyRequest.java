@@ -33,7 +33,7 @@ public class LegacyRequest {
         this.request.put("from", entity);
     }
 
-    void action(String action) {
+    public void action(String action) {
         this.request.put("action", action);
     }
 }
