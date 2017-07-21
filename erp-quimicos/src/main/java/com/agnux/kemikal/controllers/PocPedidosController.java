@@ -1028,7 +1028,14 @@ public class PocPedidosController {
             
             //System.out.println("data_string: "+data_string);
             
-            succes = this.getPocDao().selectFunctionValidateAaplicativo(data_string,app_selected,extra_data_array);
+            succes = this.getPocDao().poc_val_cusorder(
+                new Integer(id_usuario),
+                tipo_cambio,
+                fecha_compromiso,
+                select_metodo_pago,
+                no_cuenta,
+                extra_data_array);
+            //succes = this.getPocDao().selectFunctionValidateAaplicativo(data_string,app_selected,extra_data_array);
             
             log.log(Level.INFO, "despues de validacion {0}", String.valueOf(succes.get("success")));
             String actualizo = "0";

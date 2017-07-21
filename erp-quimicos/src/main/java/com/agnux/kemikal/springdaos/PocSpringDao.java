@@ -33,6 +33,26 @@ public class PocSpringDao implements PocInterfaceDao{
     }
     
     @Override
+    public HashMap<String, String> poc_val_cusorder(Integer usr_id, String curr_val, String date_lim, Integer pay_met, String account, String matrix)
+    {
+        String sql_to_query = "select poc_val_cusorder from poc_val_cusorder(" + usr_id + ",'" + curr_val + "','" + date_lim  + "'," + pay_met  + ",'" + account + "',array["+matrix+"]);";
+        System.out.println("Validacion:"+sql_to_query);
+        
+        HashMap<String, String> hm = (HashMap<String, String>) this.jdbcTemplate.queryForObject(
+            sql_to_query,
+            new Object[]{}, new RowMapper() {
+                @Override
+                public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    HashMap<String, String> row = new HashMap<String, String>();
+                    row.put("success",rs.getString("poc_val_cusorder"));
+                    return row;
+                }
+            }
+        );
+        return hm;
+    }
+    
+    @Override
     public HashMap<String, String> selectFunctionValidateAaplicativo(String data, Integer idApp, String string_array) {
         String sql_to_query = "select erp_fn_validaciones_por_aplicativo from erp_fn_validaciones_por_aplicativo('"+data+"',"+idApp+",array["+string_array+"]);";
         //System.out.println("Validacion:"+sql_to_query);
