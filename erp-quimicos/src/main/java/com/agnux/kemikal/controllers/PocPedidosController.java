@@ -1015,7 +1015,6 @@ public class PocPedidosController {
             if( String.valueOf(succes.get("success")).equals("true") ){
                 System.out.println(pc.conform_cat_store());
                 actualizo = this.getPocDao().poc_cat_cusorder(pc);
-                //actualizo = this.getPocDao().selectFunctionForThisApp(data_string, extra_data_array);
                 jsonretorno.put("actualizo",String.valueOf(actualizo));
             }
             

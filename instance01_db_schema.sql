@@ -4,7 +4,7 @@
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET client_encoding = 'UTF8';
+SET client_encoding = 'LATIN1';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
@@ -192,7 +192,7 @@ BEGIN
 		
 		FOR fila2 IN EXECUTE(cadena_sql2) LOOP
 			exis:=0;
-			--Buscar si ya esxiste en inv_exi en el a√±o actual
+			--Buscar si ya esxiste en inv_exi en el aÒo actual
 			
 			SELECT count(id) FROM inv_exi WHERE inv_prod_id = fila2.id_prod AND inv_alm_id = fila.id_alm AND ano=ano_actual INTO exis;
 			
@@ -1354,9 +1354,9 @@ CREATE FUNCTION conversion_costo_para_lista_precio(costo double precision, tc_us
 --###################################
 
 --costo: El costo siempre debe venir en M.N.
---tc_usd: √âste es el tipo de cambio para convertir el costo en USD si la moneda_lista=2
---tc_eur: √âste es el tipo de cambio para convertir el costo en EUR si la moneda_lista=3
---moneda_lista: √âste es la moneda de la Lista de Precio
+--tc_usd: …ste es el tipo de cambio para convertir el costo en USD si la moneda_lista=2
+--tc_eur: …ste es el tipo de cambio para convertir el costo en EUR si la moneda_lista=3
+--moneda_lista: …ste es la moneda de la Lista de Precio
 
 DECLARE
 	costo_convertido double precision = 0.0;
@@ -2401,9 +2401,9 @@ BEGIN
 			con_cita_llamadas+"___"+//21 str_data[21]
 			conseguimiento_llamadas+"___"+//22 str_data[22]
 			efectividad_llamadas+"___"+//23 str_data[23]
-			gesti√≥n_llamadas+"___"+//24 str_data[24]
+			gestiÛn_llamadas+"___"+//24 str_data[24]
 			avance_llamadas+"___"+//25 str_data[25]
-			planeaci√≥n_llamadas+"___"+//26 str_data[26]
+			planeaciÛn_llamadas+"___"+//26 str_data[26]
 			facturacion_casos+"___"+//27 str_data[27]
 			producto_casos+"___"+//28 str_data[28]
 			garantia_casos+"___"+//29 str_data[29]
@@ -2666,6 +2666,7 @@ BEGIN
 				kg,--str_data[19]::double precision,
 				cxc_clie_clas1_id,--str_data[20]::integer,
 				cxc_clie_clas2_id,--str_data[21]::integer,
+				--precio, --str_data[22],
 				borrado_logico,--false,
 				momento_creacion,--espacio_tiempo_ejecucion,
 				gral_usr_id_creacion,--usuario_ejecutor,
@@ -2724,6 +2725,7 @@ BEGIN
 				kg=str_data[19]::double precision,
 				cxc_clie_clas1_id=str_data[20]::integer,
 				cxc_clie_clas2_id=str_data[21]::integer,
+				--precio=str_data[22]::double precision,
 				momento_actualizacion=espacio_tiempo_ejecucion,
 				gral_usr_id_actualiza=usuario_ejecutor
 			WHERE id = str_data[4]::integer;
@@ -3495,7 +3497,7 @@ BEGIN
 			casos_distribucion :=((casos_distribucion::double precision / casos_totales::double precision) * 100) ::double precision;
 		END IF;
 
-		--sacando el porciento de da√±os 
+		--sacando el porciento de daÒos 
 		IF casos_danos=0 OR casos_totales=0  THEN
 			casos_danos :=0;
 		ELSE
@@ -4754,7 +4756,7 @@ BEGIN
 			casos_distribucion :=((casos_distribucion::double precision / casos_totales::double precision) * 100) ::double precision;
 		END IF;
 
-		--sacando el porciento de da√±os 
+		--sacando el porciento de daÒos 
 		IF casos_danos=0 OR casos_totales=0  THEN
 			casos_danos :=0;
 		ELSE
@@ -5547,7 +5549,7 @@ BEGIN
 			IF prefijo_consecutivo IS NULL THEN prefijo_consecutivo:=''; END IF;
 			
 			if (select count(id) from ctb_pol_cons WHERE gral_emp_id=emp_id AND gral_suc_id=ctb_param.gral_suc_id_cons AND anio=str_data[7]::integer AND mes=str_data[6]::integer)<=0 then 
-				--Si no existe el cosecutivo en el mes y a√±o  hay que crearlo
+				--Si no existe el cosecutivo en el mes y aÒo  hay que crearlo
 				insert into ctb_pol_cons(gral_emp_id, gral_suc_id, anio, mes, consecutivo, no_digitos)values(emp_id, ctb_param.gral_suc_id_cons, str_data[7]::integer, str_data[6]::integer, 0, 4);
 			end if;
 			
@@ -5991,7 +5993,7 @@ BEGIN
 				select extract(month from fila.fecha) into mes_actual;
 				
 				if (select count(id) from ctb_pol_cons WHERE gral_emp_id=emp_id AND gral_suc_id=ctb_param.gral_suc_id_cons AND anio=ano_actual AND mes=mes_actual)<=0 then 
-					--Si no existe el cosecutivo en el mes y a√±o  hay que crearlo
+					--Si no existe el cosecutivo en el mes y aÒo  hay que crearlo
 					insert into ctb_pol_cons(gral_emp_id, gral_suc_id, anio, mes, consecutivo, no_digitos)values(emp_id, ctb_param.gral_suc_id_cons, ano_actual, mes_actual, 0, 4);
 				end if;
 				
@@ -6102,7 +6104,7 @@ BEGIN
 							--59;"Chequeras"
 							--167;"IEPS"
 							
-							--1=Subtotal, 2=Total, 3=I.V.A., 4=Retenci√≥n I.V.A., 5=I.E.P.S., 6=I.S.R.
+							--1=Subtotal, 2=Total, 3=I.V.A., 4=RetenciÛn I.V.A., 5=I.E.P.S., 6=I.S.R.
 							if fila3.campo=1 then 
 								campo_valor:=fila3.subtotal;
 							end if;
@@ -6166,7 +6168,7 @@ BEGIN
 					end loop;
 				end loop;
 
-				--Actualizar registro de factura para indicar que ya se gener√≥ poliza
+				--Actualizar registro de factura para indicar que ya se generÛ poliza
 				update fac_docs set procesado=true, fecha_procesa=espacio_tiempo_ejecucion, gral_usr_id_procesa=usuario_ejecutor 
 				where id=fila.ref_id;
 				
@@ -6211,16 +6213,17 @@ ALTER FUNCTION public.ctb_adm_procesos(campos_data text, extra_data text[]) OWNE
 CREATE FUNCTION ctb_reporte(campos_data character varying) RETURNS SETOF record
     LANGUAGE plpgsql
     AS $$
-
 DECLARE
 	app_selected integer;
 	command_selected character varying;
 	usuario_ejecutor integer;
 	emp_id integer;
 	suc_id integer;
-
+	aplicacion_id integer := 0;
+	
 	cadena_where character varying = '';
 	cadena_where2 character varying = '';
+	cadena_where3 character varying = '';
 	cadena_sql character varying = '';
 	returnrecord record;
 	valor1 character varying:='';
@@ -6244,7 +6247,12 @@ DECLARE
 	existencia double precision;
 	fila record;
 	fila2 record;
+	fila3 record;
+	fila4 record;
 	equivalenciaPres double precision=0;
+	suma1 double precision:=0.0;
+	suma2 double precision:=0.0;
+	suma3 double precision:=0.0;
 BEGIN	
 	-- convertir cadena en arreglo
 	SELECT INTO str_data string_to_array(''||campos_data||'','___');
@@ -6282,122 +6290,7 @@ BEGIN
 		
 		BEGIN 
 			--Crear tabla temporal
-			CREATE TEMPORARY TABLE tmpRepCtb (cuenta character varying, descripcion character varying, saldo_inicial character varying, debe character varying, haber character varying, saldo_final character varying);
-			EXCEPTION WHEN OTHERS THEN
-			TRUNCATE TABLE tmpRepCtb; -- TRUNCATE if the table already exists within the session.
-		END;
-		
-		--BUSQUEDA PARA EL REPORTE-------------
-		IF command_selected='reporte' THEN 
-			--tipo de reporte
-			IF str_data[4]::integer=1 THEN
-				--Anual
-				cadena_where:=' ';
-			ELSE
-				--Mensual
-				cadena_where:=' ';
-			END IF;
-			
-			--Cuuntas
-			IF str_data[7]::integer=1 THEN
-				--Todas
-				cadena_where:=cadena_where||' ';
-			ELSE
-				--Una cuenta
-				IF str_data[8]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.cta='||str_data[8]; END IF;
-				IF str_data[9]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.subcta='||str_data[9]; END IF;
-				IF str_data[10]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.ssubcta='||str_data[10]; END IF;
-				IF str_data[11]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.sssubcta='||str_data[11]; END IF;
-				IF str_data[12]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.ssssubcta='||str_data[12]; END IF;
-			END IF;
-			
-			--Cadena para espacios en blanco cuando es para mostrar el resultado en el navegador
-			cadena1:='&nbsp;';
-			IF trim(str_data[13])='pdf' THEN 
-				--Cadena para espacios en blanco cuando es para mostrar el resultado en pdf
-				cadena1:=' ';
-			END IF;
-			
-			cadena_sql:= '
-			SELECT 
-				cta_mayor,
-				clasifica,
-				cta_mayor||'' ''||clasifica||'' ''||(CASE WHEN cta>0 THEN cta::character varying ELSE '''' END)||(CASE WHEN subcta>0 THEN ''-''||lpad(subcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ssubcta>0 THEN ''-''||lpad(ssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN sssubcta>0 THEN ''-''||lpad(sssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ssssubcta>0 THEN ''-''||lpad(ssssubcta::character varying, 4, ''0'') ELSE '''' END) AS cta,
-				(CASE WHEN (cta>0 AND subcta=0 AND ssubcta=0 AND sssubcta=0 AND ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||'''
-				      WHEN (cta>0 AND subcta>0 AND ssubcta=0 AND sssubcta=0 AND ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
-				      WHEN (cta>0 AND subcta>0 AND ssubcta>0 AND sssubcta=0 AND ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
-				      WHEN (cta>0 AND subcta>0 AND ssubcta>0 AND sssubcta>0 AND ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
-				      WHEN (cta>0 AND subcta>0 AND ssubcta>0 AND sssubcta>0 AND ssssubcta>0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
-				 ELSE '''' END)||ctb_cta.descripcion AS descripcion 
-			FROM ctb_cta 
-			WHERE borrado_logico=false AND gral_emp_id='||emp_id||' '||cadena_where||' 
-			ORDER BY cta_mayor, clasifica, cta;';
-			
-			--RAISE EXCEPTION '%',cadena_sql;
-			FOR fila IN EXECUTE (cadena_sql) LOOP
-				IF valor1<>fila.cta_mayor::character varying THEN 
-					valor1:=fila.cta_mayor::character varying;
-					valor2:=fila.clasifica::character varying;
-					
-					--Obtener la descripcion de la clase de cuenta de Mayor
-					SELECT titulo FROM ctb_may_clases WHERE id=fila.cta_mayor::integer LIMIT 1
-					INTO desc_cta_may_clases;
-
-					--Agregar la clase de la Cuenta de mayor
-					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' 0 0000', desc_cta_may_clases, '0','0', '0', '0');
-					
-					SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint
-					INTO desc_cta_may;
-					
-					--Agregar la clasificacion de la Cuenta de Mayor
-					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '0','0', '0', '0');
-
-					--Agregar la cuenta contable
-					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta, fila.descripcion, '0','0', '0', '0');
-				ELSE
-					
-					IF valor2<>fila.clasifica::character varying THEN 
-						valor2:=fila.clasifica::character varying;
-						SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint 
-						INTO desc_cta_may;
-						
-						--Agregar la clasificacion de la Cuenta de Mayor
-						INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '0','0', '0', '0');
-					END IF;
-					
-					--Agregar la cuenta contable
-					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) 
-					VALUES(fila.cta, fila.descripcion, '0','0', '0', '0');
-				END IF;
-				
-			END LOOP;
-			
-		END IF;--termina command reporte
-	END IF;
-	--Termina Reporte Auxiliar de Cuentas
-
-
-
-	--Reporte  de Balanza de Comprobacion
-	IF app_selected = 158 THEN
-		--str_data[1]	app_selected
-		--str_data[2]	id_user
-		--str_data[3]	command_selected
-		--str_data[4]	tipo_reporte
-		--str_data[5]	ano
-		--str_data[6]	mes
-		--str_data[7]	cuentas
-		--str_data[8]	cta
-		--str_data[9]	scta
-		--str_data[10]	sscta
-		--str_data[11]	ssscta
-		--str_data[12]	sssscta
-		--str_data[13]	tipo_documento
-		
-		
-		BEGIN 
-			--Crear tabla temporal
-			CREATE TEMPORARY TABLE tmpRepCtb (cuenta character varying, descripcion character varying, saldo_inicial character varying, debe character varying, haber character varying, saldo_final character varying);
+			CREATE TEMPORARY TABLE tmpRepCtb(cuenta character varying, descripcion character varying, saldo_inicial character varying, debe character varying, haber character varying, saldo_final character varying);
 			EXCEPTION WHEN OTHERS THEN
 			TRUNCATE TABLE tmpRepCtb; -- TRUNCATE if the table already exists within the session.
 		END;
@@ -6408,12 +6301,12 @@ BEGIN
 			IF str_data[4]::integer=1 THEN
 				--Mensual
 				cadena_where2:=' and ctb_pol.ano='||str_data[5]||' and ctb_pol.mes='||str_data[6]||'';
+				cadena_where3:=' and ctb_sdo_cta.ano='||str_data[5]||' and ctb_sdo_cta.mes='||str_data[6]||'';
 			ELSE
 				--Anual
 				cadena_where2:=' and ctb_pol.ano='||str_data[5]||'';
+				cadena_where3:=' and ctb_sdo_cta.ano='||str_data[5]||'';
 			END IF;
-
-			--RAISE EXCEPTION '%',cadena_where2;
 			
 			--Cuuntas
 			IF str_data[7]::integer=1 THEN
@@ -6446,13 +6339,15 @@ BEGIN
 				      WHEN (cta>0 AND subcta>0 AND ssubcta>0 AND sssubcta=0 AND ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
 				      WHEN (cta>0 AND subcta>0 AND ssubcta>0 AND sssubcta>0 AND ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
 				      WHEN (cta>0 AND subcta>0 AND ssubcta>0 AND sssubcta>0 AND ssssubcta>0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
-				 ELSE '''' END)||ctb_cta.descripcion AS descripcion 
+				 ELSE '''' END)||ctb_cta.descripcion AS descripcion,
+				 ctb_cta.naturaleza,
+				 ctb_cta.nivel 
 			FROM ctb_cta 
 			WHERE borrado_logico=false AND gral_emp_id='||emp_id||' '||cadena_where||' 
 			ORDER BY cta_mayor, clasifica, cta;';
 			
 			--RAISE EXCEPTION '%',cadena_sql;
-			FOR fila IN EXECUTE (cadena_sql) LOOP
+			FOR fila IN EXECUTE (cadena_sql) LOOP 
 				IF valor1<>fila.cta_mayor::character varying THEN 
 					valor1:=fila.cta_mayor::character varying;
 					valor2:=fila.clasifica::character varying;
@@ -6462,30 +6357,32 @@ BEGIN
 					INTO desc_cta_may_clases;
 
 					--Agregar la clase de la Cuenta de mayor
-					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' 0 0000', desc_cta_may_clases, '0','0', '0', '0');
+					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' 0 0000', desc_cta_may_clases, '','', '', '');
 					
 					SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint
 					INTO desc_cta_may;
 					
 					--Agregar la clasificacion de la Cuenta de Mayor
-					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '0','0', '0', '0');
-
-
-					--Obtener suma de la cuenta.
-					execute 'select sum(debe) as debe, sum(haber) as haber
-					from(
-						select (case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, (case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
-						from ctb_pol_mov 
-						join ctb_pol on ctb_pol.id=ctb_pol_mov.ctb_pol_id 
-						where replace(ctb_pol_mov.cta,''-'','''') ilike '''||fila.cta1||'%'' '||cadena_where2||' 
-					) as sbt' into fila2;
-					
-					
-					if fila2.debe is null then fila2.debe:=0; end if;
-					if fila2.haber is null then fila2.haber:=0; end if;
+					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '','', '', '');
 					
 					--Agregar la cuenta contable
-					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta, fila.descripcion, '0', fila2.debe::character varying, fila2.haber::character varying, '0');
+					--INSERT INTO tmpRepCtb (nivel, cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(0, fila.cta, fila.descripcion, '0','0', '0', '0');
+					
+					cadena_sql2:='
+					select 
+						ctb_pol.poliza,
+						to_char(ctb_pol.fecha,''dd/mm/yyyy'') as fecha,
+						ctb_pol.observacion,
+						(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, 
+						(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber
+					from ctb_pol 
+					join ctb_pol_mov on ctb_pol_mov.ctb_pol_id=ctb_pol.id 
+					where replace(ctb_pol_mov.cta,''-'','''') ilike '''||fila.cta1||'%'' '||cadena_where2||' ';
+					
+					FOR fila2 IN EXECUTE (cadena_sql2) LOOP 
+						--Agregar la movimientos de la cuenta contable
+						INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta, fila.descripcion, '0','0', '0', '0');
+					END LOOP;
 				ELSE
 					
 					IF valor2<>fila.clasifica::character varying THEN 
@@ -6494,32 +6391,1222 @@ BEGIN
 						INTO desc_cta_may;
 						
 						--Agregar la clasificacion de la Cuenta de Mayor
-						INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '0','0', '0', '0');
+						INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '','', '', '');
 					END IF;
 					
-					
-					--Obtener suma de la cuenta.
-					execute 'select sum(debe) as debe, sum(haber) as haber
-					from(
-						select (case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, (case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
-						from ctb_pol_mov 
-						join ctb_pol on ctb_pol.id=ctb_pol_mov.ctb_pol_id 
-						where replace(ctb_pol_mov.cta,''-'','''') ilike '''||fila.cta1||'%'' '||cadena_where2||' 
-					) as sbt' into fila2;
-
-					
-					if fila2.debe is null then fila2.debe:=0; end if;
-					if fila2.haber is null then fila2.haber:=0; end if;
-					
 					--Agregar la cuenta contable
-					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta, fila.descripcion, '0', fila2.debe::character varying, fila2.haber::character varying, '0');
+					INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta, fila.descripcion, '0','0', '0', '0');
 				END IF;
 				
 			END LOOP;
 			
 		END IF;--termina command reporte
+
+		--Recorriendo la tabla temporal y retornando sus filas
+		FOR returnrecord IN SELECT * FROM tmpRepCtb LOOP
+			RETURN NEXT returnrecord;
+		END LOOP;
+	END IF;
+	--Termina Reporte Auxiliar de Cuentas
+
+
+
+	--Reporte  de Balanza de Comprobacion
+	IF app_selected = 158 THEN
+		--str_data[1]	app_selected
+		--str_data[2]	id_user
+		--str_data[3]	command_selected
+		--str_data[4]	suc
+		--str_data[5]	fecha_ini
+		--str_data[6]	fecha_fin
+		--str_data[7]	cuentas
+		--str_data[8]	cta
+		--str_data[9]	scta
+		--str_data[10]	sscta
+		--str_data[11]	ssscta
+		--str_data[12]	sssscta
+		--str_data[13]	tipo_documento
+		
+		
+		BEGIN 
+			--Crear tabla temporal
+			CREATE TEMPORARY TABLE tmpRepCtbBalanzaComp(nivel integer, cuenta1 character varying, cuenta character varying, descripcion character varying, saldo_inicial character varying, debe character varying, haber character varying, saldo_final character varying);
+			EXCEPTION WHEN OTHERS THEN
+			TRUNCATE TABLE tmpRepCtbBalanzaComp; -- TRUNCATE if the table already exists within the session.
+		END;
+		
+		--BUSQUEDA PARA EL REPORTE-------------
+		IF command_selected='reporte' THEN 
+			
+			--RAISE EXCEPTION '%',cadena_where2;
+			
+			--Cuentas
+			IF str_data[7]::integer=1 THEN
+				--Todas
+				cadena_where:=cadena_where||' ';
+			ELSE
+				--Una cuenta
+				IF str_data[8]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.cta='||str_data[8]; END IF;
+				IF str_data[9]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.subcta='||str_data[9]; END IF;
+				IF str_data[10]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.ssubcta='||str_data[10]; END IF;
+				IF str_data[11]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.sssubcta='||str_data[11]; END IF;
+				IF str_data[12]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.ssssubcta='||str_data[12]; END IF;
+			END IF;
+			
+			--Cadena para espacios en blanco cuando es para mostrar el resultado en el navegador
+			cadena1:='&nbsp;';
+			IF trim(str_data[13])='pdf' THEN 
+				--Cadena para espacios en blanco cuando es para mostrar el resultado en pdf
+				cadena1:=' ';
+			END IF;
+			
+			cadena_sql:= '
+			select sbt3.cta_mayor, sbt3.clasifica, sbt3.cuenta, sbt3.cta1, sbt3.cta, sbt3.descripcion, sbt3.naturaleza, sbt3.nivel, sbt3.saldo_ini, sbt3.saldo_fin, sbt3.ini_debe, sbt3.ini_haber, sum(case when pol_mov.debe is null then 0 else pol_mov.debe end) as debe, sum(case when pol_mov.haber is null then 0 else pol_mov.haber end) as haber 
+			from (
+				select sbt2.cta_mayor, sbt2.clasifica, sbt2.cuenta, sbt2.cta1, sbt2.cta, sbt2.descripcion, sbt2.naturaleza, sbt2.nivel, sbt2.saldo_ini, sbt2.saldo_fin, sum(case when pol_mov_ini.debe is null then 0 else pol_mov_ini.debe end) as ini_debe, sum(case when pol_mov_ini.haber is null then 0 else pol_mov_ini.haber end) as ini_haber 
+				from(
+					select sbt1.cta_mayor, sbt1.clasifica, sbt1.cuenta, sbt1.cta1, sbt1.cta, sbt1.descripcion, sbt1.naturaleza, sbt1.nivel, sum(case when ctb_sdo.saldo_ini is null then 0 else ctb_sdo.saldo_ini end) as saldo_ini, sum(case when ctb_sdo.saldo_fin is null then 0 else ctb_sdo.saldo_fin end) as saldo_fin 
+					from (
+						SELECT 
+							ctb_cta.cta_mayor,
+							ctb_cta.clasifica,
+							ctb_cta.cta as cuenta,
+							(CASE WHEN ctb_cta.cta>0 THEN ctb_cta.cta::character varying ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN lpad(ctb_cta.subcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN lpad(ctb_cta.ssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN lpad(ctb_cta.sssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN lpad(ctb_cta.ssssubcta::character varying,4,''0'') ELSE '''' END) AS cta1,
+							ctb_cta.cta_mayor||'' ''||ctb_cta.clasifica||'' ''||(CASE WHEN ctb_cta.cta>0 THEN ctb_cta.cta::character varying ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN ''-''||lpad(ctb_cta.subcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN ''-''||lpad(ctb_cta.ssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN ''-''||lpad(ctb_cta.sssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN ''-''||lpad(ctb_cta.ssssubcta::character varying, 4, ''0'') ELSE '''' END) AS cta,
+							(CASE WHEN (ctb_cta.cta>0 AND ctb_cta.subcta=0 AND ctb_cta.ssubcta=0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||'''
+							      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta=0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+							      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+							      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta>0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+							      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta>0 AND ctb_cta.ssssubcta>0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+							 ELSE '''' END)||ctb_cta.descripcion AS descripcion,
+							 ctb_cta.naturaleza,
+							 ctb_cta.nivel 
+						FROM ctb_cta 
+						WHERE ctb_cta.borrado_logico=false AND ctb_cta.gral_emp_id='||emp_id||' '||cadena_where||' 
+					) as sbt1 
+					left join (
+						select replace(ctb_sdo_cta.cta,''-'','''') as cta, sum(case when ctb_sdo_cta.saldo_ini is null then 0 else ctb_sdo_cta.saldo_ini end) as saldo_ini, sum(case when ctb_sdo_cta.saldo_fin is null then 0 else ctb_sdo_cta.saldo_fin end) as saldo_fin 
+						from ctb_sdo_cta where ctb_sdo_cta.ano=extract(year from '''||str_data[5]||'''::timestamp with time zone) 
+						group by ctb_sdo_cta.cta 
+					) as ctb_sdo on ctb_sdo.cta ilike sbt1.cta1||''%'' 
+					group by sbt1.cta_mayor, sbt1.clasifica, sbt1.cuenta, sbt1.cta1, sbt1.cta, sbt1.descripcion, sbt1.naturaleza, sbt1.nivel 
+				) as sbt2 
+				left join (
+					select replace(ctb_pol_mov.cta,''-'','''') as cta, sum(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, sum(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
+					from ctb_pol_mov join ctb_pol on ctb_pol.id=ctb_pol_mov.ctb_pol_id where to_char(ctb_pol.fecha,''yyyymmdd'')::integer >= (extract(year from '''||str_data[5]||'''::timestamp with time zone)||''0101'')::integer  and to_char(ctb_pol.fecha,''yyyymmdd'')::integer < to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer 
+					group by ctb_pol_mov.cta 
+				) as pol_mov_ini on pol_mov_ini.cta ilike sbt2.cta1||''%'' 
+				group by sbt2.cta_mayor, sbt2.clasifica, sbt2.cuenta, sbt2.cta1, sbt2.cta, sbt2.descripcion, sbt2.naturaleza, sbt2.nivel, sbt2.saldo_ini, sbt2.saldo_fin 
+			) as sbt3 
+			left join (
+				select replace(ctb_pol_mov.cta,''-'','''') as cta, sum(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, sum(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
+				from ctb_pol_mov join ctb_pol on ctb_pol.id=ctb_pol_mov.ctb_pol_id where to_char(ctb_pol.fecha,''yyyymmdd'')::integer BETWEEN to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer AND to_char('''||str_data[6]||'''::timestamp with time zone,''yyyymmdd'')::integer
+				group by ctb_pol_mov.cta 
+			) as pol_mov on pol_mov.cta ilike sbt3.cta1||''%'' 
+			group by sbt3.cta_mayor, sbt3.clasifica, sbt3.cuenta, sbt3.cta1, sbt3.cta, sbt3.descripcion, sbt3.naturaleza, sbt3.nivel, sbt3.ini_debe, sbt3.ini_haber, sbt3.saldo_ini, sbt3.saldo_fin 
+			ORDER BY sbt3.cta_mayor, sbt3.clasifica, sbt3.cuenta;';
+			
+			--RAISE EXCEPTION '%',cadena_sql;
+			FOR fila IN EXECUTE (cadena_sql) LOOP
+				IF valor1<>fila.cta_mayor::character varying THEN 
+					valor1:=fila.cta_mayor::character varying;
+					valor2:=fila.clasifica::character varying;
+
+					if fila.saldo_ini is null then fila.saldo_ini:=0; end if;
+					if fila.saldo_fin is null then fila.saldo_fin:=0; end if;
+					if fila.ini_debe is null then fila.ini_debe:=0; end if;
+					if fila.ini_haber is null then fila.ini_haber:=0; end if;
+					if fila.debe is null then fila.debe:=0; end if;
+					if fila.haber is null then fila.haber:=0; end if;
+					
+					--fila.nivel  1=Auxiliar, 2=Mayor
+					
+					--Obtener la descripcion de la clase de cuenta de Mayor
+					SELECT titulo FROM ctb_may_clases WHERE id=fila.cta_mayor::integer LIMIT 1
+					INTO desc_cta_may_clases;
+					
+					--Agregar la clase de la Cuenta de mayor
+					INSERT INTO tmpRepCtbBalanzaComp(nivel, cuenta1, cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(0, '0000', fila.cta_mayor||' 0 0000', desc_cta_may_clases, '','', '', '');
+					--INSERT INTO tmpRepCtb (cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.cta_mayor||' 0 0000', desc_cta_may_clases, '0','0', '0', '0');
+					
+					SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint
+					INTO desc_cta_may;
+					
+					--Agregar la clasificacion de la Cuenta de Mayor
+					INSERT INTO tmpRepCtbBalanzaComp(nivel, cuenta1, cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(0,  '0000', fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '','', '', '');
+					
+					--1=Deudora, 2=Acreedora
+					if fila.naturaleza=1 then 
+						--Calcular el saldo inicial a la fecha inicial del reporte
+						fila.saldo_ini:= fila.saldo_ini + fila.ini_debe - fila.ini_haber;
+						
+						fila.saldo_fin:=fila.saldo_ini + fila.debe - fila.haber;
+					else
+						--Calcular el saldo inicial a la fecha inicial del reporte
+						fila.saldo_ini:= fila.saldo_ini - fila.ini_debe + fila.ini_haber;
+						
+						fila.saldo_fin:=fila.saldo_ini - fila.debe + fila.haber;
+					end if;
+					
+					--Agregar la cuenta contable
+					INSERT INTO tmpRepCtbBalanzaComp(nivel, cuenta1,cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.nivel, fila.cta1, fila.cta, fila.descripcion, fila.saldo_ini, fila.debe::character varying, fila.haber::character varying, fila.saldo_fin::character varying);
+				ELSE
+					
+					IF valor2<>fila.clasifica::character varying THEN 
+						valor2:=fila.clasifica::character varying;
+						SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint 
+						INTO desc_cta_may;
+						
+						--Agregar la clasificacion de la Cuenta de Mayor
+						INSERT INTO tmpRepCtbBalanzaComp(nivel, cuenta1,cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(0, '0000',fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '','', '', '');
+					END IF;
+					
+					/*
+					--Obtener sumas de la cuenta en el periodo indicado por Fecha Inicial y Fecha Final
+					execute 'select sum(debe) as debe, sum(haber) as haber 
+					from(
+						select (case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, (case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
+						from ctb_pol_mov 
+						join ctb_pol on (ctb_pol.id=ctb_pol_mov.ctb_pol_id and (to_char(ctb_pol.fecha,''yyyymmdd'')::integer BETWEEN  to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer AND to_char('''||str_data[6]||'''::timestamp with time zone,''yyyymmdd'')::integer))
+						where replace(ctb_pol_mov.cta,''-'','''') ilike '''||fila.cta1||'%'' 
+					) as sbt' into fila2;
+					
+					
+					if fila2.debe is null then fila2.debe:=0; end if;
+					if fila2.haber is null then fila2.haber:=0; end if;
+					
+					
+					--Obtener el saldo inicial de la cuenta en el aÒo que indique la Fecha Inicial del periodo de la consulta
+					execute 'select sum(saldo_ini) as saldo_ini, sum(debe) as debe, sum(haber) as haber, sum(saldo_fin) as saldo_fin 
+					from(
+						select (case when ctb_sdo_cta.saldo_ini is null then 0 else ctb_sdo_cta.saldo_ini end) as saldo_ini, 
+							(case when ctb_sdo_cta.debe is null then 0 else ctb_sdo_cta.debe end) as debe, 
+							(case when ctb_sdo_cta.haber is null then 0 else ctb_sdo_cta.haber end) as haber,
+							(case when ctb_sdo_cta.saldo_fin is null then 0 else ctb_sdo_cta.saldo_fin end) as saldo_fin 
+						from ctb_sdo_cta 
+						where replace(ctb_sdo_cta.cta,''-'','''') ilike '''||fila.cta1||'%'' and ctb_sdo_cta.ano=extract(year from '''||str_data[5]||'''::timestamp with time zone) 
+					) as sbt' into fila3;
+
+					if fila3.debe is null then fila3.debe:=0; end if;
+					if fila3.haber is null then fila3.haber:=0; end if;
+					if fila3.saldo_ini is null then fila3.saldo_ini:=0; end if;
+					if fila3.saldo_fin is null then fila3.saldo_fin:=0; end if;
+
+
+					--Obtener la suma de los movimientos desde el comienzo del aÒo a un dÌa antes de la Fecha Inicial del periodo de la consulta
+					execute 'select sum(debe) as debe, sum(haber) as haber 
+					from(
+						select (case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, (case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
+						from ctb_pol_mov 
+						join ctb_pol on (ctb_pol.id=ctb_pol_mov.ctb_pol_id and to_char(ctb_pol.fecha,''yyyymmdd'')::integer >= (extract(year from '''||str_data[5]||'''::timestamp with time zone)||''0101'')::integer  and to_char(ctb_pol.fecha,''yyyymmdd'')::integer < to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer)
+						where replace(ctb_pol_mov.cta,''-'','''') ilike '''||fila.cta1||'%'' 
+					) as sbt' into fila4;
+					
+					if fila4.debe is null then fila4.debe:=0; end if;
+					if fila4.haber is null then fila4.haber:=0; end if;
+					*/
+
+					--1=Deudora, 2=Acreedora
+					if fila.naturaleza=1 then 
+						--Calcular el saldo inicial a la fecha inicial del reporte
+						fila.saldo_ini:= fila.saldo_ini + fila.ini_debe - fila.ini_haber;
+						
+						fila.saldo_fin:=fila.saldo_ini + fila.debe - fila.haber;
+					else
+						--Calcular el saldo inicial a la fecha inicial del reporte
+						fila.saldo_ini:= fila.saldo_ini - fila.ini_debe + fila.ini_haber;
+						
+						fila.saldo_fin:=fila.saldo_ini - fila.debe + fila.haber;
+					end if;
+					
+					--Agregar la cuenta contable
+					INSERT INTO tmpRepCtbBalanzaComp(nivel, cuenta1,cuenta, descripcion, saldo_inicial, debe, haber, saldo_final) VALUES(fila.nivel, fila.cta1,fila.cta, fila.descripcion, fila.saldo_ini, fila.debe::character varying, fila.haber::character varying, fila.saldo_fin::character varying);
+				END IF;
+				
+			END LOOP;
+			
+		END IF;--termina command reporte
+
+		--Recorriendo la tabla temporal y retornando sus filas
+		FOR returnrecord IN SELECT * FROM tmpRepCtbBalanzaComp LOOP
+			RETURN NEXT returnrecord;
+		END LOOP;
 	END IF;
 	--Termina Reporte de Balanza de Comprobacion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	--Reporte Auxiliar de Movimientos de Cuentas(CTB)
+	IF app_selected = 159 THEN
+		--str_data[1]	app_selected
+		--str_data[2]	id_user
+		--str_data[3]	command_selected
+		--str_data[4]	suc
+		--str_data[5]	fecha_ini
+		--str_data[6]	fecha_fin
+		--str_data[7]	cuentas
+		--str_data[8]	cta
+		--str_data[9]	scta
+		--str_data[10]	sscta
+		--str_data[11]	ssscta
+		--str_data[12]	sssscta
+		--str_data[13]	tipo_documento
+		
+		BEGIN 
+			/*
+			tipo_reg character varying,
+			suc character varying,
+			cta character varying,
+			descrip_cta character varying,
+			poliza character varying,
+			orig character varying,
+			tipo_pol character varying,
+			fecha character varying,
+			referencia character varying,
+			cc character varying,
+			descrip_mov character varying,
+			saldo_ini character varying,
+			debe character varying,
+			haber character varying,
+			saldo_fin character varying
+			*/
+			--Crear tabla temporal
+			CREATE TEMPORARY TABLE tmpRepCtbAuxMov(tipo_reg character varying, suc character varying, cta character varying, descrip_cta character varying, poliza character varying, orig character varying, tipo_pol character varying, fecha character varying, referencia character varying, cc character varying, descrip_mov character varying, saldo_ini character varying, debe character varying, haber character varying, saldo_fin character varying);
+			EXCEPTION WHEN OTHERS THEN
+			TRUNCATE TABLE tmpRepCtbAuxMov; -- TRUNCATE if the table already exists within the session.
+		END;
+		
+		--BUSQUEDA PARA EL REPORTE-------------
+		IF command_selected='reporte' THEN 
+			
+			--Cuentas
+			IF str_data[7]::integer=1 THEN
+				--Todas
+				cadena_where:=cadena_where||' ';
+			ELSE
+				--Una cuenta
+				IF str_data[8]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.cta='||str_data[8]; END IF;
+				IF str_data[9]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.subcta='||str_data[9]; END IF;
+				IF str_data[10]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.ssubcta='||str_data[10]; END IF;
+				IF str_data[11]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.sssubcta='||str_data[11]; END IF;
+				IF str_data[12]::integer>0 THEN cadena_where:=cadena_where||' AND ctb_cta.ssssubcta='||str_data[12]; END IF;
+			END IF;
+			
+			--Cadena para espacios en blanco cuando es para mostrar el resultado en el navegador
+			cadena1:='&nbsp;';
+			IF trim(str_data[13])='pdf' THEN 
+				--Cadena para espacios en blanco cuando es para mostrar el resultado en pdf
+				cadena1:=' ';
+			END IF;
+			
+			cadena_sql:= '
+			select sbt3.cta_mayor, sbt3.clasifica, sbt3.cuenta, sbt3.cta1, sbt3.cta, sbt3.descripcion, sbt3.naturaleza, sbt3.nivel, sbt3.saldo_ini, sbt3.saldo_fin, sbt3.ini_debe, sbt3.ini_haber, sum(case when pol_mov.debe is null then 0 else pol_mov.debe end) as debe, sum(case when pol_mov.haber is null then 0 else pol_mov.haber end) as haber 
+			from (
+				select sbt2.cta_mayor, sbt2.clasifica, sbt2.cuenta, sbt2.cta1, sbt2.cta, sbt2.descripcion, sbt2.naturaleza, sbt2.nivel, sbt2.saldo_ini, sbt2.saldo_fin, sum(case when pol_mov_ini.debe is null then 0 else pol_mov_ini.debe end) as ini_debe, sum(case when pol_mov_ini.haber is null then 0 else pol_mov_ini.haber end) as ini_haber 
+				from(
+					select sbt1.cta_mayor, sbt1.clasifica, sbt1.cuenta, sbt1.cta1, sbt1.cta, sbt1.descripcion, sbt1.naturaleza, sbt1.nivel, sum(case when ctb_sdo.saldo_ini is null then 0 else ctb_sdo.saldo_ini end) as saldo_ini, sum(case when ctb_sdo.saldo_fin is null then 0 else ctb_sdo.saldo_fin end) as saldo_fin 
+					from (
+						SELECT 
+							ctb_cta.cta_mayor,
+							ctb_cta.clasifica,
+							ctb_cta.cta as cuenta,
+							(CASE WHEN ctb_cta.cta>0 THEN ctb_cta.cta::character varying ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN lpad(ctb_cta.subcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN lpad(ctb_cta.ssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN lpad(ctb_cta.sssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN lpad(ctb_cta.ssssubcta::character varying,4,''0'') ELSE '''' END) AS cta1,
+							ctb_cta.cta_mayor||'' ''||ctb_cta.clasifica||'' ''||(CASE WHEN ctb_cta.cta>0 THEN ctb_cta.cta::character varying ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN ''-''||lpad(ctb_cta.subcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN ''-''||lpad(ctb_cta.ssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN ''-''||lpad(ctb_cta.sssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN ''-''||lpad(ctb_cta.ssssubcta::character varying, 4, ''0'') ELSE '''' END) AS cta,
+							(CASE WHEN (ctb_cta.cta>0 AND ctb_cta.subcta=0 AND ctb_cta.ssubcta=0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||'''
+							      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta=0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+							      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+							      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta>0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+							      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta>0 AND ctb_cta.ssssubcta>0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+							 ELSE '''' END)||ctb_cta.descripcion AS descripcion,
+							 ctb_cta.naturaleza,
+							 ctb_cta.nivel 
+						FROM ctb_cta 
+						WHERE ctb_cta.borrado_logico=false AND ctb_cta.gral_emp_id='||emp_id||' '||cadena_where||' 
+					) as sbt1 
+					left join (
+						select replace(ctb_sdo_cta.cta,''-'','''') as cta, sum(case when ctb_sdo_cta.saldo_ini is null then 0 else ctb_sdo_cta.saldo_ini end) as saldo_ini, sum(case when ctb_sdo_cta.saldo_fin is null then 0 else ctb_sdo_cta.saldo_fin end) as saldo_fin 
+						from ctb_sdo_cta where ctb_sdo_cta.ano=extract(year from '''||str_data[5]||'''::timestamp with time zone) 
+						group by ctb_sdo_cta.cta 
+					) as ctb_sdo on ctb_sdo.cta ilike sbt1.cta1||''%'' 
+					group by sbt1.cta_mayor, sbt1.clasifica, sbt1.cuenta, sbt1.cta1, sbt1.cta, sbt1.descripcion, sbt1.naturaleza, sbt1.nivel 
+				) as sbt2 
+				left join (
+					select replace(ctb_pol_mov.cta,''-'','''') as cta, sum(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, sum(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
+					from ctb_pol_mov join ctb_pol on ctb_pol.id=ctb_pol_mov.ctb_pol_id where to_char(ctb_pol.fecha,''yyyymmdd'')::integer >= (extract(year from '''||str_data[5]||'''::timestamp with time zone)||''0101'')::integer  and to_char(ctb_pol.fecha,''yyyymmdd'')::integer < to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer 
+					group by ctb_pol_mov.cta 
+				) as pol_mov_ini on pol_mov_ini.cta ilike sbt2.cta1||''%'' 
+				group by sbt2.cta_mayor, sbt2.clasifica, sbt2.cuenta, sbt2.cta1, sbt2.cta, sbt2.descripcion, sbt2.naturaleza, sbt2.nivel, sbt2.saldo_ini, sbt2.saldo_fin 
+			) as sbt3 
+			left join (
+				select replace(ctb_pol_mov.cta,''-'','''') as cta, sum(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, sum(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
+				from ctb_pol_mov join ctb_pol on ctb_pol.id=ctb_pol_mov.ctb_pol_id where to_char(ctb_pol.fecha,''yyyymmdd'')::integer BETWEEN to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer AND to_char('''||str_data[6]||'''::timestamp with time zone,''yyyymmdd'')::integer 
+				group by ctb_pol_mov.cta 
+			) as pol_mov on pol_mov.cta ilike sbt3.cta1||''%'' 
+			group by sbt3.cta_mayor, sbt3.clasifica, sbt3.cuenta, sbt3.cta1, sbt3.cta, sbt3.descripcion, sbt3.naturaleza, sbt3.nivel, sbt3.ini_debe, sbt3.ini_haber, sbt3.saldo_ini, sbt3.saldo_fin 
+			ORDER BY sbt3.cta_mayor, sbt3.clasifica, sbt3.cuenta;';
+			
+			--RAISE EXCEPTION '%',cadena_sql;
+			FOR fila IN EXECUTE (cadena_sql) LOOP
+				IF valor1<>fila.cta_mayor::character varying THEN 
+					valor1:=fila.cta_mayor::character varying;
+					valor2:=fila.clasifica::character varying;
+					
+					if fila.saldo_ini is null then fila.saldo_ini:=0; end if;
+					if fila.saldo_fin is null then fila.saldo_fin:=0; end if;
+					if fila.ini_debe is null then fila.ini_debe:=0; end if;
+					if fila.ini_haber is null then fila.ini_haber:=0; end if;
+					if fila.debe is null then fila.debe:=0; end if;
+					if fila.haber is null then fila.haber:=0; end if;
+					
+					--fila.nivel  1=Auxiliar, 2=Mayor
+					
+					--Obtener la descripcion de la clase de cuenta de Mayor
+					SELECT titulo FROM ctb_may_clases WHERE id=fila.cta_mayor::integer LIMIT 1
+					INTO desc_cta_may_clases;
+					
+					--Agregar la clase de la Cuenta de mayor
+					INSERT INTO tmpRepCtbAuxMov(tipo_reg, suc, cta , descrip_cta, poliza, orig, tipo_pol, fecha, referencia, cc, descrip_mov, saldo_ini, debe, haber, saldo_fin)
+					values('cta', '', fila.cta_mayor||' 0 0000', desc_cta_may_clases, '', '', '', '', '', '', '', '', '', '', '');
+					
+					SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint
+					INTO desc_cta_may;
+					
+					--Agregar la clasificacion de la Cuenta de Mayor
+					INSERT INTO tmpRepCtbAuxMov(tipo_reg, suc, cta , descrip_cta, poliza, orig, tipo_pol, fecha, referencia, cc, descrip_mov, saldo_ini, debe, haber, saldo_fin)
+					values('cta', '', fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '', '', '', '', '', '', '', '', '', '', '');
+					
+					--1=Deudora, 2=Acreedora
+					if fila.naturaleza=1 then 
+						--Calcular el saldo inicial a la fecha inicial del reporte
+						fila.saldo_ini:= fila.saldo_ini + fila.ini_debe - fila.ini_haber;
+						
+						fila.saldo_fin:=fila.saldo_ini + fila.debe - fila.haber;
+					else
+						--Calcular el saldo inicial a la fecha inicial del reporte
+						fila.saldo_ini:= fila.saldo_ini - fila.ini_debe + fila.ini_haber;
+						
+						fila.saldo_fin:=fila.saldo_ini - fila.debe + fila.haber;
+					end if;
+					
+					
+					--Agregar la cuenta contable
+					INSERT INTO tmpRepCtbAuxMov(tipo_reg, suc, cta , descrip_cta, poliza, orig, tipo_pol, fecha, referencia, cc, descrip_mov, saldo_ini, debe, haber, saldo_fin)
+					values('cta', '', fila.cta, fila.descripcion, '', '', '', '', '', '', '', fila.saldo_ini::character varying, fila.debe::character varying, fila.haber::character varying, fila.saldo_fin::character varying);
+					
+					
+					--Obtener movimientos de la cuenta 
+					cadena_sql2:='
+					select 
+						(case when gral_suc.clave is null then '''' else gral_suc.clave end) as suc,
+						to_char(ctb_pol.fecha,''dd/mm/yyyy'') as fecha, 
+						ctb_pol.poliza,
+						(case when ctb_tpol_grupos.titulo is null then '''' else ctb_tpol_grupos.titulo end) as tipo_pol,
+						ctb_pol.referencia, 
+						ctb_pol.descripcion as descripcion_mov, 
+						(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, 
+						(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber,
+						0::double precision as saldo_fin 
+					from ctb_pol 
+					join ctb_pol_mov on ctb_pol_mov.ctb_pol_id=ctb_pol.id 
+					join gral_suc on gral_suc.id=ctb_pol.gral_suc_id 
+					left join ctb_tpol on ctb_tpol.id=ctb_pol.ctb_tpol_id 
+					left join ctb_tpol_grupos on ctb_tpol_grupos.id=ctb_tpol.ctb_tpol_grupo_id 
+					where replace(ctb_pol_mov.cta,''-'','''')='''||fila.cta1||''' and (to_char(ctb_pol.fecha,''yyyymmdd'')::integer BETWEEN to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer AND to_char('''||str_data[6]||'''::timestamp with time zone,''yyyymmdd'')::integer)';
+					--where replace(ctb_pol_mov.cta,''-'','''') ilike '''||fila.cta1||'%'' '||cadena_where2||' ';
+					
+					FOR fila2 IN EXECUTE (cadena_sql2) LOOP 
+						--1=Deudora, 2=Acreedora
+						if fila.naturaleza=1 then 
+							--fila2.saldo_fin:=fila2.saldo_ini + fila2.debe - fila2.haber;
+							fila2.saldo_fin:= fila.saldo_ini + fila2.debe - fila2.haber;
+						else 
+							--fila2.saldo_fin:=fila2.saldo_ini - fila2.debe + fila2.haber;
+							fila2.saldo_fin:= fila.saldo_ini - fila2.debe + fila2.haber;
+						end if;
+						
+						--Agregar la movimientos de la cuenta contable
+						INSERT INTO tmpRepCtbAuxMov(tipo_reg, suc, cta, descrip_cta, poliza, orig, tipo_pol, fecha, referencia, cc, descrip_mov, saldo_ini, debe, haber, saldo_fin)
+						values('mov', fila2.suc, fila.cta, '', fila2.poliza, '', fila2.tipo_pol, fila2.fecha, fila2.referencia, '', fila2.descripcion_mov, '0', fila2.debe::character varying, fila2.haber::character varying, fila2.saldo_fin::character varying);
+						
+						--Tomar el ultimo saldo final de la cuenta contable como nuevo saldo inicial
+						fila.saldo_ini := fila2.saldo_fin;
+					END LOOP;
+					
+				ELSE
+					
+					IF valor2<>fila.clasifica::character varying THEN 
+						valor2:=fila.clasifica::character varying;
+						SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint 
+						INTO desc_cta_may;
+						
+						--Agregar la clasificacion de la Cuenta de Mayor
+						INSERT INTO tmpRepCtbAuxMov(tipo_reg, suc, cta , descrip_cta, poliza, orig, tipo_pol, fecha, referencia, cc, descrip_mov, saldo_ini, debe, haber, saldo_fin)
+						values('cta', '', fila.cta_mayor||' '||fila.clasifica||' 0000', cadena1||cadena1||cadena1||desc_cta_may, '', '', '', '', '', '', '', '', '', '', '');
+					END IF;
+
+					
+					--1=Deudora, 2=Acreedora
+					if fila.naturaleza=1 then 
+						--Calcular el saldo inicial a la fecha inicial del reporte
+						fila.saldo_ini:= fila.saldo_ini + fila.ini_debe - fila.ini_haber;
+						
+						fila.saldo_fin:=fila.saldo_ini + fila.debe - fila.haber;
+					else
+						--Calcular el saldo inicial a la fecha inicial del reporte
+						fila.saldo_ini:= fila.saldo_ini - fila.ini_debe + fila.ini_haber;
+						
+						fila.saldo_fin:=fila.saldo_ini - fila.debe + fila.haber;
+					end if;
+					
+					
+					--Agregar la cuenta contable
+					INSERT INTO tmpRepCtbAuxMov(tipo_reg, suc, cta , descrip_cta, poliza, orig, tipo_pol, fecha, referencia, cc, descrip_mov, saldo_ini, debe, haber, saldo_fin)
+					values('cta', '', fila.cta, fila.descripcion, '', '', '', '', '', '', '', fila.saldo_ini::character varying, fila.debe::character varying, fila.haber::character varying, fila.saldo_fin::character varying);
+					
+					
+					--Obtener movimientos de la cuenta 
+					cadena_sql2:='
+					select 
+						(case when gral_suc.clave is null then '''' else gral_suc.clave end) as suc,
+						to_char(ctb_pol.fecha,''dd/mm/yyyy'') as fecha, 
+						ctb_pol.poliza,
+						(case when ctb_tpol_grupos.titulo is null then '''' else ctb_tpol_grupos.titulo end) as tipo_pol,
+						ctb_pol.referencia, 
+						(case when ctb_cc.titulo is null then '''' else ctb_cc.titulo end) as cc,
+						ctb_pol.descripcion as descripcion_mov, 
+						(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, 
+						(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber,
+						0::double precision as saldo_fin 
+					from ctb_pol 
+					join ctb_pol_mov on ctb_pol_mov.ctb_pol_id=ctb_pol.id 
+					join gral_suc on gral_suc.id=ctb_pol.gral_suc_id 
+					left join ctb_cta on ctb_cta.id=ctb_pol_mov.ctb_cta_id 
+					left join ctb_cc on ctb_cc.id=ctb_cta.ctb_cc_id 
+					left join ctb_tpol on ctb_tpol.id=ctb_pol.ctb_tpol_id 
+					left join ctb_tpol_grupos on ctb_tpol_grupos.id=ctb_tpol.ctb_tpol_grupo_id 
+					where replace(ctb_pol_mov.cta,''-'','''')='''||fila.cta1||''' and (to_char(ctb_pol.fecha,''yyyymmdd'')::integer BETWEEN to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer AND to_char('''||str_data[6]||'''::timestamp with time zone,''yyyymmdd'')::integer)';
+					--where replace(ctb_pol_mov.cta,''-'','''') ilike '''||fila.cta1||'%'' '||cadena_where2||' ';
+					
+					FOR fila2 IN EXECUTE (cadena_sql2) LOOP 
+						--1=Deudora, 2=Acreedora
+						if fila.naturaleza=1 then 
+							--fila2.saldo_fin:=fila2.saldo_ini + fila2.debe - fila2.haber;
+							fila2.saldo_fin:= fila.saldo_ini + fila2.debe - fila2.haber;
+						else 
+							--fila2.saldo_fin:=fila2.saldo_ini - fila2.debe + fila2.haber;
+							fila2.saldo_fin:= fila.saldo_ini - fila2.debe + fila2.haber;
+						end if;
+						
+						--Agregar la movimientos de la cuenta contable
+						INSERT INTO tmpRepCtbAuxMov(tipo_reg, suc, cta, descrip_cta, poliza, orig, tipo_pol, fecha, referencia, cc, descrip_mov, saldo_ini, debe, haber, saldo_fin)
+						values('mov', fila2.suc, fila.cta, '', fila2.poliza, '', fila2.tipo_pol, fila2.fecha, fila2.referencia, fila2.cc, fila2.descripcion_mov, '0', fila2.debe::character varying, fila2.haber::character varying, fila2.saldo_fin::character varying);
+						
+						--Tomar el ultimo saldo final de la cuenta contable como nuevo saldo inicial
+						fila.saldo_ini := fila2.saldo_fin;
+					END LOOP;
+					
+				END IF;
+				
+			END LOOP;
+			
+		END IF;--termina command reporte
+
+		
+		
+		--Recorriendo la tabla temporal y retornando sus filas
+		FOR returnrecord IN SELECT * FROM tmpRepCtbAuxMov LOOP
+			RETURN NEXT returnrecord;
+		END LOOP;
+	END IF;
+	--Termina Reporte Auxiliar de Movimientos de Cuentas(CTB)
+
+
+
+
+
+
+	--Reporte  de Balance General
+	IF app_selected = 160 THEN
+		--str_data[1]	app_selected
+		--str_data[2]	id_user
+		--str_data[3]	command_selected
+		--str_data[4]	tipo_doc
+		--str_data[5]	suc
+		--str_data[6]	fecha_corte
+		
+		BEGIN 
+			--tipo_reg=1 -> Registro de clase mayor
+			--tipo_reg=2 -> Registro para clasificacion(Rubro)
+			--tipo_reg=3 -> Registro de cuenta mayor
+			--tipo_reg=4 -> Registro para Pasivo + Capital
+			
+			--Crear tabla temporal
+			CREATE TEMPORARY TABLE tmpRepBalanceGeneral(tipo_reg integer, mayor integer, clasifica integer, descripcion character varying, saldo_final character varying);
+			EXCEPTION WHEN OTHERS THEN
+			TRUNCATE TABLE tmpRepBalanceGeneral; -- TRUNCATE if the table already exists within the session.
+		END;
+		
+		--BUSQUEDA PARA EL REPORTE-------------
+		IF command_selected='reporte' THEN 
+			
+			--RAISE EXCEPTION '%',cadena_where2;
+			
+			--Cadena para espacios en blanco cuando es para mostrar el resultado en el navegador
+			cadena1:='&nbsp;';
+			IF trim(str_data[4])='pdf' THEN 
+				--Cadena para espacios en blanco cuando es para mostrar el resultado en pdf
+				cadena1:=' ';
+			END IF;
+			
+			cadena_sql:= '
+			select sbt2.cta_mayor, 
+				sbt2.clasifica, 
+				sbt2.cuenta, 
+				sbt2.cta1, 
+				sbt2.cta, 
+				sbt2.descripcion, 
+				sbt2.naturaleza, 
+				sbt2.nivel, 
+				sbt2.saldo_ini, 
+				sbt2.saldo_fin, 
+				sum(case when pol_mov.debe is null then 0 else pol_mov.debe end) as debe, 
+				sum(case when pol_mov.haber is null then 0 else pol_mov.haber end) as haber 
+			from(
+				select sbt1.cta_mayor, sbt1.clasifica, sbt1.cuenta, sbt1.cta1, sbt1.cta, sbt1.descripcion, sbt1.naturaleza, sbt1.nivel, sum(case when ctb_sdo.saldo_ini is null then 0 else ctb_sdo.saldo_ini end) as saldo_ini, sum(case when ctb_sdo.saldo_fin is null then 0 else ctb_sdo.saldo_fin end) as saldo_fin 
+				from (
+					SELECT 
+						ctb_cta.cta_mayor,
+						ctb_cta.clasifica,
+						ctb_cta.cta as cuenta,
+						(CASE WHEN ctb_cta.cta>0 THEN ctb_cta.cta::character varying ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN lpad(ctb_cta.subcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN lpad(ctb_cta.ssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN lpad(ctb_cta.sssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN lpad(ctb_cta.ssssubcta::character varying,4,''0'') ELSE '''' END) AS cta1,
+						ctb_cta.cta_mayor||'' ''||ctb_cta.clasifica||'' ''||(CASE WHEN ctb_cta.cta>0 THEN ctb_cta.cta::character varying ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN ''-''||lpad(ctb_cta.subcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN ''-''||lpad(ctb_cta.ssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN ''-''||lpad(ctb_cta.sssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN ''-''||lpad(ctb_cta.ssssubcta::character varying, 4, ''0'') ELSE '''' END) AS cta,
+						(CASE WHEN (ctb_cta.cta>0 AND ctb_cta.subcta=0 AND ctb_cta.ssubcta=0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||'''
+						      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta=0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+						      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+						      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta>0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+						      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta>0 AND ctb_cta.ssssubcta>0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+						 ELSE '''' END)||upper(ctb_cta.descripcion) AS descripcion,
+						 ctb_cta.naturaleza,
+						 ctb_cta.nivel 
+					FROM ctb_cta 
+					WHERE ctb_cta.borrado_logico=false and ctb_cta.tipo=1 and ctb_cta.nivel=2 and ctb_cta.gral_emp_id='||emp_id||'  
+				) as sbt1 
+				left join (
+					select replace(ctb_sdo_cta.cta,''-'','''') as cta, sum(case when ctb_sdo_cta.saldo_ini is null then 0 else ctb_sdo_cta.saldo_ini end) as saldo_ini, sum(case when ctb_sdo_cta.saldo_fin is null then 0 else ctb_sdo_cta.saldo_fin end) as saldo_fin 
+					from ctb_sdo_cta where ctb_sdo_cta.ano=extract(year from '''||str_data[6]||'''::timestamp with time zone) 
+					group by ctb_sdo_cta.cta 
+				) as ctb_sdo on ctb_sdo.cta ilike sbt1.cta1||''%'' 
+				group by sbt1.cta_mayor, sbt1.clasifica, sbt1.cuenta, sbt1.cta1, sbt1.cta, sbt1.descripcion, sbt1.naturaleza, sbt1.nivel 
+			) as sbt2 
+			left join (
+				select replace(ctb_pol_mov.cta,''-'','''') as cta, sum(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, sum(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
+				from ctb_pol_mov join ctb_pol on ctb_pol.id=ctb_pol_mov.ctb_pol_id where to_char(ctb_pol.fecha,''yyyymmdd'')::integer >= (extract(year from '''||str_data[6]||'''::timestamp with time zone)||''0101'')::integer  and to_char(ctb_pol.fecha,''yyyymmdd'')::integer <= to_char('''||str_data[6]||'''::timestamp with time zone,''yyyymmdd'')::integer 
+				group by ctb_pol_mov.cta 
+			) as pol_mov on pol_mov.cta ilike sbt2.cta1||''%'' 
+			group by sbt2.cta_mayor, sbt2.clasifica, sbt2.cuenta, sbt2.cta1, sbt2.cta, sbt2.descripcion, sbt2.naturaleza, sbt2.nivel, sbt2.saldo_ini, sbt2.saldo_fin 
+			ORDER BY sbt2.cta_mayor, sbt2.clasifica, sbt2.cuenta;';
+			
+			--RAISE EXCEPTION '%',cadena_sql;
+			FOR fila IN EXECUTE (cadena_sql) LOOP
+				IF valor1<>fila.cta_mayor::character varying THEN 
+					valor1:=fila.cta_mayor::character varying;
+					valor2:=fila.clasifica::character varying;
+					
+					if fila.saldo_ini is null then fila.saldo_ini:=0; end if;
+					if fila.saldo_fin is null then fila.saldo_fin:=0; end if;
+					if fila.debe is null then fila.debe:=0; end if;
+					if fila.haber is null then fila.haber:=0; end if;
+					
+					--Obtener la descripcion de la clase de cuenta de Mayor
+					SELECT titulo FROM ctb_may_clases WHERE id=fila.cta_mayor::integer LIMIT 1
+					INTO desc_cta_may_clases;
+					
+					--Agregar la clase de la Cuenta de mayor
+					INSERT INTO tmpRepBalanceGeneral(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(1, fila.cta_mayor, 0, desc_cta_may_clases, '');
+					
+					SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint
+					INTO desc_cta_may;
+					
+					--Agregar la clasificacion de la Cuenta de Mayor
+					INSERT INTO tmpRepBalanceGeneral(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, fila.cta_mayor, fila.clasifica, cadena1||cadena1||cadena1||desc_cta_may, '');
+					
+					--1=Deudora, 2=Acreedora
+					if fila.naturaleza=1 then 
+						fila.saldo_fin:=fila.saldo_ini + fila.debe - fila.haber;
+					else
+						fila.saldo_fin:=fila.saldo_ini - fila.debe + fila.haber;
+					end if;
+					
+					--Agregar la cuenta contable(ctb_cta.tipo=1 and ctb_cta.nivel=2)
+					INSERT INTO tmpRepBalanceGeneral(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(3, fila.cta_mayor, fila.clasifica, fila.descripcion, fila.saldo_fin::character varying);
+				ELSE
+					
+					IF valor2<>fila.clasifica::character varying THEN 
+						valor2:=fila.clasifica::character varying;
+						SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint 
+						INTO desc_cta_may;
+						
+						--Agregar la clasificacion de la Cuenta de Mayor
+						INSERT INTO tmpRepBalanceGeneral(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, fila.cta_mayor, fila.clasifica, cadena1||cadena1||cadena1||desc_cta_may, '');
+					END IF;
+					
+					
+					--1=Deudora, 2=Acreedora
+					if fila.naturaleza=1 then 
+						fila.saldo_fin:=fila.saldo_ini + fila.debe - fila.haber;
+					else
+						fila.saldo_fin:=fila.saldo_ini - fila.debe + fila.haber;
+					end if;
+					
+					--Agregar la cuenta contable
+					INSERT INTO tmpRepBalanceGeneral(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(3, fila.cta_mayor, fila.clasifica, fila.descripcion, fila.saldo_fin::character varying);
+				END IF;
+				
+			END LOOP;
+
+			--Agregar registro para guardar PASIVO + CAPITAL
+			INSERT INTO tmpRepBalanceGeneral(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(4, 0, fila.clasifica, 'PASIVO + CAPITAL', '0');
+			
+		END IF;--termina command reporte
+		
+		
+		--Inicializar valores
+		valor1:='';
+		valor2:='';
+		suma1:=0.0;
+		suma2:=0.0;
+		
+		--Recorriendo la tabla temporal y retornando sus filas
+		FOR returnrecord IN SELECT * FROM tmpRepBalanceGeneral LOOP 
+			IF valor1<>returnrecord.mayor::character varying THEN 
+				valor1:=returnrecord.mayor::character varying;
+				valor2:='';
+				suma1:=0.0;
+				
+				FOR fila2 IN SELECT * FROM tmpRepBalanceGeneral LOOP 
+					IF valor1::integer=fila2.mayor THEN 
+						if trim(fila2.saldo_final)<>'' then 
+							--suma1:=suma1 + fila2.saldo_final::double precision;
+							
+							if replace(replace(fila2.descripcion,' ',''),'”','O') ilike '%DEPRECIACIONACUMULADA%' and fila2.mayor=returnrecord.mayor then 
+								--Restar la depreciacion si existe
+								suma1:=suma1 - fila2.saldo_final::double precision;
+							else 
+								suma1:=suma1 + fila2.saldo_final::double precision;
+							end if;
+						end if;
+					END IF;
+				END LOOP;
+				
+				--Asigna suma de clase mayor
+				returnrecord.saldo_final:=suma1::character varying;
+				
+				--Suma pasivo y capital
+				if returnrecord.mayor=2 or returnrecord.mayor=3 then 
+					suma2:=suma2 + suma1::double precision;
+				end if;
+			ELSE 
+				IF valor2<>returnrecord.clasifica::character varying AND valor1=returnrecord.mayor::character varying THEN 
+					valor2:=returnrecord.clasifica::character varying;
+					suma1:=0.0;
+					suma3:=0.0;
+					
+					for fila2 in select * from tmpRepBalanceGeneral LOOP 
+						if valor1::integer=fila2.mayor and valor2::integer=fila2.clasifica then 
+							if trim(fila2.saldo_final)<>'' then 
+								if replace(replace(fila2.descripcion,' ',''),'”','O') ilike '%DEPRECIACIONACUMULADA%' and fila2.clasifica=returnrecord.clasifica and fila2.mayor=returnrecord.mayor then 
+									--Restar la depreciacion si existe
+									suma1:=suma1 - fila2.saldo_final::double precision;
+								else 
+									suma1:=suma1 + fila2.saldo_final::double precision;
+								end if;
+							end if;
+						end if;
+					end loop;
+					
+					/*
+					--Buscar suma de la depreciacion
+					select sum(saldo_final::double precision) as saldo from tmpRepBalanceGeneral where mayor=returnrecord.mayor and clasifica=returnrecord.clasifica and tipo_reg=3
+					and  replace(descripcion,' ','') ilike '%DEPRECIACIONACUMULADA%' into suma3;
+					
+					if suma3 is not null then 
+
+						--RAISE EXCEPTION '%','suma1='||suma1||'   suma3='||suma3;
+						
+						if suma3 > 0 then 
+							--Restar la depreciacion si existe
+							suma1:= suma1 - suma3::double precision;
+						end if;
+
+						--RAISE EXCEPTION '%','suma1='||suma1||'   suma3='||suma3;
+					end if;
+					*/
+
+					
+					--Asigna sumas de los rubros(clasificacion de cuenta)
+					returnrecord.saldo_final:=suma1::character varying;
+				END IF;
+			END IF;
+			
+			
+			--Agregar el total para Pasivo y Capital
+			IF returnrecord.tipo_reg=4 THEN 
+				returnrecord.saldo_final:=suma2::character varying;
+			END IF;
+			
+			RETURN NEXT returnrecord;
+		END LOOP;
+	END IF;
+	--Termina Reporte de Balance General
+
+
+
+	--Reporte  de Estado de Resultados
+	IF app_selected = 161 THEN
+		--str_data[1]	app_selected
+		--str_data[2]	id_user
+		--str_data[3]	command_selected
+		--str_data[4]	tipo_doc
+		--str_data[5]	suc
+		--str_data[6]	fecha_corte
+		
+		BEGIN 
+			--tipo_reg=1 -> Registro de clase mayor
+			--tipo_reg=2 -> Registro para clasificacion(Rubro)
+			--tipo_reg=3 -> Registro de cuenta mayor
+			--tipo_reg=4 -> Registro para Pasivo + Capital
+			
+			--Crear tabla temporal
+			CREATE TEMPORARY TABLE tmpRepEdoRes(tipo_reg integer, mayor integer, clasifica integer, descripcion character varying, saldo_final character varying);
+			EXCEPTION WHEN OTHERS THEN
+			TRUNCATE TABLE tmpRepEdoRes; -- TRUNCATE if the table already exists within the session.
+		END;
+
+		BEGIN 
+			--tipo_reg=1 -> Registro de clase mayor
+			--tipo_reg=2 -> Registro para clasificacion(Rubro)
+			--tipo_reg=3 -> Registro de cuenta mayor
+			--tipo_reg=4 -> Registro para Pasivo + Capital
+			--Crear tabla temporal2
+			CREATE TEMPORARY TABLE tmpRepEdoRes2(tipo_reg integer, mayor integer, clasifica integer, descripcion character varying, saldo_final character varying);
+			EXCEPTION WHEN OTHERS THEN
+			TRUNCATE TABLE tmpRepEdoRes2; -- TRUNCATE if the table already exists within the session.
+		END;
+		
+		--BUSQUEDA PARA EL REPORTE-------------
+		IF command_selected='reporte' THEN 
+			
+			--RAISE EXCEPTION '%',cadena_where2;
+			
+			--Cadena para espacios en blanco cuando es para mostrar el resultado en el navegador
+			cadena1:='&nbsp;';
+			IF trim(str_data[4])='pdf' THEN 
+				--Cadena para espacios en blanco cuando es para mostrar el resultado en pdf
+				cadena1:=' ';
+			END IF;
+			
+			cadena_sql:= '
+			select sbt1.cta_mayor, 
+				sbt1.clasifica, 
+				sbt1.cuenta, 
+				sbt1.cta1, 
+				sbt1.cta, 
+				sbt1.descripcion, 
+				sbt1.naturaleza, 
+				sbt1.nivel, 
+				0::double precision as saldo_ini, 
+				0::double precision as saldo_fin, 
+				sum(case when pol_mov.debe is null then 0 else pol_mov.debe end) as debe, 
+				sum(case when pol_mov.haber is null then 0 else pol_mov.haber end) as haber 
+			from (
+				SELECT 
+					ctb_cta.cta_mayor,
+					ctb_cta.clasifica,
+					ctb_cta.cta as cuenta,
+					(CASE WHEN ctb_cta.cta>0 THEN ctb_cta.cta::character varying ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN lpad(ctb_cta.subcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN lpad(ctb_cta.ssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN lpad(ctb_cta.sssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN lpad(ctb_cta.ssssubcta::character varying,4,''0'') ELSE '''' END) AS cta1,
+					ctb_cta.cta_mayor||'' ''||ctb_cta.clasifica||'' ''||(CASE WHEN ctb_cta.cta>0 THEN ctb_cta.cta::character varying ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN ''-''||lpad(ctb_cta.subcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN ''-''||lpad(ctb_cta.ssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN ''-''||lpad(ctb_cta.sssubcta::character varying, 4, ''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN ''-''||lpad(ctb_cta.ssssubcta::character varying, 4, ''0'') ELSE '''' END) AS cta,
+					(CASE WHEN (ctb_cta.cta>0 AND ctb_cta.subcta=0 AND ctb_cta.ssubcta=0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||'''
+					      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta=0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+					      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta=0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+					      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta>0 AND ctb_cta.ssssubcta=0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+					      WHEN (ctb_cta.cta>0 AND ctb_cta.subcta>0 AND ctb_cta.ssubcta>0 AND ctb_cta.sssubcta>0 AND ctb_cta.ssssubcta>0) THEN '''||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||cadena1||'''
+					 ELSE '''' END)||upper(ctb_cta.descripcion) AS descripcion,
+					 ctb_cta.naturaleza,
+					 ctb_cta.nivel 
+				FROM ctb_cta 
+				WHERE ctb_cta.borrado_logico=false and ctb_cta.tipo=2 and ctb_cta.nivel=2 and ctb_cta.gral_emp_id='||emp_id||'  
+			) as sbt1 
+			left join (
+				select replace(ctb_pol_mov.cta,''-'','''') as cta, sum(case when ctb_pol_mov.tipo=1 then ctb_pol_mov.cantidad else 0 end) as debe, sum(case when ctb_pol_mov.tipo=2 then ctb_pol_mov.cantidad else 0 end) as haber 
+				from ctb_pol_mov join ctb_pol on ctb_pol.id=ctb_pol_mov.ctb_pol_id where to_char(ctb_pol.fecha,''yyyymmdd'')::integer >= (extract(year from '''||str_data[6]||'''::timestamp with time zone)||''0101'')::integer  and to_char(ctb_pol.fecha,''yyyymmdd'')::integer <= to_char('''||str_data[6]||'''::timestamp with time zone,''yyyymmdd'')::integer 
+				group by ctb_pol_mov.cta 
+			) as pol_mov on pol_mov.cta ilike sbt1.cta1||''%'' 
+			group by sbt1.cta_mayor, sbt1.clasifica, sbt1.cuenta, sbt1.cta1, sbt1.cta, sbt1.descripcion, sbt1.naturaleza, sbt1.nivel, saldo_ini, saldo_fin 
+			ORDER BY sbt1.cta_mayor, sbt1.clasifica, sbt1.cuenta;';
+		
+			--RAISE EXCEPTION '%',cadena_sql;
+			FOR fila IN EXECUTE (cadena_sql) LOOP
+				IF valor1<>fila.cta_mayor::character varying THEN 
+					valor1:=fila.cta_mayor::character varying;
+					valor2:=fila.clasifica::character varying;
+					
+					if fila.saldo_ini is null then fila.saldo_ini:=0; end if;
+					if fila.saldo_fin is null then fila.saldo_fin:=0; end if;
+					if fila.debe is null then fila.debe:=0; end if;
+					if fila.haber is null then fila.haber:=0; end if;
+
+					--Obtener la descripcion de la clase de cuenta de Mayor
+					SELECT titulo FROM ctb_may_clases WHERE id=fila.cta_mayor::integer LIMIT 1 INTO desc_cta_may_clases;
+					
+					--Agregar la clase de la Cuenta de mayor
+					INSERT INTO tmpRepEdoRes(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(1, fila.cta_mayor, 0, desc_cta_may_clases, '');
+					
+					SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint
+					INTO desc_cta_may;
+					
+					--Agregar la clasificacion de la Cuenta de Mayor
+					INSERT INTO tmpRepEdoRes(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, fila.cta_mayor, fila.clasifica, cadena1||cadena1||cadena1||desc_cta_may, '');
+					
+					
+					--1=Deudora, 2=Acreedora
+					if fila.naturaleza=1 then 
+						fila.saldo_fin:=fila.saldo_ini + fila.debe - fila.haber;
+					else
+						fila.saldo_fin:=fila.saldo_ini - fila.debe + fila.haber;
+					end if;
+					
+					--Agregar la cuenta contable(ctb_cta.tipo=1 and ctb_cta.nivel=2)
+					INSERT INTO tmpRepEdoRes(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(3, fila.cta_mayor, fila.clasifica, fila.descripcion, fila.saldo_fin::character varying);
+				ELSE
+					
+					IF valor2<>fila.clasifica::character varying THEN 
+						valor2:=fila.clasifica::character varying;
+						
+						SELECT descripcion FROM ctb_may WHERE ctb_may_clase_id=fila.cta_mayor::integer AND clasificacion=fila.clasifica::smallint 
+						INTO desc_cta_may;
+					
+						--Agregar la clasificacion de la Cuenta de Mayor
+						INSERT INTO tmpRepEdoRes(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, fila.cta_mayor, fila.clasifica, cadena1||cadena1||cadena1||desc_cta_may, '');
+						
+					END IF;
+					
+					--1=Deudora, 2=Acreedora
+					if fila.naturaleza=1 then 
+						fila.saldo_fin:=fila.saldo_ini + fila.debe - fila.haber;
+					else
+						fila.saldo_fin:=fila.saldo_ini - fila.debe + fila.haber;
+					end if;
+					
+					--Agregar la cuenta contable
+					INSERT INTO tmpRepEdoRes(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(3, fila.cta_mayor, fila.clasifica, fila.descripcion, fila.saldo_fin::character varying);
+					
+				END IF;
+				
+			END LOOP;
+			
+		END IF;--termina command reporte
+		
+		
+		--Inicializar valores
+		valor1:='';
+		valor2:='';
+		suma1:=0.0;
+		suma2:=0.0;
+		
+		
+		FOR returnrecord IN select * from ctb_par_er where gral_emp_id=emp_id order by orden, cta_mayor, clasifica LOOP 
+			
+			IF returnrecord.cta_mayor<>0  THEN 
+				if returnrecord.detalle then 
+					--Aqui entra cuendo incluye detalle
+
+					suma2:=0.0;
+
+					--Para gastos de operecion no lleva monto, solo en las cuentas de mayor
+					INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(3, returnrecord.cta_mayor, returnrecord.clasifica, returnrecord.descripcion, '');
+					
+					if returnrecord.clasifica=0 then 
+						FOR fila2 IN select * from tmpRepEdoRes where mayor=returnrecord.cta_mayor LOOP 
+							if trim(fila2.saldo_final)<>'' then 
+								suma2:=suma2 + fila2.saldo_final::double precision;
+
+								--Operacion 2=Resta
+								IF returnrecord.operacion=2 then 
+									fila2.descripcion:='(-)'||fila2.descripcion;
+								end if;
+								
+								INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(3, fila2.mayor, fila2.clasifica, fila2.descripcion, fila2.saldo_final);
+							end if;
+						END LOOP;
+					else
+						FOR fila2 IN select * from tmpRepEdoRes where mayor=returnrecord.cta_mayor and clasifica=returnrecord.clasifica LOOP 
+							if trim(fila2.saldo_final)<>'' then 
+								suma2:=suma2 + fila2.saldo_final::double precision;
+								
+								--Operacion 2=Resta
+								IF returnrecord.operacion=2 then 
+									fila2.descripcion:='(-)'||fila2.descripcion;
+								end if;
+
+
+								INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(3, fila2.mayor, fila2.clasifica, fila2.descripcion, fila2.saldo_final);
+							end if;
+						END LOOP;
+					end if;
+
+
+					--Operacion 1=suma
+					IF returnrecord.operacion=1 then 
+						suma1:=suma1 + suma2::double precision;
+					end if;
+
+					--Operacion 2=Resta
+					IF returnrecord.operacion=2 then 
+						suma1:=suma1 - suma2::double precision;
+					end if;
+
+					
+					--RAISE EXCEPTION '%','suma2='||suma2;
+				else
+					--Aqui entra cuando No incluye detalle
+					suma2:=0.0;
+					
+					--RAISE EXCEPTION '%','cta_mayor='||returnrecord.cta_mayor||'   clasifica='||returnrecord.clasifica;
+					
+					if returnrecord.clasifica=0 then 
+						FOR fila2 IN select * from tmpRepEdoRes where mayor=returnrecord.cta_mayor LOOP 
+							if trim(fila2.saldo_final)<>'' then 
+								suma2:=suma2 + fila2.saldo_final::double precision;
+							end if;
+						END LOOP;
+					else
+						FOR fila2 IN select * from tmpRepEdoRes where mayor=returnrecord.cta_mayor and clasifica=returnrecord.clasifica LOOP 
+							if trim(fila2.saldo_final)<>'' then 
+								suma2:=suma2 + fila2.saldo_final::double precision;
+							end if;
+						END LOOP;
+					end if;
+					
+					--Operacion 1=suma
+					IF returnrecord.operacion=1 then 
+						suma1:=suma1 + suma2::double precision;
+					end if;
+
+					--Operacion 2=Resta
+					IF returnrecord.operacion=2 then 
+						suma1:=suma1 - suma2::double precision;
+						returnrecord.descripcion:= '(-)'||fila2.descripcion;
+					end if;
+					
+					INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(3, returnrecord.cta_mayor, returnrecord.clasifica, returnrecord.descripcion, suma2::character varying);
+					suma2:=0;
+				end if;
+				
+			else
+				--Operacion 3=Resultado operacion
+				IF returnrecord.operacion=3 then 
+					if suma2 > 0 then 
+						INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(1, returnrecord.cta_mayor, returnrecord.clasifica, returnrecord.descripcion, suma2::character varying);
+					else
+						INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(1, returnrecord.cta_mayor, returnrecord.clasifica, returnrecord.descripcion, suma1::character varying);
+					end if;
+					
+				end if;
+			end if;
+		END LOOP;
+		
+		/*
+		--Recorriendo la tabla temporal y retornando sus filas
+		FOR returnrecord IN SELECT * FROM tmpRepEdoRes LOOP 
+			
+			IF valor1<>returnrecord.mayor::character varying THEN 
+				valor1:=returnrecord.mayor::character varying;
+				valor2:='';
+				
+				--Solo suma y agregar el de INGRESOS
+				if returnrecord.mayor=4 then 
+					suma1:=0.0;
+					
+					FOR fila2 IN SELECT * FROM tmpRepEdoRes LOOP 
+						IF valor1::integer=fila2.mayor THEN 
+							if trim(fila2.saldo_final)<>'' then 
+								suma1:=suma1 + fila2.saldo_final::double precision;
+							end if;
+						END IF;
+					END LOOP;
+					
+					--Asigna suma de clase mayor
+					returnrecord.saldo_final:=suma1::character varying;
+
+					INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, returnrecord.mayor, returnrecord.clasifica,returnrecord.descripcion, returnrecord.saldo_final);
+				end if;
+				
+				--Suma pasivo y capital
+				--if returnrecord.mayor=2 or returnrecord.mayor=3 then 
+				--	suma2:=suma2 + suma1::double precision;
+				--end if;
+			ELSE 
+				--Solo suma y agregar el de EGRESOS
+				if returnrecord.mayor=5 then 
+					--Solo agregar cuando es COSTO DE VENTAS
+					if returnrecord.clasifica=1 then 
+						--tipo_reg=2 Es un rubro, no una cuenta
+						if returnrecord.tipo_reg=2 then 
+							suma2:=0.0;
+							for fila2 in select * from tmpRepEdoRes LOOP 
+								if returnrecord.mayor=fila2.mayor and returnrecord.clasifica=fila2.clasifica then 
+									if trim(fila2.saldo_final)<>'' then 
+										suma2:=suma2 + fila2.saldo_final::double precision;
+									end if;
+								end if;
+							end loop;
+							
+							returnrecord.saldo_final:=suma2::character varying;
+							
+							--Agregar COSTO DE VENTAS
+							INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, returnrecord.mayor, returnrecord.clasifica,'(-) '||returnrecord.descripcion, returnrecord.saldo_final);
+							
+							--Restar INGRESOS - COSTO DE VENTAS
+
+							suma1 := suma1 - suma2::double precision;
+							
+							returnrecord.saldo_final:= suma1::character varying;
+							
+							INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, returnrecord.mayor, returnrecord.clasifica,'UTILIDAD BRUTA', returnrecord.saldo_final);
+						end if;
+					end if;
+					
+					--Agregar cuentas de mayor de GASTOS DE OPERACION
+					if returnrecord.clasifica=2 then 
+						--tipo_reg=2 Es un rubro, no una cuenta
+						if returnrecord.tipo_reg=2 then 
+							--Agregar GASTOS DE OPERACION
+
+							--El saldo final se agrega vacio
+							returnrecord.saldo_final:='';
+							INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, returnrecord.mayor, returnrecord.clasifica,returnrecord.descripcion, returnrecord.saldo_final);
+						end if;
+						
+						--tipo_reg=3 Es una cuenta de mayor
+						if returnrecord.tipo_reg=3 then 
+							--Agregar COSTO DE VENTAS
+							INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, returnrecord.mayor, returnrecord.clasifica,'(-) '||returnrecord.descripcion, returnrecord.saldo_final);
+
+							suma1 := suma1 - returnrecord.saldo_final::double precision;
+						end if;
+					end if;
+
+
+					--Solo agregar cuando es OTROS EGRESOS
+					if returnrecord.clasifica=3 then 
+						--tipo_reg=2 Es un rubro, no una cuenta
+						if returnrecord.tipo_reg=2 then 
+							suma2:=0.0;
+							for fila2 in select * from tmpRepEdoRes LOOP 
+								if returnrecord.mayor=fila2.mayor and returnrecord.clasifica=fila2.clasifica then 
+									if trim(fila2.saldo_final)<>'' then 
+										suma2:=suma2 + fila2.saldo_final::double precision;
+									end if;
+								end if;
+							end loop;
+							
+							returnrecord.saldo_final:=suma2::character varying;
+							
+							--Agregar COSTO DE VENTAS
+							INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, returnrecord.mayor, returnrecord.clasifica,'(-) '||returnrecord.descripcion, returnrecord.saldo_final);
+							
+							--Restar INGRESOS - COSTO DE VENTAS
+
+							suma1 := suma1 - suma2::double precision;
+						end if;
+					end if;
+					
+				end if;
+			END IF;
+		END LOOP;
+		*/
+		
+		--INSERT INTO tmpRepEdoRes2(tipo_reg, mayor, clasifica, descripcion, saldo_final) VALUES(2, returnrecord.mayor, returnrecord.clasifica,'UTILIDAD O PERDIDA ANTES DE IMPUESTOS', suma1::character varying);
+		
+		--Recorriendo la tabla temporal y retornando sus filas
+		FOR fila3 IN SELECT * FROM tmpRepEdoRes2 LOOP
+			RETURN NEXT fila3;
+		END LOOP;
+	END IF;
+	--Termina repore de Estado de Resultados
+
+
+
+
+	
+	--Busqueda para programa de Generacion de Polizas
+	IF app_selected = 206 THEN
+		--str_data[1]	app_selected
+		--str_data[2]	id_user
+		--str_data[3]	command_selected
+		--str_data[4]	fecha_ini
+		--str_data[5]	fecha_fin
+		--str_data[6]	tipo_mov
+		
+		BEGIN 
+			--Crear tabla temporal
+			CREATE TEMPORARY TABLE tmpBusquedaMovimientos(fecha date, ref_id integer, referencia character varying, descripcion character varying, total character varying, tmov_id integer, tipo_mov character varying, app_id integer);
+			EXCEPTION WHEN OTHERS THEN
+			TRUNCATE TABLE tmpBusquedaMovimientos; -- TRUNCATE if the table already exists within the session.
+		END;
+		
+		--BUSQUEDA
+		IF command_selected='busqueda' THEN 
+			--Existe filtro por movimiento
+			if str_data[6]::integer>0 then 
+				select ctb_app.gral_app_id from ctb_tmov join ctb_app on ctb_app.id=ctb_tmov.ctb_app_id where ctb_tmov.id=str_data[6]::integer limit 1 
+				into aplicacion_id;
+				
+				--Facturacion
+				if aplicacion_id=13 then 
+					cadena_sql:= '
+					select fac_docs.momento_creacion::date as fecha, fac_docs.id as ref_id, fac_docs.serie_folio as referencia, cxc_clie.razon_social as descripcion, fac_docs.total::character varying as total, ctb_tmov.id as tmov_id, ctb_tmov.titulo as tipo_mov 
+					from fac_docs 
+					join erp_proceso on (erp_proceso.id=fac_docs.proceso_id and erp_proceso.empresa_id='||emp_id||') 
+					join cxc_clie on cxc_clie.id=fac_docs.cxc_clie_id 
+					join ctb_tmov on ctb_tmov.id=fac_docs.ctb_tmov_id  
+					where fac_docs.ctb_tmov_id='||str_data[6]||' and fac_docs.procesado=false 
+					and to_char(fac_docs.momento_creacion,''yyyymmdd'')::integer between (to_char('''||str_data[4]||'''::timestamp with time zone,''yyyymmdd'')::integer) and (to_char('''||str_data[5]||'''::timestamp with time zone,''yyyymmdd'')::integer);';
+				end if;
+				
+				--RAISE EXCEPTION '%',cadena_sql;
+				FOR fila IN EXECUTE (cadena_sql) LOOP 
+					--Agregar movimiento a la tabla temporal
+					INSERT INTO tmpBusquedaMovimientos (fecha, ref_id, referencia, descripcion, total, tmov_id, tipo_mov, app_id) 
+					VALUES(fila.fecha, fila.ref_id, fila.referencia, fila.descripcion, fila.total, fila.tmov_id, fila.tipo_mov, aplicacion_id);
+				END LOOP;
+			else
+				--No existe filtro por movimiento
+				
+			end if;
+			
+		END IF;--termina command reporte
+
+		--Recorriendo la tabla temporal y retornando sus filas
+		FOR returnrecord IN SELECT * FROM tmpBusquedaMovimientos LOOP
+			RETURN NEXT returnrecord;
+		END LOOP;
+	END IF;
+	--Termina Busqueda para programa de Generacion de Polizas
+
+
 
 	/*
 	SELECT 
@@ -6532,15 +7619,73 @@ BEGIN
 	JOIN ctb_may ON (ctb_may.ctb_may_clase_id=ctb_may_clases.id AND ctb_cta.clasifica=ctb_may.clasificacion)
 	ORDER BY ctb_cta
 	*/
-
+	/*
 	--Recorriendo la tabla temporal y retornando sus filas
 	FOR returnrecord IN SELECT * FROM tmpRepCtb LOOP
 		RETURN NEXT returnrecord;
 	END LOOP;
-	
-END;
+	*/
 
-$$;
+
+
+
+
+
+	--106=Catalogo de cuentas contables
+	--Obtiene la lista de cuentas para el xml de Cuentas contables
+	IF app_selected = 106 THEN
+		--str_data[1]	app_selected
+		--str_data[2]	id_user
+		--str_data[3]	command_selected
+		
+		--BUSQUEDA PARA EL REPORTE-------------
+		IF command_selected='reporte' THEN 
+			
+			cadena_sql:= '
+			SELECT 
+				(case when ctb_cta_sat.codigo is null then '''' else ctb_cta_sat.codigo end) as codagrup,
+				(CASE WHEN ctb_cta.cta>0 THEN lpad(ctb_cta.cta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN lpad(ctb_cta.subcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN lpad(ctb_cta.ssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN lpad(ctb_cta.sssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssssubcta>0 THEN lpad(ctb_cta.ssssubcta::character varying,4,''0'') ELSE '''' END) AS numcta,
+				(case when ctb_cta.ssssubcta=0 then 
+					(case when ctb_cta.sssubcta=0 then 
+						(case when ctb_cta.ssubcta=0 then 
+							(case when ctb_cta.subcta=0 then 
+								(case when ctb_cta.cta=0 then '''' else '''' end) 
+							else 
+								(CASE WHEN ctb_cta.cta>0 THEN lpad(ctb_cta.cta::character varying,4,''0'') ELSE '''' END) 
+							end) 
+						else 
+							(CASE WHEN ctb_cta.cta>0 THEN lpad(ctb_cta.cta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN lpad(ctb_cta.subcta::character varying,4,''0'') ELSE '''' END)
+						end) 
+					else
+						(CASE WHEN ctb_cta.cta>0 THEN lpad(ctb_cta.cta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.subcta>0 THEN lpad(ctb_cta.subcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN lpad(ctb_cta.ssubcta::character varying,4,''0'') ELSE '''' END) 
+					end)
+				else
+					(CASE WHEN ctb_cta.cta>0 THEN lpad(ctb_cta.cta::character varying,4,''0'') END)||(CASE WHEN ctb_cta.subcta>0 THEN lpad(ctb_cta.subcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.ssubcta>0 THEN lpad(ctb_cta.ssubcta::character varying,4,''0'') ELSE '''' END)||(CASE WHEN ctb_cta.sssubcta>0 THEN lpad(ctb_cta.sssubcta::character varying,4,''0'') ELSE '''' END) 
+				end) as subctade,
+				ctb_cta.descripcion,
+				(case when ctb_cta.naturaleza=1 then ''D'' when ctb_cta.naturaleza=2 then ''A'' else '''' end) as natur,
+				(case when ctb_cta.nivel=0 then '''' else ctb_cta.nivel::character varying end) as nivel 
+			FROM ctb_cta 
+			left join ctb_cta_sat on ctb_cta_sat.id=ctb_cta.ctb_cta_sat_id 
+			WHERE ctb_cta.borrado_logico=false AND ctb_cta.gral_emp_id='||emp_id||' 
+			ORDER BY ctb_cta.cta_mayor,ctb_cta.clasifica,ctb_cta.cta,ctb_cta.subcta,ctb_cta.ssubcta,ctb_cta.sssubcta,ctb_cta.ssssubcta';
+			
+			--RAISE EXCEPTION '%',cadena_sql;
+			FOR fila IN EXECUTE (cadena_sql) LOOP 
+				RETURN NEXT fila;
+			END LOOP;
+			
+		END IF;--termina command reporte
+	END IF;
+	--Termina Reporte Auxiliar de Cuentas
+
+
+
+
+
+
+	
+END;$$;
 
 
 ALTER FUNCTION public.ctb_reporte(campos_data character varying) OWNER TO instance01;
@@ -7874,7 +9019,7 @@ BEGIN
 						  cant_letra,--str_data[18]
 						  fecha_conciliado,--str_data[6]::timestamp with time zone,
 						  sucursal_ctb,--suc_id
-						  poliza,--es el numero de p√≥liza de contabilidad , Default= 0 
+						  poliza,--es el numero de pÛliza de contabilidad , Default= 0 
 						  ref_num,--nuevo_consecutivo_cheque,
 						  gral_usr_id_captura,--usuario_ejecutor
 						  fecha_captura,--espacio_tiempo_ejecucion
@@ -8183,7 +9328,7 @@ BEGIN
 						  cant_letra,--str_data[17]
 						  fecha_conciliado,--str_data[8]::timestamp with time zone,
 						  sucursal_ctb,--suc_id
-						  poliza,--es el numero de p√≥liza de contabilidad , Default= 0 
+						  poliza,--es el numero de pÛliza de contabilidad , Default= 0 
 						  ref_num,--nuevo_consecutivo_cheque,
 						  gral_usr_id_captura,--usuario_ejecutor
 						  fecha_captura,--espacio_tiempo_ejecucion
@@ -9579,7 +10724,7 @@ BEGIN
 											sql_insert:='';
 											sql_update := '';
 											
-											--query para verificar existencia del producto en el almacen y en el a√±o actual
+											--query para verificar existencia del producto en el almacen y en el aÒo actual
 											sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||fila_det_conf.id_prod||' AND inv_alm_id = '||fila_det.alm_pres_destino||' AND ano = '||ano_actual||';';
 											EXECUTE sql_select INTO exis;
 											
@@ -9786,7 +10931,7 @@ BEGIN
 							sql_update := '';
 							sql_insert := '';
 							
-							--query para verificar existencia del producto en el almacen y en el a√±o actual
+							--query para verificar existencia del producto en el almacen y en el aÒo actual
 							sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||fila.inv_prod_id||' AND inv_alm_id = '||fila_det.alm_pres_destino||' AND ano = '||ano_actual||';';
 							EXECUTE sql_select INTO exis;
 							
@@ -10318,7 +11463,7 @@ BEGIN
 										sql_insert:='';
 										sql_update := '';
 										
-										--query para verificar existencia del producto en el almacen y en el a√±o actual
+										--query para verificar existencia del producto en el almacen y en el aÒo actual
 										sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||fila_det_conf.id_prod||' AND inv_alm_id = '||fila_det.alm_pres_destino||' AND ano = '||ano_actual||';';
 										EXECUTE sql_select INTO exis;
 										
@@ -10523,7 +11668,7 @@ BEGIN
 						sql_update := '';
 						sql_insert := '';
 						
-						--query para verificar existencia del producto en el almacen y en el a√±o actual
+						--query para verificar existencia del producto en el almacen y en el aÒo actual
 						sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||fila.inv_prod_id||' AND inv_alm_id = '||fila_det.alm_pres_destino||' AND ano = '||ano_actual||';';
 						EXECUTE sql_select INTO exis;
 						
@@ -10649,7 +11794,7 @@ DECLARE
 --# mailto: gpmarsan@gmail.com      #
 --# 09 / abril / 2013               #
 --###################################
---√©ste procedimiento es para los buscadores 
+--Èste procedimiento es para los buscadores 
 --de todos los Aplicativos del Modulo de Envasado
 	
 	str_data text[];
@@ -11097,7 +12242,7 @@ BEGIN
 				IF str_filas[5]::integer=0 THEN
 					valor_retorno := ''||valor_retorno||'amlEnv'||str_filas[2]||':Es necesario seleccionar el Almacen Origen del Envase.___';
 				ELSE
-					--verificar que el campo cantidad no est√© vac√≠o
+					--verificar que el campo cantidad no estÈ vacÌo
 					IF trim(str_filas[7])!='' THEN
 						--verificar que la Cantidad sea mayor que cero
 						IF str_filas[7]::double precision>0 THEN 
@@ -11327,7 +12472,7 @@ BEGIN
 				IF str_filas[7]::integer=0 THEN
 					valor_retorno := ''||valor_retorno||'amlEnv'||str_filas[2]||':Es necesario seleccionar el Almacen Origen del Envase.___';
 				ELSE
-					--verificar que el campo cantidad no est√© vac√≠o
+					--verificar que el campo cantidad no estÈ vacÌo
 					IF trim(str_filas[6])!='' THEN
 						--verificar que la Cantidad sea mayor que cero
 						IF str_filas[6]::double precision>0 THEN 
@@ -12669,7 +13814,7 @@ BEGIN
 					VALUES(id_osal,prefactura_detalle.cantidad,prefactura_detalle.precio_unitario,prefactura_detalle.producto_id,prefactura_detalle.presentacion_id);
 
 					
-					--Verificar si se est√° llevando el control de existencias por Presentaciones
+					--Verificar si se est· llevando el control de existencias por Presentaciones
 					IF controlExisPres=true THEN 
 						--Si la configuracion indica que se validan Presentaciones desde el Pedido,entonces significa que hay reservados, por lo tanto hay que descontarlos
 						IF facpar.validar_pres_pedido=true THEN 
@@ -12753,17 +13898,17 @@ BEGIN
 	WHERE id=prefact_id::integer;
 	
 	IF tipo_comp='FAC' THEN 
-		--Aqu√≠ se actualiza el Consecutivo del Folio de la Factura. √âsta actualizacion es por empresa-sucursal
+		--AquÌ se actualiza el Consecutivo del Folio de la Factura. …sta actualizacion es por empresa-sucursal
 		UPDATE fac_cfds_conf_folios SET folio_actual=(folio_actual+1) WHERE id=(SELECT fac_cfds_conf_folios.id FROM fac_cfds_conf JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id WHERE fac_cfds_conf_folios.proposito='FAC' AND fac_cfds_conf.empresa_id=emp_id AND fac_cfds_conf.gral_suc_id=suc_id);
 	END IF;
 	
 	IF tipo_comp='NCR' THEN 
-		--Aqu√≠ se actualiza el Consecutivo del Folio de la Nota de credito. √âsta actualizacion es por empresa-sucursal
+		--AquÌ se actualiza el Consecutivo del Folio de la Nota de credito. …sta actualizacion es por empresa-sucursal
 		UPDATE fac_cfds_conf_folios SET folio_actual=(folio_actual+1) WHERE id=(SELECT fac_cfds_conf_folios.id FROM fac_cfds_conf JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id WHERE fac_cfds_conf_folios.proposito='NCR' AND fac_cfds_conf.empresa_id=emp_id AND fac_cfds_conf.gral_suc_id=suc_id);
 	END IF;
 
 	IF tipo_comp='NCA' THEN 
-		--Aqu√≠ se actualiza el Consecutivo del Folio de la Nota de Cargo. √âsta actualizacion es por empresa-sucursal
+		--AquÌ se actualiza el Consecutivo del Folio de la Nota de Cargo. …sta actualizacion es por empresa-sucursal
 		UPDATE fac_cfds_conf_folios SET folio_actual=(folio_actual+1) WHERE id=(SELECT fac_cfds_conf_folios.id FROM fac_cfds_conf JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id WHERE fac_cfds_conf_folios.proposito='NCA' AND fac_cfds_conf.empresa_id=emp_id AND fac_cfds_conf.gral_suc_id=suc_id);
 	END IF;
 	
@@ -13277,12 +14422,12 @@ BEGIN
 		
 		--telefono 1
 		IF str_data[19]='' OR str_data[19]=' ' THEN
-			valor_retorno := ''||valor_retorno||'tel1:Es necesario ingresar el numero de Tel√©fono___';
+			valor_retorno := ''||valor_retorno||'tel1:Es necesario ingresar el numero de TelÈfono___';
 		ELSE
 			EXECUTE 'select mask_regex from erp_mascaras_para_validaciones_por_app where app_id='||id_app||' and mask_name ilike ''is_PhoneCorrect'';' INTO mask_general;
 			EXECUTE 'select '''||str_data[19]||''' ~ '''||mask_general||''';' INTO match_cadena;
 			IF match_cadena = false THEN
-				valor_retorno := ''||valor_retorno||'tel1:Numero de Tel√©fono No Valido___';
+				valor_retorno := ''||valor_retorno||'tel1:Numero de TelÈfono No Valido___';
 			END IF;
 		END IF;
 		
@@ -13311,17 +14456,17 @@ BEGIN
 		
 		--Clasificacion 1 del proveedor
 		IF str_data[30]::integer = 0 THEN
-			valor_retorno := ''||valor_retorno||'clasif1:Es necesario seleccionar un Clasificaci√≥n para el proveedor___';
+			valor_retorno := ''||valor_retorno||'clasif1:Es necesario seleccionar un ClasificaciÛn para el proveedor___';
 		END IF;
 		
 		--Clasificacion 2 del proveedor
 		IF str_data[31]::integer = 0 THEN
-			valor_retorno := ''||valor_retorno||'clasif2:Es necesario seleccionar un Clasificaci√≥n para el proveedor___';
+			valor_retorno := ''||valor_retorno||'clasif2:Es necesario seleccionar un ClasificaciÛn para el proveedor___';
 		END IF;
 		
 		--Clasificacion 3 del proveedor
 		IF str_data[32]::integer = 0 THEN
-			valor_retorno := ''||valor_retorno||'clasif3:Es necesario seleccionar un Clasificaci√≥n para el proveedor___';
+			valor_retorno := ''||valor_retorno||'clasif3:Es necesario seleccionar un ClasificaciÛn para el proveedor___';
 		END IF;
 		
 		
@@ -13333,12 +14478,12 @@ BEGIN
 		
 		--dias de credito
 		IF str_data[37]::integer = 0 THEN
-			valor_retorno := ''||valor_retorno||'credito:Es necesario seleccionar los D√≠as de Cr√©dito___';
+			valor_retorno := ''||valor_retorno||'credito:Es necesario seleccionar los DÌas de CrÈdito___';
 		END IF;
 		
 		--inicio de credito
 		IF str_data[39]::integer = 0 THEN
-			valor_retorno := ''||valor_retorno||'inicred:Es necesario seleccionar el Inicio del Cr√©dito___';
+			valor_retorno := ''||valor_retorno||'inicred:Es necesario seleccionar el Inicio del CrÈdito___';
 		END IF;
 		
 		--contacto ventas
@@ -13391,7 +14536,7 @@ BEGIN
 			IF valor_retorno = '' THEN
 				EXECUTE 'select count(id) from cxp_prov where correo_electronico='''||str_data[24]||''' AND empresa_id='||emp_id||';' INTO valida_integridad;
 				IF valida_integridad > 0 THEN
-					valor_retorno := ''||valor_retorno||'email:El Correo Electr√≥nico ingresado ya se encuentra en uso___';
+					valor_retorno := ''||valor_retorno||'email:El Correo ElectrÛnico ingresado ya se encuentra en uso___';
 				END IF;
 			END IF;
 		END IF;
@@ -13588,11 +14733,11 @@ BEGIN
 		--password
 		--RAISE EXCEPTION '%',str_data[38];
 		IF trim(str_data[37])<>'' THEN
-			--Si existe nombre de usuario hay que validar que exista la contrase√±a
+			--Si existe nombre de usuario hay que validar que exista la contraseÒa
 			EXECUTE 'select mask_regex from erp_mascaras_para_validaciones_por_app where app_id='||id_app||' and mask_name ilike ''is_PasswordCorrect'';' INTO mask_general;
 			EXECUTE 'select '''||str_data[38]||''' ~ '''||mask_general||''';' INTO match_cadena;
 			IF match_cadena= false THEN
-				valor_retorno := ''||valor_retorno||'password:Debe introducir una contrase√±a___';
+				valor_retorno := ''||valor_retorno||'password:Debe introducir una contraseÒa___';
 			END IF;
 		END IF;
 		--RAISE EXCEPTION '%','arreglo: '||arreglo[1];
@@ -13829,7 +14974,7 @@ BEGIN
 		--telefono 1
 		IF trim(str_data[6])<>'XEXX010101000' THEN 
 			IF str_data[20]='' OR str_data[20]=' ' THEN
-				valor_retorno := ''||valor_retorno||'tel1:Es necesario ingresar el numero de Tel√©fono___';
+				valor_retorno := ''||valor_retorno||'tel1:Es necesario ingresar el numero de TelÈfono___';
 			ELSE
 				--telefono
 				EXECUTE 'select mask_regex from erp_mascaras_para_validaciones_por_app where app_id='||id_app||' and mask_name ilike ''is_PhoneCorrect'';' INTO mask_general;
@@ -13911,7 +15056,7 @@ BEGIN
 		
 		--inicio de credito
 		IF str_data[41]::integer = 0 THEN
-			valor_retorno := ''||valor_retorno||'inicred:Es necesario seleccionar el Inicio del Cr√©dito___';
+			valor_retorno := ''||valor_retorno||'inicred:Es necesario seleccionar el Inicio del CrÈdito___';
 		END IF;
 		
 		--e-mail contacto compras
@@ -14448,7 +15593,7 @@ BEGIN
 
 		--str_data[13] fletera
 		IF trim(str_data[13]) = '' THEN
-			valor_retorno := ''||valor_retorno||'fletera:Es necesario seleccionar una compa√±ia___';
+			valor_retorno := ''||valor_retorno||'fletera:Es necesario seleccionar una compaÒia___';
 		END IF;
 		
 		--str_data[14] flete
@@ -14671,7 +15816,7 @@ BEGIN
 		--str_data[3]	id_usuario
 		--str_data[4]	identificador
 		--str_data[5] 	select_tipo_cotizacion
-		--str_data[6]	id_cliente √≥ id_prospecto
+		--str_data[6]	id_cliente Û id_prospecto
 		--str_data[7]	check_descripcion_larga
 		--str_data[8]	observaciones
 		--str_data[9]	tipo_cambio
@@ -14813,11 +15958,11 @@ BEGIN
 										
 										--RAISE EXCEPTION '%','facpar.aut_precio_menor_cot: '||facpar.aut_precio_menor_cot;
 										
-										--Verificar si la configuraci√≥n permite la autorizacion de precios abajo de la lista de precio en cotizaciones
+										--Verificar si la configuraciÛn permite la autorizacion de precios abajo de la lista de precio en cotizaciones
 										if facpar.aut_precio_menor_cot then 
 											--Verificar si hay que salvar aun cuando hay precios no autorizados
 											if str_filas[16]::boolean=false then 
-												--Verificar si est√° autorizado el precio menor
+												--Verificar si est· autorizado el precio menor
 												if str_filas[12]::boolean then 
 
 													--RAISE EXCEPTION '%','str_filas[6]:'||str_filas[6]||'     str_filas[13]:'||str_filas[13];
@@ -15542,7 +16687,7 @@ BEGIN
 		END IF;
 		
 		IF str_data[7] = '' THEN
-			valor_retorno := ''||valor_retorno||'desesp:Es necesario ingresar la Descripcion en espa√±ol___';
+			valor_retorno := ''||valor_retorno||'desesp:Es necesario ingresar la Descripcion en espaÒol___';
 		END IF;
 	END IF;--termina validacion de Clasificacion de Cuentas(Cuentas de Mayor)
 
@@ -15827,7 +16972,7 @@ BEGIN
 		/*
 		--str_data[14] fletera
 		IF str_data[14] = '' THEN
-			valor_retorno := ''||valor_retorno||'fletera:Es necesario seleccionar una compa√±ia___';
+			valor_retorno := ''||valor_retorno||'fletera:Es necesario seleccionar una compaÒia___';
 		END IF;
 		*/
 		--str_data[16] flete
@@ -16974,7 +18119,7 @@ BEGIN
 		END IF;
 		
 		IF str_data[16]::integer = 0 THEN					
-			 valor_retorno := ''||valor_retorno||'pais:Es necesario seleccionar el Pa√≠s___';
+			 valor_retorno := ''||valor_retorno||'pais:Es necesario seleccionar el PaÌs___';
 		END IF;
 		
 		IF str_data[18] = '' THEN				
@@ -17997,7 +19142,7 @@ BEGIN
 												
 												IF exisActualPres::double precision < cantPresAsignado::double precision THEN
 													IF incluye_modulo_produccion=true OR facpar.permitir_req_com=TRUE THEN 
-														--Si incluye modulo de produccion √≥ la configuracion permite generar requisiciones cuando no hay exisencia
+														--Si incluye modulo de produccion Û la configuracion permite generar requisiciones cuando no hay exisencia
 														IF incluye_modulo_produccion THEN 
 															IF tipo::integer=1 OR tipo::integer=2 OR tipo::integer=8 THEN 
 																IF str_filas[10]='0' THEN
@@ -18024,7 +19169,7 @@ BEGIN
 												END IF;
 											ELSE 
 												IF incluye_modulo_produccion=true OR facpar.permitir_req_com=TRUE THEN 
-													--Si incluye modulo de produccion √≥ la configuracion permite generar requisiciones cuando no hay exisencia
+													--Si incluye modulo de produccion Û la configuracion permite generar requisiciones cuando no hay exisencia
 													
 													IF incluye_modulo_produccion THEN 
 														IF tipo::integer=1 OR tipo::integer=2 OR tipo::integer=8 THEN 
@@ -18129,13 +19274,13 @@ BEGIN
 									IF round(str_filas[7]::numeric,4)::double precision < precio_minimo THEN
 										--valor_retorno := ''||valor_retorno||'costo'||str_filas[9]||':No puede ser asignado este precio.___';
 										
-										--Verificar si la configuraci√≥n permite la autorizacion de precios abajo de la lista de precio en pedidos
+										--Verificar si la configuraciÛn permite la autorizacion de precios abajo de la lista de precio en pedidos
 										if facpar.aut_precio_menor_ped then 
 											
 											--Verificar si hay que salvar aun cuando hay precios no autorizados
 											if str_filas[21]::boolean=false then 
 												
-												--Verificar si est√° autorizado el precio menor
+												--Verificar si est· autorizado el precio menor
 												if str_filas[17]::boolean then 
 													
 													--RAISE EXCEPTION '%','str_filas[6]:'||str_filas[6]||'     str_filas[13]:'||str_filas[13];
@@ -18228,7 +19373,7 @@ BEGIN
 	IF id_app=65 THEN 
 		IF command_selected = 'autorizar' THEN 
 			--str_data[4]::integer
-			--Verificar si la configuraci√≥n permite la autorizacion de precios abajo de la lista de precio en pedidos
+			--Verificar si la configuraciÛn permite la autorizacion de precios abajo de la lista de precio en pedidos
 			if facpar.aut_precio_menor_ped then 
 				if (select count(id) from poc_pedidos_detalle where poc_pedido_id=str_data[4]::integer and requiere_aut=true and autorizado=false)>0 then 
 					valor_retorno := ''||valor_retorno||'checkauth:No es posible autorizar el pedido porque hay precios por debajo de la lista.<br>Regrese a la parte de edici&oacute;n del Pedido para pedir la autorizaci&oacute;n.___';
@@ -18872,11 +20017,11 @@ BEGIN
 		END IF;
 
 		IF str_data[6] = ''  THEN
-			valor_retorno := ''||valor_retorno||'descripcion:Es necesario ingresar la descripci√≥n___';
+			valor_retorno := ''||valor_retorno||'descripcion:Es necesario ingresar la descripciÛn___';
 		END IF;
 		
 		IF valida_integridad > 0 THEN
-			valor_retorno := ''||valor_retorno||'DNL:El D√≠a ya se encuentra registrado___:';
+			valor_retorno := ''||valor_retorno||'DNL:El DÌa ya se encuentra registrado___:';
 		END IF;		
 	END IF;--termina validacion Catalogo dias no laborables
 	-----------------------------------------------------------------------------------------------------------
@@ -18919,7 +20064,7 @@ BEGIN
 			INTO valida_integridad;
 			
 			IF valida_integridad > 0 THEN
-				valor_retorno := ''||valor_retorno||'categoria:El nombre de la Categor√≠a ingresada ya se encuentra en uso___';
+				valor_retorno := ''||valor_retorno||'categoria:El nombre de la CategorÌa ingresada ya se encuentra en uso___';
 			END IF;	
 		END IF;	
 	END IF;--termina validacion de categorias -------------------------------------------------------------------------------------------------
@@ -19195,7 +20340,7 @@ BEGIN
 		--str_data[7]        hora_fin 
 		--str_data[8]        gral_deptos_id (depto)	
 		IF str_data[5]::integer = 0 THEN
-			valor_retorno := 0||valor_retorno||'turno:Es necesario ingresar el n√∫mero del Turno___';
+			valor_retorno := 0||valor_retorno||'turno:Es necesario ingresar el n˙mero del Turno___';
 		END IF;
 
 		IF str_data[6] = ''  THEN
@@ -19218,7 +20363,7 @@ BEGIN
 				INTO valida_integridad;
 				
 				IF valida_integridad > 0 THEN
-					valor_retorno := ''||valor_retorno||'0turno:El n√∫mero del turno ingresado ya se encuentra en uso___';
+					valor_retorno := ''||valor_retorno||'0turno:El n˙mero del turno ingresado ya se encuentra en uso___';
 				END IF;	
 		END IF;	
 					
@@ -21166,7 +22311,7 @@ BEGIN
 		
 		--telefono 1
 		IF str_data[20]='' OR str_data[20]=' ' THEN
-			valor_retorno := ''||valor_retorno||'tel1:Es necesario ingresar el numero de Tel√©fono___';
+			valor_retorno := ''||valor_retorno||'tel1:Es necesario ingresar el numero de TelÈfono___';
 		ELSE
 			--telefono
 			EXECUTE 'select mask_regex from erp_mascaras_para_validaciones_por_app where app_id='||id_app||' and mask_name ilike ''is_PhoneCorrect'';' INTO mask_general;
@@ -21389,7 +22534,7 @@ BEGIN
 		
 		--str_data[15] tel1
 		IF str_data[15]='' OR str_data[15]=' ' THEN
-			valor_retorno := ''||valor_retorno||'tel1:Es necesario ingresar el numero de Tel√©fono___';
+			valor_retorno := ''||valor_retorno||'tel1:Es necesario ingresar el numero de TelÈfono___';
 		ELSE
 			--telefono
 			EXECUTE 'select mask_regex from erp_mascaras_para_validaciones_por_app where app_id='||id_app||' and mask_name ilike ''is_PhoneCorrect'';' INTO mask_general;
@@ -22508,12 +23653,12 @@ BEGIN
 
 
 
-	--Validacion para Aplicativo para cambiar contrase√±a de usuario
+	--Validacion para Aplicativo para cambiar contraseÒa de usuario
 	IF id_app=155 THEN
 		IF trim(str_data[4])='' THEN 
 			valor_retorno := ''||valor_retorno||'passant:Es necesario ingresar Contrase&ntilde;a anterior.___';
 		ELSE
-			--Obtener la contrase√±a actual del usuario
+			--Obtener la contraseÒa actual del usuario
 			select "password" from gral_usr where id=str_data[3]::integer into cadena;
 			
 			IF cadena IS NULL THEN 
@@ -22536,7 +23681,7 @@ BEGIN
 				END IF;
 			END IF;
 		END IF;
-	END IF;--termina validacion Aplicativo para cambiar contrase√±a de usuario
+	END IF;--termina validacion Aplicativo para cambiar contraseÒa de usuario
 
 	
 
@@ -23002,14 +24147,14 @@ BEGIN
 
 
 
-	--validacion de Catalogo de Configuraci√≥n Periodicidad de Pago
+	--validacion de Catalogo de ConfiguraciÛn Periodicidad de Pago
         IF id_app=174 THEN
                 --str_data[4]  id
-                --str_data[5]  a√±o 
+                --str_data[5]  aÒo 
                 --str_data[6]  periodicidad de pago
 		--str_data[7]  titulo
 
-	      --a√±o
+	      --aÒo
 		IF str_data[5]::integer =0 THEN
 			valor_retorno := ''||valor_retorno||'select_anio:Es necesario seleccionar un A&ntilde;o.___';
 		END IF;
@@ -23106,7 +24251,7 @@ BEGIN
 					--str_filas2[7]	noTr
 					--Aqui se verifica en el listado si existe un elemento con la misma descripcion
 					IF str_filas[4]=str_filas2[4] THEN
-						--Si existe entra aqu√≠
+						--Si existe entra aquÌ
 						--Hay que verificar que no sea el mismo elemento
 						IF str_filas[7]<>str_filas2[7] THEN
 							valor_retorno := ''||valor_retorno||'tituloperiodo'||str_filas[7]||':Es necesario ingresar un titulo diferente'||str_filas2[4]||'.___';
@@ -23136,7 +24281,7 @@ BEGIN
 		END IF;
 		
         END IF;
-        --validacion de Catalogo de Configuraci√≥n Periodicidad de Pago
+        --validacion de Catalogo de ConfiguraciÛn Periodicidad de Pago
 
 
 
@@ -23512,7 +24657,7 @@ BEGIN
 						--str_filas[11]	selec_chk_cheque
 						IF str_filas[7]::integer=1 THEN 
 							if (select count(id) from log_doc_ped where id=str_filas[4]::integer and log_status_id>=1)>0 then 
-								--Aqu√≠ entra porque el pedido ya ha sido enviado en un viaje
+								--AquÌ entra porque el pedido ya ha sido enviado en un viaje
 								valor_retorno := ''||valor_retorno||'PED_REP:'||str_filas[4]||'___';
 							end if;
 						end if;
@@ -24407,7 +25552,7 @@ BEGIN
 			/*
 			--str_data[14] fletera
 			IF str_data[14] = '' THEN
-				valor_retorno := ''||valor_retorno||'fletera:Es necesario seleccionar una compa√±ia___';
+				valor_retorno := ''||valor_retorno||'fletera:Es necesario seleccionar una compaÒia___';
 			END IF;
 			*/
 			--str_data[16] flete
@@ -24762,7 +25907,7 @@ BEGIN
 		if (select count(id) from crm_registro_proyecto where lower(trim(titulo))=lower(trim(str_data[5])))>0 then 
 			if str_data[4]::integer >0 then 
 				select id from crm_registro_proyecto where lower(trim(titulo))=lower(trim(str_data[5])) limit 1 into id_registro;
-				--Verificar si el registro que se encontr√≥ no es el mismo que se est√° actualizando
+				--Verificar si el registro que se encontrÛ no es el mismo que se est· actualizando
 				if id_registro<>str_data[4]::integer then 
 					valor_retorno := ''||valor_retorno||'nombre:El Nombre o Titulo del Proyecto ya se encuentra registrado.___';
 				end if;
@@ -24791,7 +25936,7 @@ BEGIN
 		if (select count(id) from crm_tipos_seguimiento_visita where lower(trim(titulo))=lower(trim(str_data[5])))>0 then 
 			if str_data[4]::integer >0 then 
 				select id from crm_tipos_seguimiento_visita where lower(trim(titulo))=lower(trim(str_data[5])) limit 1 into id_registro;
-				--Verificar si el registro que se encontr√≥ no es el mismo que se est√° actualizando
+				--Verificar si el registro que se encontrÛ no es el mismo que se est· actualizando
 				if id_registro<>str_data[4]::integer then 
 					valor_retorno := ''||valor_retorno||'titulo:El Titulo del Tipo de Seguimiento de Visita ya se encuentra registrado.___';
 				end if;
@@ -24823,7 +25968,7 @@ BEGIN
 			if str_data[4]::integer >0 then 
 				select id from fac_metodos_pago where lower(trim(clave_sat))=lower(trim(str_data[5])) and borrado_logico=false and gral_emp_id=emp_id limit 1 into id_registro;
 				
-				--Verificar si el registro que se encontr√≥ no es el mismo que se est√° actualizando
+				--Verificar si el registro que se encontrÛ no es el mismo que se est· actualizando
 				if id_registro<>str_data[4]::integer then 
 					valor_retorno := ''||valor_retorno||'clave:La Clave del SAT ya se encuentra registrado.___';
 				end if;
@@ -24836,7 +25981,7 @@ BEGIN
 			if str_data[4]::integer >0 then 
 				select id from fac_metodos_pago where lower(trim(titulo))=lower(trim(str_data[6])) and borrado_logico=false and gral_emp_id=emp_id limit 1 into id_registro;
 				
-				--Verificar si el registro que se encontr√≥ no es el mismo que se est√° actualizando
+				--Verificar si el registro que se encontrÛ no es el mismo que se est· actualizando
 				if id_registro<>str_data[4]::integer then 
 					valor_retorno := ''||valor_retorno||'titulo:El Titulo del Metodo de Pago ya se encuentra registrado.___';
 				end if;
@@ -25060,7 +26205,7 @@ BEGIN
 	--tomar el id del almacen para ventas
 	id_almacen := facpar.inv_alm_id;
 	
-	--√©ste consecutivo es para el folio de Remisi√≥n y folio para BackOrder(poc_ped_bo)
+	--Èste consecutivo es para el folio de RemisiÛn y folio para BackOrder(poc_ped_bo)
 	suc_id_consecutivo := facpar.gral_suc_id_consecutivo;
 
 	--query para verificar si la Empresa actual incluye Modulo de Produccion y control de Existencias por Presentacion
@@ -25369,7 +26514,7 @@ BEGIN
 		--Aqui entra antes de generar Remision y Factura
 		IF command_selected = 'actualizar' THEN
 			/*
-			Aqu√≠ se actualizan los datos de la PREFACTURA, esto es antes de facturar, terminando este proceso se genera la FACTURA
+			AquÌ se actualizan los datos de la PREFACTURA, esto es antes de facturar, terminando este proceso se genera la FACTURA
 			Solo se actualizan los datos del header de la prefactura, lo datos del grid se deja  como viene del pedido
 			*/
 			--str_data[3]	id_usuario
@@ -25755,8 +26900,8 @@ BEGIN
 				
 				
 				/*
-				Verificar si se est√° llevando control de existencias por Presentaciones. 
-				Si no se lleva control de presentaciones, por ningun motivo podr√° ser cambiada la presentacion, por lo tanto no es necesario actualizar
+				Verificar si se est· llevando control de existencias por Presentaciones. 
+				Si no se lleva control de presentaciones, por ningun motivo podr· ser cambiada la presentacion, por lo tanto no es necesario actualizar
 				*/
 				IF controlExisPres=true THEN 
 					IF facpar.validar_pres_pedido=false THEN 
@@ -25766,7 +26911,7 @@ BEGIN
 							SELECT INTO str_filas string_to_array(extra_data[cont_fila],'___');
 							
 							IF str_filas[1]::integer<>0 THEN--1: no esta eliminado, 0:eliminado
-								--Aqu√≠ se actualiza la presentaci√≥n porque puede que haya cambiado antes de facturar o remisionar
+								--AquÌ se actualiza la presentaciÛn porque puede que haya cambiado antes de facturar o remisionar
 								UPDATE erp_prefacturas_detalles SET presentacion_id=str_filas[4]::integer 
 								WHERE id=str_filas[2]::integer;
 							END IF;
@@ -26049,7 +27194,7 @@ BEGIN
 							INSERT INTO inv_mov_detalle(producto_id, alm_origen_id, alm_destino_id, cantidad, inv_mov_id, costo, inv_prod_presentacion_id)
 							VALUES(prefactura_detalle.producto_id, id_almacen,0, cantUnidadProd, identificador_nuevo_movimiento, costo_promedio_actual, prefactura_detalle.presentacion_id);
 							
-							--query para descontar producto de existencias y descontar existencia reservada porque ya se Remision√≥
+							--query para descontar producto de existencias y descontar existencia reservada porque ya se RemisionÛ
 							sql_update := 'UPDATE inv_exi SET salidas_'||mes_actual||'=(salidas_'||mes_actual||' + '||cantUnidadProd||'), 
 							reservado=(reservado::double precision - '||prefactura_detalle.reservado||'::double precision), momento_salida_'||mes_actual||'='''||espacio_tiempo_ejecucion||'''
 							WHERE inv_alm_id='||id_almacen||'::integer AND inv_prod_id='||prefactura_detalle.producto_id||'::integer AND ano='||ano_actual||'::integer;';
@@ -26059,7 +27204,7 @@ BEGIN
 							INSERT INTO inv_osal_detalle(inv_osal_id,inv_prod_id,inv_prod_presentacion_id,cantidad,precio_unitario,inv_prod_unidad_id, gral_ieps_id, valor_ieps)
 							VALUES(id_osal,prefactura_detalle.producto_id,prefactura_detalle.presentacion_id,prefactura_detalle.cantidad,prefactura_detalle.precio_unitario,prefactura_detalle.inv_prod_unidad_id, prefactura_detalle.gral_ieps_id, prefactura_detalle.valor_ieps);
 							
-							--Verificar si se est√° llevando el control de existencias por Presentaciones
+							--Verificar si se est· llevando el control de existencias por Presentaciones
 							IF controlExisPres=true THEN 
 								--Si la configuracion indica que se validan Presentaciones desde el Pedido,entonces significa que hay reservados, por lo tanto hay que descontarlos
 								IF facpar.validar_pres_pedido=true THEN 
@@ -26122,7 +27267,7 @@ BEGIN
 					ELSE
 						
 						IF prefactura_detalle.tipo_producto::integer=4 THEN
-							--Aqu√≠ solo entre cuando es un Servicio
+							--AquÌ solo entre cuando es un Servicio
 							--::Aqui inica calculos para el control de remision por partida::::::::
 							--Calcular la cantidad facturada
 							prefactura_detalle.cant_facturado:=prefactura_detalle.cant_facturado::double precision + prefactura_detalle.cantidad::double precision;
@@ -26394,7 +27539,7 @@ BEGIN
 							INSERT INTO inv_mov_detalle(producto_id, alm_origen_id, alm_destino_id, cantidad, inv_mov_id, costo, inv_prod_presentacion_id)
 							VALUES(prefactura_detalle.producto_id, id_almacen,0, prefactura_detalle.cantidad, identificador_nuevo_movimiento, costo_promedio_actual, prefactura_detalle.presentacion_id);
 							
-							--query para descontar producto de existencias y descontar existencia reservada porque ya se Factur√≥
+							--query para descontar producto de existencias y descontar existencia reservada porque ya se FacturÛ
 							sql_update := 'UPDATE inv_exi SET salidas_'||mes_actual||'=(salidas_'||mes_actual||'::double precision + '||prefactura_detalle.cantidad||'::double precision), 
 							reservado=(reservado::double precision - '||prefactura_detalle.reservado||'::double precision), momento_salida_'||mes_actual||'='''||espacio_tiempo_ejecucion||'''
 							WHERE inv_alm_id='||id_almacen||'::integer AND inv_prod_id='||prefactura_detalle.producto_id||'::integer AND ano='||ano_actual||'::integer;';
@@ -26410,7 +27555,7 @@ BEGIN
 							VALUES(id_osal,prefactura_detalle.producto_id,prefactura_detalle.presentacion_id,prefactura_detalle.cantidad,prefactura_detalle.precio_unitario);
 							
 							
-							--Verificar si se est√° llevando el control de existencias por Presentaciones
+							--Verificar si se est· llevando el control de existencias por Presentaciones
 							IF controlExisPres=true THEN 
 								--Si la configuracion indica que se validan Presentaciones desde el Pedido,entonces significa que hay reservados, por lo tanto hay que descontarlos
 								IF facpar.validar_pres_pedido=true THEN 
@@ -26508,7 +27653,7 @@ BEGIN
 			fac_total
 			tasa_retencion_immex
 			*/
-			--Aqu√≠ se actualiza el Consecutivo del Folio de la Factura. √âsta actualizacion es por empresa-sucursal
+			--AquÌ se actualiza el Consecutivo del Folio de la Factura. …sta actualizacion es por empresa-sucursal
 			UPDATE fac_cfds_conf_folios SET folio_actual=(folio_actual+1) WHERE id=(SELECT fac_cfds_conf_folios.id FROM fac_cfds_conf JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id WHERE fac_cfds_conf_folios.proposito='FAC' AND fac_cfds_conf.empresa_id=emp_id AND fac_cfds_conf.gral_suc_id=suc_id);
 			
 			valor_retorno := '1:'||ultimo_id;--retorna el id de fac_docs
@@ -26575,7 +27720,7 @@ BEGIN
 				tipo_cam:=prefactura_fila.tipo_cambio;
 			END IF;
 			
-			--Toma la fecha de la Facturaci√≥n. √âsta fecha es la misma que se le asigno al xml
+			--Toma la fecha de la FacturaciÛn. …sta fecha es la misma que se le asigno al xml
 			espacio_tiempo_ejecucion := translate(str_data[13],'T',' ')::timestamp with time zone;
 			
 			--crea registro en fac_cfds
@@ -26908,7 +28053,7 @@ BEGIN
 							INSERT INTO inv_mov_detalle(producto_id, alm_origen_id, alm_destino_id, cantidad, inv_mov_id, costo, inv_prod_presentacion_id)
 							VALUES(prefactura_detalle.producto_id, id_almacen,0, cantUnidadProd, identificador_nuevo_movimiento, costo_promedio_actual, prefactura_detalle.presentacion_id);
 							
-							--Query para descontar producto de existencias y descontar existencia reservada porque ya se Factur√≥
+							--Query para descontar producto de existencias y descontar existencia reservada porque ya se FacturÛ
 							sql_update := 'UPDATE inv_exi SET salidas_'||mes_actual||'=(salidas_'||mes_actual||'::double precision + '||cantUnidadProd||'::double precision), 
 							reservado=(reservado::double precision - '||prefactura_detalle.reservado||'::double precision), momento_salida_'||mes_actual||'='''||espacio_tiempo_ejecucion||'''
 							WHERE inv_alm_id='||id_almacen||'::integer AND inv_prod_id='||prefactura_detalle.producto_id||'::integer AND ano='||ano_actual||'::integer;';
@@ -26925,7 +28070,7 @@ BEGIN
 							VALUES(id_osal,prefactura_detalle.producto_id,prefactura_detalle.presentacion_id,prefactura_detalle.cantidad,prefactura_detalle.precio_unitario, prefactura_detalle.inv_prod_unidad_id, prefactura_detalle.gral_ieps_id, prefactura_detalle.valor_ieps);
 							
 							
-							--Verificar si se est√° llevando el control de existencias por Presentaciones
+							--Verificar si se est· llevando el control de existencias por Presentaciones
 							IF controlExisPres=true THEN 
 								--Si la configuracion indica que se validan Presentaciones desde el Pedido,entonces significa que hay reservados, por lo tanto hay que descontarlos
 								IF facpar.validar_pres_pedido=true THEN 
@@ -27093,7 +28238,7 @@ BEGIN
 			UPDATE erp_prefacturas SET fac_subtotal=0, fac_impuesto=0, fac_monto_retencion=0, fac_total=0, fac_monto_ieps=0, fac_monto_descto=0 
 			WHERE id=str_data[4]::integer;
 			
-			--Actualiza el consecutivo del folio de la factura en la tabla fac_cfds_conf_folios. La actualizaci√≥n es por Empresa-sucursal
+			--Actualiza el consecutivo del folio de la factura en la tabla fac_cfds_conf_folios. La actualizaciÛn es por Empresa-sucursal
 			UPDATE fac_cfds_conf_folios SET folio_actual=(folio_actual+1) WHERE id=(SELECT fac_cfds_conf_folios.id FROM fac_cfds_conf JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id WHERE fac_cfds_conf_folios.proposito='FAC' AND fac_cfds_conf.empresa_id=emp_id AND fac_cfds_conf.gral_suc_id=suc_id);
 			
 			valor_retorno := '1:'||ultimo_id;--retorna el id de fac_docs
@@ -27239,7 +28384,7 @@ BEGIN
 							exis:=0;
 							sql_select:='';
 							
-							--query para verificar existencia del producto en el almacen y en el a√±o actual
+							--query para verificar existencia del producto en el almacen y en el aÒo actual
 							sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id='||factura_detalle.inv_prod_id||' AND inv_alm_id='||id_almacen||' AND ano = '||ano_actual||';';
 							--RAISE EXCEPTION '%' ,'sql_select: '||sql_select;
 							EXECUTE sql_select INTO exis;
@@ -27254,7 +28399,7 @@ BEGIN
 								EXECUTE sql_insert;
 							END IF;
 							
-							--Verificar si se est√° llevando el control de existencias por Presentaciones
+							--Verificar si se est· llevando el control de existencias por Presentaciones
 							IF controlExisPres=true THEN 							
 								--Convertir la cantidad de la partida a su equivalente a presentaciones
 								cantPresAsignado := factura_detalle.cantidad::double precision / factura_detalle.cant_equiv::double precision;
@@ -27265,7 +28410,7 @@ BEGIN
 								exis:=0;
 								sql_select:='';
 								
-								--query para verificar existencia del producto en el almacen y en el a√±o actual
+								--query para verificar existencia del producto en el almacen y en el aÒo actual
 								sql_select := 'SELECT count(id) FROM inv_exi_pres WHERE inv_prod_id='||factura_detalle.inv_prod_id||' AND inv_alm_id='||id_almacen||' AND inv_prod_presentacion_id = '||factura_detalle.presentacion_id||';';
 								--RAISE EXCEPTION '%' ,'sql_select: '||sql_select;
 								EXECUTE sql_select INTO exis;
@@ -28327,7 +29472,7 @@ BEGIN
 						exis:=0;
 						sql_select:='';
 						
-						--Query para verificar existencia del producto en el almacen y en el a√±o actual
+						--Query para verificar existencia del producto en el almacen y en el aÒo actual
 						sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||factura_detalle.inv_prod_id||' AND inv_alm_id='||id_almacen||' AND ano = '||ano_actual;
 						--RAISE EXCEPTION '%' ,'sql_select: '||sql_select;
 						EXECUTE sql_select INTO exis;
@@ -28342,7 +29487,7 @@ BEGIN
 							EXECUTE sql_insert;
 						END IF;
 						
-						--Verificar si se est√° llevando el control de existencias por Presentaciones
+						--Verificar si se est· llevando el control de existencias por Presentaciones
 						IF controlExisPres=true THEN 
 							--Convertir la cantidad de la partida a su equivalente a presentaciones
 							cantPresAsignado := factura_detalle.cantidad::double precision / factura_detalle.cant_equiv::double precision;
@@ -28721,7 +29866,7 @@ BEGIN
 			--Actualizar el periodo actual para indicar que ya fue generado la nomina correspondiente
 			UPDATE nom_periodos_conf_det SET estatus=true WHERE id=id2;
 			
-			--Actualiza el consecutivo del folio de Nominas en la tabla fac_cfds_conf_folios. La actualizaci√≥n es por Empresa-sucursal
+			--Actualiza el consecutivo del folio de Nominas en la tabla fac_cfds_conf_folios. La actualizaciÛn es por Empresa-sucursal
 			UPDATE fac_cfds_conf_folios SET folio_actual=(folio_actual+1) WHERE id=(SELECT fac_cfds_conf_folios.id FROM fac_cfds_conf JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id WHERE lower(trim(fac_cfds_conf_folios.proposito))='nom' AND fac_cfds_conf.empresa_id=emp_id AND fac_cfds_conf.gral_suc_id=suc_id);
 			
 			--valor_actualizado||id_registro||codigo_error||mensaje
@@ -29212,7 +30357,7 @@ BEGIN
 			--reiniciamos el valor de la variable exis a cero
 			exis:=0;
 			
-			--query para verificar existencia del producto en el almacen y en el a√±o actual
+			--query para verificar existencia del producto en el almacen y en el aÒo actual
 			sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||prefactura_detalle.producto_id||' AND inv_alm_id ='||id_almacen||' AND ano = '||ano_actual;
 			--RAISE EXCEPTION '%' ,'sql_select: '||sql_select;
 			EXECUTE sql_select INTO exis;
@@ -29941,7 +31086,7 @@ BEGIN
 				gral_emp_id,
 				gralsuc_id
 				)VALUES (
-				--Informaci√≥n: data_string: 4___new___1___0___[3]ADMIN___[4]SANTOS___[5]CAMPOS___[6]12345678901___[7]12345678901___[8]MASN831210MK7___[9]MASN831210MK7___[10]2012-08-09___[11]2012-08-15___3___2___2___7___1234567891_________2___19___986___AV.JUAREZ___12___MARIA LUISA___64988___EZEQUIEL CARDENAS___1234567891___2_________4
+				--InformaciÛn: data_string: 4___new___1___0___[3]ADMIN___[4]SANTOS___[5]CAMPOS___[6]12345678901___[7]12345678901___[8]MASN831210MK7___[9]MASN831210MK7___[10]2012-08-09___[11]2012-08-15___3___2___2___7___1234567891_________2___19___986___AV.JUAREZ___12___MARIA LUISA___64988___EZEQUIEL CARDENAS___1234567891___2_________4
 					nuevo_folio,                       
 					str_data[5],
 					str_data[6],
@@ -30786,7 +31931,7 @@ BEGIN
 					--Si es MN, el tipo de cambio es 1
 					valor1:=1;
 				else
-					--Buscar el tipo de cambio del d√≠a
+					--Buscar el tipo de cambio del dÌa
 					SELECT valor AS tipo_cambio FROM erp_monedavers WHERE momento_creacion<=now() AND moneda_id=str_data[45]::integer ORDER BY momento_creacion DESC LIMIT 1 into valor1;
 					if valor1 is null then valor1:=1; end if;
 				end if;
@@ -31407,7 +32552,7 @@ BEGIN
 						suc_id	
 					);
 					*/
-					--Aqu√≠ se genera una nuevo numero de transaccion para el anticipo des saldo a favor
+					--AquÌ se genera una nuevo numero de transaccion para el anticipo des saldo a favor
 					--aqui entra para tomar el consecutivo del folio  la sucursal actual
 					UPDATE 	gral_cons SET consecutivo=( SELECT sbt.consecutivo + 1  FROM gral_cons AS sbt WHERE sbt.id=gral_cons.id )
 					WHERE gral_emp_id=emp_id AND gral_suc_id=suc_id AND gral_cons_tipo_id=id_tipo_consecutivo  RETURNING prefijo,consecutivo INTO prefijo_consecutivo,nuevo_consecutivo;
@@ -34125,7 +35270,7 @@ BEGIN
 	
 	
 	
-	--Aplicativo Actualizador de Contrase√±a del usuario
+	--Aplicativo Actualizador de ContraseÒa del usuario
 	IF app_selected = 155 THEN
 		IF command_selected = 'edit' THEN
 			UPDATE gral_usr SET password=str_data[5] WHERE id=str_data[3]::integer;
@@ -34133,7 +35278,7 @@ BEGIN
 			valor_retorno := '1';
 		END IF;	
 		
-	END IF;--termina Aplicativo Actualizador de Contrase√±a del usuario
+	END IF;--termina Aplicativo Actualizador de ContraseÒa del usuario
 	
 	
 	
@@ -34269,12 +35414,12 @@ BEGIN
 
 
 
--- Catalogo de Configuraci√≥n Periodicidad de Pago
+-- Catalogo de ConfiguraciÛn Periodicidad de Pago
 	IF app_selected = 174 THEN
 		IF command_selected = 'new' THEN
 			--str_data[4]	id
 			--str_data clave nuevo_folio
-			--str_data[5]	a√±o
+			--str_data[5]	aÒo
 			--str_data[6]	tipoperiodicidad
 			--str_data[7]	descripcion
 			
@@ -34342,7 +35487,7 @@ BEGIN
 			WHERE nom_periodos_conf.id = str_data[4]::integer;
 			valor_retorno := '1';
 		END IF;
-	END IF;-- Catalogo de Configuraci√≥n Periodicidad de Pago
+	END IF;-- Catalogo de ConfiguraciÛn Periodicidad de Pago
 
 	
 	-- Catalogo de descuentos  de  clientes
@@ -37331,7 +38476,7 @@ BEGIN
 		END IF;
 
 		IF str_data[9]::integer = 0 THEN
-			--busca si el usuario tiene rol de ADMINISTRADOR ¬† ¬† ¬† ¬† ¬† ¬† ¬†
+			--busca si el usuario tiene rol de ADMINISTRADOR † † † † † † †
 			SELECT count(gral_usr_id) FROM gral_usr_rol WHERE gral_usr_id=id_user AND gral_rol_id=1 INTO exis;
 			
 			IF exis=0 THEN
@@ -37374,7 +38519,7 @@ BEGIN
 		--str_data[13]	pminimo
 		--str_data[14]	tipo_cambio
 		--str_data[15]	codigo
-		--str_data[16]	a√±o
+		--str_data[16]	aÒo
 		--str_data[17]	mes
 		
 		IF str_data[16]::integer > 0 THEN
@@ -37956,10 +39101,10 @@ BEGIN
         --termina buscador del catalogo Operadores
 
 	
-	--Buscador de Aplicativo Actualizador de Contrase√±a de Usuario
+	--Buscador de Aplicativo Actualizador de ContraseÒa de Usuario
 	IF app_selected = 155 THEN
 		sql_query := 'select gral_usr.id from gral_usr left join gral_empleados on gral_empleados.id=gral_usr.gral_empleados_id where gral_usr.id='||id_user||';';
-	END IF;	--Termina Buscador de Aplicativo Actualizador de Contrase√±a de Usuario
+	END IF;	--Termina Buscador de Aplicativo Actualizador de ContraseÒa de Usuario
 
 	
 	--Buscador del catalogo de IEPS
@@ -38960,7 +40105,7 @@ BEGIN
 
 
 
-	--Buscador Cat√°logo de M√©todos de Pago(FAC)
+	--Buscador Cat·logo de MÈtodos de Pago(FAC)
 	IF app_selected=209 THEN
 		--str_data[1]	app_selected
 		--str_data[2]	id_usuario
@@ -38981,7 +40126,7 @@ BEGIN
 		
 		--RAISE EXCEPTION '%' ,sql_query;
 	END IF;
-	--Termina buscador Cat√°logo de M√©todos de Pago(FAC)
+	--Termina buscador Cat·logo de MÈtodos de Pago(FAC)
 
 
 
@@ -39612,7 +40757,7 @@ BEGIN
 					exis:=0;
 					
 					sql_select := '';
-					--query para verificar existencia del producto en el almacen y en el a√±o actual
+					--query para verificar existencia del producto en el almacen y en el aÒo actual
 					sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||str_filas[4]||' AND inv_alm_id = '||str_data[15]||' AND ano = '||ano_actual;
 					--RAISE EXCEPTION '%' ,'sql_select: '||sql_select;
 					EXECUTE sql_select INTO exis;
@@ -39798,7 +40943,7 @@ BEGIN
 							FOR fila IN EXECUTE (sql_select) LOOP
 								IF fila.precio_minimo > 0 THEN 
 									/*
-									--Aqu√≠ se calculan los valores para las listas de precios
+									--AquÌ se calculan los valores para las listas de precios
 									fila.precio_calculado1 := (CASE WHEN inv_pre_param.margen_l1=0 THEN 0 ELSE fila.precio_minimo / (1 - (inv_pre_param.margen_l1/100)::double precision ) END);
 									fila.precio_calculado2 := (CASE WHEN inv_pre_param.margen_l2=0 THEN 0 ELSE fila.precio_minimo / (1 - (inv_pre_param.margen_l2/100)::double precision ) END);
 									fila.precio_calculado3 := (CASE WHEN inv_pre_param.margen_l3=0 THEN 0 ELSE fila.precio_minimo / (1 - (inv_pre_param.margen_l3/100)::double precision ) END);
@@ -39839,7 +40984,7 @@ BEGIN
 									select * from inv_pre WHERE gral_emp_id=emp_id AND borrado_logico=FALSE AND inv_prod_id=fila.prod_id AND inv_prod_presentacion_id=fila.pres_id 
 									into fila2;
 									
-									--calculo_precio_1(Forma de calculo) 	1=Automatico (En l√≠nea)
+									--calculo_precio_1(Forma de calculo) 	1=Automatico (En lÌnea)
 									--operacion_precio_1(Operacion para el calculo) 	1=Porcentaje (%)
 									if fila2.id is not null then 
 										if fila2.calculo_precio_1=1 then 
@@ -39957,7 +41102,7 @@ BEGIN
 						--Redondear la Cantidad de la Presentacion
 						cantPres := round(cantPres::numeric,noDecUnidad)::double precision;
 						
-						--Query para verificar existencia del producto en el almacen y en el a√±o actual y presentacion
+						--Query para verificar existencia del producto en el almacen y en el aÒo actual y presentacion
 						sql_select := 'SELECT count(id) FROM inv_exi_pres WHERE inv_prod_id='||str_filas[4]||' AND inv_prod_presentacion_id='||str_filas[7]||' AND inv_alm_id='||str_data[15]||';';
 						--RAISE EXCEPTION '%' ,'sql_select: '||sql_select;
 						EXECUTE sql_select INTO exis;
@@ -40977,7 +42122,7 @@ BEGIN
 					
 					--AQUI SE GENERA EL MOVIMIENTO DE ENTRADA PARA EL PRODUCTO SUBENSAMBLE
 					identificador_nuevo_movimiento:=0;
-					tipo_movimiento_id:=10;--¬∑Entrada por produccion de subensamble
+					tipo_movimiento_id:=10;--∑Entrada por produccion de subensamble
 					INSERT INTO inv_mov(observacion,momento_creacion,gral_usr_id, gral_app_id,inv_mov_tipo_id) 
 					VALUES(str_data[6],espacio_tiempo_ejecucion,usuario_ejecutor,app_selected, tipo_movimiento_id) 
 					RETURNING id INTO identificador_nuevo_movimiento;
@@ -40991,7 +42136,7 @@ BEGIN
 					--reiniciamos el valor de la variable exis a cero
 					exis:=0;
 					
-					--query para verificar existencia del producto en el almacen y en el a√±o actual
+					--query para verificar existencia del producto en el almacen y en el aÒo actual
 					sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||orden_detalle.inv_prod_id_subensamble||' AND inv_alm_id = '||id_almacen||' AND ano = '||ano_actual;
 					--RAISE EXCEPTION '%' ,'sql_select: '||sql_select;
 					EXECUTE sql_select INTO exis;
@@ -41171,13 +42316,13 @@ BEGIN
 										--convertir a hexadecimal el nuevo consecutivo
 										nuevo_lote=to_hex(nuevo_consecutivo);
 										
-										--extraer los dos digitos del a√±o
+										--extraer los dos digitos del aÒo
 										SELECT to_char(espacio_tiempo_ejecucion,'yy') INTO ano_actual_2_digitos;
 										 
 										--agregar ceros a la izquierda para acompletar 6 caracteres con lpad y convertir a mayusculas con upper
 										nuevo_lote := upper(lpad(nuevo_lote, 6, '0'));
 										
-										--agregar a√±o y mes al consecutivo del lote para acompletar 10 caractares
+										--agregar aÒo y mes al consecutivo del lote para acompletar 10 caractares
 										nuevo_lote := ano_actual_2_digitos || mes_actual || nuevo_lote;
 										
 									END IF;
@@ -41974,7 +43119,7 @@ BEGIN
 				exis:=0;
 				
 				sql_select := '';
-				--query para verificar existencia del producto en el almacen y en el a√±o actual
+				--query para verificar existencia del producto en el almacen y en el aÒo actual
 				sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||str_filas[1]||' AND inv_alm_id = '||str_data[8]||' AND ano = '||ano_actual;
 				EXECUTE sql_select INTO exis;
 				
@@ -42184,7 +43329,7 @@ BEGIN
 				incrementa := 0;--inicializar valor
 				
 				IF exis > 0 THEN
-					--Aqu√≠ entra para ACTUALIZAR un registro
+					--AquÌ entra para ACTUALIZAR un registro
 					incrementa := mes_actual + 1;
 					
 					--aqui se crea la cadena para actualizar y repetir los valores del mes actual hasta el mes 12
@@ -42201,7 +43346,7 @@ BEGIN
 					EXECUTE sql_update;
 					
 				ELSE
-					--aqu√≠ entra para CREAR un nuevo registro
+					--aquÌ entra para CREAR un nuevo registro
 					incrementa := mes_actual + 1;
 
 					--esta cadena almacen los campos a actualizar
@@ -42265,7 +43410,7 @@ BEGIN
 						
 						FOR fila2 IN EXECUTE (sql_select) LOOP
 							IF fila2.precio_minimo > 0 THEN 
-								--Aqu√≠ se calculan los valores para las listas de precios
+								--AquÌ se calculan los valores para las listas de precios
 								fila2.precio_calculado1 := (CASE WHEN inv_pre_param.margen_l1=0 THEN 0 ELSE fila2.precio_minimo / (1 - (inv_pre_param.margen_l1/100)::double precision ) END);
 								fila2.precio_calculado2 := (CASE WHEN inv_pre_param.margen_l2=0 THEN 0 ELSE fila2.precio_minimo / (1 - (inv_pre_param.margen_l2/100)::double precision ) END);
 								fila2.precio_calculado3 := (CASE WHEN inv_pre_param.margen_l3=0 THEN 0 ELSE fila2.precio_minimo / (1 - (inv_pre_param.margen_l3/100)::double precision ) END);
@@ -42464,7 +43609,7 @@ BEGIN
 					fila.precio_calculado10 := conversion_costo_para_lista_precio(fila.precio_minimo, tc_usd, tc_eur, fila2.moneda10);
 				*/	
 					
-					--Aqu√≠ se calculan los valores para las listas de precios
+					--AquÌ se calculan los valores para las listas de precios
 					fila.precio_calculado1 := (CASE WHEN str_data[11]::double precision=0 THEN 0 ELSE fila.precio_minimo / (1 - (str_data[11]::double precision/100)::double precision ) END);
 					fila.precio_calculado2 := (CASE WHEN str_data[12]::double precision=0 THEN 0 ELSE fila.precio_minimo / (1 - (str_data[12]::double precision/100)::double precision ) END);
 					fila.precio_calculado3 := (CASE WHEN str_data[13]::double precision=0 THEN 0 ELSE fila.precio_minimo / (1 - (str_data[13]::double precision/100)::double precision ) END);
@@ -42741,16 +43886,16 @@ BEGIN
 				SELECT count(id) FROM inv_prod_cost_prom WHERE inv_prod_id=str_filas[2]::integer AND ano=ano_actual INTO exis;
 				
 				IF exis<=0 THEN 
-					--Aqu√≠ entra para CREAR un nuevo registro
+					--AquÌ entra para CREAR un nuevo registro
 					incrementa := mes_actual + 1;
 					
-					--√âsta cadena almacena los campos a actualizar
+					--…sta cadena almacena los campos a actualizar
 					sql_insert := 'INSERT INTO inv_prod_cost_prom(inv_prod_id, ano, costo_ultimo_'||mes_actual||', tipo_cambio_'||mes_actual||', gral_mon_id_'||mes_actual||', actualizacion_'||mes_actual||' ';
 					
 					--En esta cadena van los valores de los campos a actualizar
 					valores_campos:=''||str_filas[2]||', '||ano_actual||', '||str_filas[3]||'::double precision, '||str_filas[5]||'::double precision,'||str_filas[4]||'::integer,'''||espacio_tiempo_ejecucion||'''::timestamp with time zone';
 
-					--Este ciclo es para repetir los valores desde el mes actual hasta el mes 12 del a√±o actual
+					--Este ciclo es para repetir los valores desde el mes actual hasta el mes 12 del aÒo actual
 					WHILE incrementa <= 12 LOOP
 						sql_insert:=sql_insert ||', costo_ultimo_'||incrementa||', tipo_cambio_'||incrementa||', gral_mon_id_'||incrementa||', actualizacion_'||incrementa||'';
 						valores_campos:=valores_campos ||', '||str_filas[3]||'::double precision, '||str_filas[5]||'::double precision,'||str_filas[4]||'::integer,'''||espacio_tiempo_ejecucion||'''::timestamp with time zone ';
@@ -42761,10 +43906,10 @@ BEGIN
 					--RAISE EXCEPTION '%','sql_insert: '||sql_insert;
 					EXECUTE sql_insert;
 				ELSE
-					--Aqu√≠ entra para ACTUALIZAR un registro
+					--AquÌ entra para ACTUALIZAR un registro
 					incrementa := mes_actual + 1;
 					
-					--aqui se crea la cadena para actualizar y repetir los valores del mes actual hasta el mes 12 del a√±o actual
+					--aqui se crea la cadena para actualizar y repetir los valores del mes actual hasta el mes 12 del aÒo actual
 					sql_update := 'UPDATE inv_prod_cost_prom SET costo_ultimo_'||mes_actual||'='||str_filas[3]||'::double precision, tipo_cambio_'||mes_actual||'='||str_filas[5]||'::double precision, gral_mon_id_'||mes_actual||'='||str_filas[4]||'::integer, actualizacion_'||mes_actual||'='''||espacio_tiempo_ejecucion||'''';
 					WHILE incrementa <= 12 LOOP
 						sql_update:=sql_update ||', costo_ultimo_'||incrementa||'='||str_filas[3]||'::double precision, tipo_cambio_'||incrementa||'='||str_filas[5]||'::double precision, gral_mon_id_'||incrementa||'='||str_filas[4]||'::integer, actualizacion_'||incrementa||'='''||espacio_tiempo_ejecucion||'''::timestamp with time zone ';
@@ -42779,7 +43924,7 @@ BEGIN
 				
 				
 				IF com_param.captura_costo_ref THEN 
-					--Aqu√≠ entra cuando tiene que actualizar valores para calculo de Costo de Referencia
+					--AquÌ entra cuando tiene que actualizar valores para calculo de Costo de Referencia
 					
 					--inicializar valor
 					incrementa := 0;
@@ -42793,7 +43938,7 @@ BEGIN
 					INTO exis;
 					
 					IF exis > 0 THEN
-						--Aqu√≠ entra para ACTUALIZAR un registro
+						--AquÌ entra para ACTUALIZAR un registro
 						incrementa := mes_actual + 1;
 						
 						--aqui se crea la cadena para actualizar y repetir los valores del mes actual hasta el mes 12
@@ -42808,7 +43953,7 @@ BEGIN
 						--Aqui ejecutamos la cadena sql
 						EXECUTE sql_update;
 					ELSE
-						--aqu√≠ entra para CREAR un nuevo registro
+						--aquÌ entra para CREAR un nuevo registro
 						incrementa := mes_actual + 1;
 						
 						--Esta cadena almacen los campos a actualizar
@@ -42905,7 +44050,7 @@ BEGIN
 								select * from inv_pre WHERE gral_emp_id=emp_id AND borrado_logico=FALSE AND inv_prod_id=fila.prod_id AND inv_prod_presentacion_id=fila.pres_id 
 								into fila2;
 								
-								--calculo_precio_1(Forma de calculo) 	1=Automatico (En l√≠nea)
+								--calculo_precio_1(Forma de calculo) 	1=Automatico (En lÌnea)
 								--operacion_precio_1(Operacion para el calculo) 	1=Porcentaje (%)
 								if fila2.id is not null then 
 									if fila2.calculo_precio_1=1 then 
@@ -43595,7 +44740,7 @@ BEGIN
 	
 	SELECT EXTRACT(YEAR FROM  fecha_inicial::timestamp with time zone ) INTO ano;
 	SELECT EXTRACT(MONTH FROM fecha_inicial::timestamp with time zone) INTO mes;
-	--RAISE EXCEPTION '%','A√±o:'||ano||'mes:'||mes;
+	--RAISE EXCEPTION '%','AÒo:'||ano||'mes:'||mes;
 	--RAISE EXCEPTION '%','id_almacen: '||id_almacen;
 	
 	--obtener id de almacen de la sucursal
@@ -43694,7 +44839,7 @@ CREATE FUNCTION inv_iniciar_anio(id_empresa integer, nuevo_anio integer) RETURNS
     AS $$
 DECLARE
 	/***
-	Este procedimiento es para inicar el a√±o, debe ejecutarse el 1 de enero de vada a√±o para que los datos esten disponibles para el nuevo a√±o.
+	Este procedimiento es para inicar el aÒo, debe ejecutarse el 1 de enero de vada aÒo para que los datos esten disponibles para el nuevo aÒo.
 	Las tablas que se afectan son:
 	inv_exi(Tabla de existencias)
 	inv_prod_cost_prom(Tabla de costos promedio y costo ultimo de compra por unidad)
@@ -43713,7 +44858,7 @@ BEGIN
 	--Llamada al procedimiento
 	--select * from inv_iniciar_anio(4, 2014);
 	
-	--Cadena sql para tomar los datos del a√±o anterior
+	--Cadena sql para tomar los datos del aÒo anterior
 	cadena_sql:='
 	SELECT 
 		inv_prod_cost_prom.inv_prod_id,
@@ -43732,7 +44877,7 @@ BEGIN
 	--RAISE EXCEPTION '%','cadena_sql: '||cadena_sql;
 	
 	FOR fila IN EXECUTE(cadena_sql) LOOP
-		--Crea los registros en la tabla inv_prod_cost_prom para el nuevo a√±o
+		--Crea los registros en la tabla inv_prod_cost_prom para el nuevo aÒo
 		INSERT INTO inv_prod_cost_prom(inv_prod_id, ano, costo_promedio_1, costo_promedio_2, costo_promedio_3, costo_promedio_4, costo_promedio_5, costo_promedio_6, costo_promedio_7, costo_promedio_8, costo_promedio_9, costo_promedio_10, costo_promedio_11, costo_promedio_12, costo_ultimo_1, costo_ultimo_2, costo_ultimo_3, costo_ultimo_4, costo_ultimo_5, costo_ultimo_6, costo_ultimo_7, costo_ultimo_8, costo_ultimo_9, costo_ultimo_10, costo_ultimo_11, costo_ultimo_12, tipo_cambio_1, tipo_cambio_2, tipo_cambio_3, tipo_cambio_4, tipo_cambio_5, tipo_cambio_6, tipo_cambio_7, tipo_cambio_8, tipo_cambio_9, tipo_cambio_10, tipo_cambio_11, tipo_cambio_12, gral_mon_id_1, gral_mon_id_2, gral_mon_id_3, gral_mon_id_4, gral_mon_id_5, gral_mon_id_6, gral_mon_id_7, gral_mon_id_8, gral_mon_id_9, gral_mon_id_10, gral_mon_id_11, gral_mon_id_12, actualizacion_1, actualizacion_2, actualizacion_3, actualizacion_4, actualizacion_5, actualizacion_6, actualizacion_7, actualizacion_8, actualizacion_9, actualizacion_10, actualizacion_11, actualizacion_12, factura_ultima_1, factura_ultima_2, factura_ultima_3, factura_ultima_4, factura_ultima_5, factura_ultima_6, factura_ultima_7, factura_ultima_8, factura_ultima_9, factura_ultima_10, factura_ultima_11, factura_ultima_12, oc_ultima_1, oc_ultima_2, oc_ultima_3, oc_ultima_4, oc_ultima_5, oc_ultima_6, oc_ultima_7, oc_ultima_8, oc_ultima_9, oc_ultima_10, oc_ultima_11, oc_ultima_12 )
 		VALUES(fila.inv_prod_id, nuevo_anio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_promedio, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.costo_ultimo, fila.tc, fila.tc, fila.tc, fila.tc, fila.tc, fila.tc, fila.tc, fila.tc, fila.tc, fila.tc, fila.tc, fila.tc, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.id_mon, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.actualizacion, fila.factura, fila.factura, fila.factura, fila.factura, fila.factura, fila.factura, fila.factura, fila.factura, fila.factura, fila.factura, fila.factura, fila.factura, fila.oc, fila.oc, fila.oc, fila.oc, fila.oc, fila.oc, fila.oc, fila.oc, fila.oc, fila.oc, fila.oc, fila.oc);
 	END LOOP;
@@ -43763,7 +44908,7 @@ BEGIN
 	--RAISE EXCEPTION '%','cadena_sql2: '||cadena_sql2;
 	
 	FOR fila2 IN EXECUTE(cadena_sql2) LOOP
-		--Crea los registros en la tabla inv_prod_costos para el nuevo a√±o
+		--Crea los registros en la tabla inv_prod_costos para el nuevo aÒo
 		INSERT INTO inv_prod_costos(gral_emp_id, ano, inv_prod_id, inv_prod_presentacion_id, costo_imp_1, costo_imp_2, costo_imp_3, costo_imp_4, costo_imp_5, costo_imp_6, costo_imp_7, costo_imp_8, costo_imp_9, costo_imp_10, costo_imp_11, costo_imp_12, costo_dir_1, costo_dir_2, costo_dir_3, costo_dir_4, costo_dir_5, costo_dir_6, costo_dir_7, costo_dir_8, costo_dir_9, costo_dir_10, costo_dir_11, costo_dir_12, precio_min_1, precio_min_2, precio_min_3, precio_min_4, precio_min_5, precio_min_6, precio_min_7, precio_min_8, precio_min_9, precio_min_10, precio_min_11, precio_min_12, actualizacion_1, actualizacion_2, actualizacion_3, actualizacion_4, actualizacion_5, actualizacion_6, actualizacion_7, actualizacion_8, actualizacion_9, actualizacion_10, actualizacion_11, actualizacion_12, usr_id_actualiza_1, usr_id_actualiza_2, usr_id_actualiza_3, usr_id_actualiza_4, usr_id_actualiza_5, usr_id_actualiza_6, usr_id_actualiza_7, usr_id_actualiza_8, usr_id_actualiza_9, usr_id_actualiza_10, usr_id_actualiza_11, usr_id_actualiza_12, costo_adic_1, costo_adic_2, costo_adic_3, costo_adic_4, costo_adic_5, costo_adic_6, costo_adic_7, costo_adic_8, costo_adic_9, costo_adic_10, costo_adic_11, costo_adic_12)
 		VALUES(fila2.gral_emp_id, nuevo_anio, fila2.inv_prod_id, fila2.inv_prod_presentacion_id, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.igi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.gi, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.pmin, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.actualizacion, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.id_user, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic, fila2.costo_adic);
 	END LOOP;
@@ -43790,8 +44935,8 @@ BEGIN
 	--RAISE EXCEPTION '%','cadena_sql3: '||cadena_sql3;
 	
 	FOR fila3 IN EXECUTE(cadena_sql3) LOOP
-		--Crea los registros en la tabla inv_exi para el nuevo a√±o.
-		--La existencia del a√±o anterior se carga en el campo exi_inicial
+		--Crea los registros en la tabla inv_exi para el nuevo aÒo.
+		--La existencia del aÒo anterior se carga en el campo exi_inicial
 		INSERT INTO inv_exi(ano,inv_prod_id, inv_alm_id, exi_inicial, transito, reservado, entradas_1, entradas_2, entradas_3, entradas_4, entradas_5, entradas_6, entradas_7, entradas_8, entradas_9, entradas_10, entradas_11, entradas_12, salidas_1, salidas_2, salidas_3, salidas_4, salidas_5, salidas_6, salidas_7, salidas_8, salidas_9, salidas_10, salidas_11, salidas_12,costo_ultimo_1, costo_ultimo_2, costo_ultimo_3, costo_ultimo_4, costo_ultimo_5, costo_ultimo_6, costo_ultimo_7, costo_ultimo_8, costo_ultimo_9, costo_ultimo_10, costo_ultimo_11, costo_ultimo_12 )
 		VALUES(nuevo_anio,fila3.inv_prod_id, fila3.inv_alm_id, fila3.exi, fila3.transito, fila3.reservado, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo, fila3.costo_ultimo);
 	END LOOP;
@@ -43908,7 +45053,7 @@ BEGIN
 		--str_data[13]	pminimo
 		--str_data[14]	tipo_cambio
 		--str_data[15]	codigo
-		--str_data[16]	a√±o
+		--str_data[16]	aÒo
 		--str_data[17]	mes
 		--str_data[18]	costo_adic
 		
@@ -43969,7 +45114,7 @@ BEGIN
 				--si no es simulacion, el calculo se hace con la moneda de la factura
 				cadena_campos:=cadena_campos||'inv_prod_cost_prom.gral_mon_id_'||mes_actual||'::integer AS moneda_pm_id, ';
 			ELSE
-				--si √©s simulacion, el calculo se hace en M.N.
+				--si Ès simulacion, el calculo se hace en M.N.
 				cadena_campos:=cadena_campos||'1::integer AS moneda_pm_id, ';
 			END IF;	
 			
@@ -44365,12 +45510,12 @@ BEGIN
 				cadena_where:=' WHERE existencia <=0';
 			END IF;
 			
-			--tipo solo valor m√≠nimo
+			--tipo solo valor mÌnimo
 			IF str_data[7]::integer=4 THEN
 				cadena_where:=' WHERE existencia <= valor_minimo';
 			END IF;
 			
-			--tipo solo valor m√°ximo
+			--tipo solo valor m·ximo
 			IF str_data[7]::integer=5 THEN
 				cadena_where:=' WHERE existencia >= valor_maximo';
 			END IF;
@@ -44810,12 +45955,12 @@ BEGIN
 		cadena_where:=' WHERE existencia <=0';
 	END IF;
 
-	--tipo solo valor m√≠nimo
+	--tipo solo valor mÌnimo
 	IF tipo_reporte=4 THEN
 		cadena_where:=' WHERE existencia <= valor_minimo';
 	END IF;
 
-	--tipo solo valor m√°ximo
+	--tipo solo valor m·ximo
 	IF tipo_reporte=5 THEN
 		cadena_where:=' WHERE existencia >= valor_maximo';
 	END IF;
@@ -45214,7 +46359,7 @@ BEGIN
 		incrementa := 0;--inicializar valor
 		
 		IF exis > 0 THEN
-			--Aqu√≠ entra para ACTUALIZAR un registro
+			--AquÌ entra para ACTUALIZAR un registro
 			incrementa := mes_actual + 1;
 			
 			--aqui se crea la cadena para actualizar y repetir los valores del mes actual hasta el mes 12
@@ -45231,7 +46376,7 @@ BEGIN
 			EXECUTE sql_update;
 			
 		ELSE
-			--aqu√≠ entra para CREAR un nuevo registro
+			--aquÌ entra para CREAR un nuevo registro
 			incrementa := mes_actual + 1;
 
 			--esta cadena almacen los campos a actualizar
@@ -46151,7 +47296,7 @@ BEGIN
 					exis:=0;
 					cadena_sql:='';
 					
-					--Buscar registro del producto en el almacen y en el a√±o actual
+					--Buscar registro del producto en el almacen y en el aÒo actual
 					SELECT count(id) FROM inv_exi WHERE inv_prod_id=fila2.id_prod AND inv_alm_id=str_data[5]::integer AND ano=ano_actual INTO exis;
 					
 					IF exis > 0 THEN 
@@ -46707,7 +47852,7 @@ BEGIN
 				exis:=0;
 				cadena_sql:='';
 				
-				--Buscar registro del producto en el almacen y en el a√±o actual
+				--Buscar registro del producto en el almacen y en el aÒo actual
 				select count(id) from inv_mov where referencia=fila.folio_carga and inv_mov_tipo_id=tipo_movimiento_id and gral_app_id=app_selected into exis;
 				
 				if exis > 0 then 
@@ -46782,7 +47927,7 @@ BEGIN
 								exis:=0;
 								cadena_sql:='';
 								
-								--Buscar registro del producto en el almacen y en el a√±o actual
+								--Buscar registro del producto en el almacen y en el aÒo actual
 								SELECT count(id) FROM inv_exi WHERE inv_prod_id=str_filas[4]::integer AND inv_alm_id=str_filas[10]::integer AND ano=ano_actual INTO exis;
 								
 								IF exis > 0 THEN 
@@ -47401,7 +48546,7 @@ BEGIN
 					--str_filas[5]	tipo_unidad_id
 					
 					if str_filas[2]::integer > 0 then 
-						--Aqu√≠ entra cuando es editar un registro existente
+						--AquÌ entra cuando es editar un registro existente
 						update log_tarifario_venta_det set log_tarifa_tipo_id=str_filas[3]::integer, valor=str_filas[4]::double precision, log_vehiculo_tipo_id=str_filas[5]::integer where id=str_filas[2]::integer and log_tarifario_venta_id=str_data[4]::integer;
 					else 
 						--Crea registro en log_tarifario_venta_det
@@ -47831,7 +48976,7 @@ DECLARE
 
 	--Variable para controlar la creacion de un registro en la tabla header de requisiciones cuando la configuracion lo permita
 	header_requisicion_generada boolean:=false;
-	--Variable que indica si una partida gener√≥ requisicion
+	--Variable que indica si una partida generÛ requisicion
 	generar_requisicion  boolean:=false;
 BEGIN
 	controlExisPres:=false;
@@ -47884,7 +49029,7 @@ BEGIN
 	--tomar el id del almacen para ventas
 	--id_almacen := facpar.inv_alm_id;
 
-	--√©ste consecutivo es para el folio del Pedido y folio para BackOrder(poc_ped_bo)
+	--Èste consecutivo es para el folio del Pedido y folio para BackOrder(poc_ped_bo)
 	suc_id_consecutivo := facpar.gral_suc_id_consecutivo;
 	
 	
@@ -47896,7 +49041,7 @@ BEGIN
 			--str_data[3]	id_usuario
 			--str_data[4]	identificador
 			--str_data[5] 	select_tipo_cotizacion
-			--str_data[6]	id_cliente √≥ id_prospecto
+			--str_data[6]	id_cliente Û id_prospecto
 			--str_data[7]	check_descripcion_larga
 			--str_data[8]	observaciones
 			--str_data[9]	tipo_cambio
@@ -49268,7 +50413,7 @@ BEGIN
 							VALUES(nuevo_folio,pedido.fecha_compromiso, pedido.observaciones, false, false, emp_id, suc_id, espacio_tiempo_ejecucion, usuario_id, fila.empleado_id, fila.depto_id, pedido.folio, 2) 
 							RETURNING id INTO ultimo_id2;
 							
-							--Cambiar bandera para indicar que ya se gener√≥ el header de la tabla de requisiciones
+							--Cambiar bandera para indicar que ya se generÛ el header de la tabla de requisiciones
 							header_requisicion_generada:=true;
 						END IF;
 						
@@ -49342,7 +50487,7 @@ BEGIN
 				into exis;
 				
 				if exis<=0 then 
-					--Cancelar Requisici√≥n si es que existe.
+					--Cancelar RequisiciÛn si es que existe.
 					update com_oc_req set cancelado=true, momento_cancelacion=espacio_tiempo_ejecucion, gral_usr_id_cancelacion=usuario_id 
 					where trim(com_oc_req.folio_pedido)=trim(pedido.folio) and com_oc_req.gral_suc_id=fila2.sucursal_id;
 					
@@ -49589,7 +50734,7 @@ BEGIN
 						exis:=0;
 						sql_select:='';
 						
-						--query para verificar existencia del producto en el almacen y en el a√±o actual
+						--query para verificar existencia del producto en el almacen y en el aÒo actual
 						sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||remision_detalle.inv_prod_id||' AND inv_alm_id='||id_almacen||' AND ano = '||ano_actual;
 						--RAISE EXCEPTION '%' ,'sql_select: '||sql_select;
 						EXECUTE sql_select INTO exis;
@@ -49608,7 +50753,7 @@ BEGIN
 						
 						
 						------Inicia regresar existencias a la tabla inv_exi_pres---------------------------------
-						--Verificar si la configuraci√≥n indica que se esta controlando existencias por presentaciones
+						--Verificar si la configuraciÛn indica que se esta controlando existencias por presentaciones
 						IF controlExisPres=true THEN 
 							--buscar la equivalencia de la Presentacion
 							SELECT cantidad  FROM inv_prod_presentaciones WHERE id=remision_detalle.presentacion_id::integer 
@@ -49638,7 +50783,7 @@ BEGIN
 								WHERE inv_alm_id=id_almacen::integer AND inv_prod_id=remision_detalle.inv_prod_id::integer AND inv_prod_presentacion_id=remision_detalle.presentacion_id::integer;
 								
 							ELSE
-								--Aqu√≠ entra para crear registro en inv_exi_pres
+								--AquÌ entra para crear registro en inv_exi_pres
 								INSERT INTO inv_exi_pres (inv_alm_id, inv_prod_id, inv_prod_presentacion_id, entradas, momento_creacion, gral_usr_id_creacion) 
 								VALUES(id_almacen, remision_detalle.inv_prod_id, remision_detalle.presentacion_id, cantPres, espacio_tiempo_ejecucion, usuario_id);
 							END IF;
@@ -49755,7 +50900,7 @@ BEGIN
 			END IF;
 		END IF;
 		
-		--Aqu√≠ entra cuando se paga la remision
+		--AquÌ entra cuando se paga la remision
 		IF command_selected = 'pagar' THEN
 			UPDATE fac_rems SET estatus=1 WHERE id=str_data[4]::integer;
 			valor_retorno := 'true';
@@ -49862,6 +51007,1566 @@ END;$_$;
 
 
 ALTER FUNCTION public.poc_adm_procesos(campos_data text, extra_data text[]) OWNER TO instance01;
+
+--
+-- Name: poc_cat_cusorder(character varying, integer, integer, integer, integer, integer, integer, integer, integer, integer, double precision, double precision, double precision, boolean, boolean, boolean, boolean, text, text, text, character varying, character varying, character varying, character varying, character varying, text[]); Type: FUNCTION; Schema: public; Owner: instance01
+--
+
+CREATE FUNCTION poc_cat_cusorder(cmd character varying, usuario_id integer, salesman_id integer, customer_id integer, cust_df_id integer, warehouse_id integer, currency_id integer, sup_credays_id integer, met_pago_id integer, pedido_id integer, tasaretimmex double precision, currency_val double precision, perc_desc double precision, allow_desc boolean, send_comments boolean, flete_enable boolean, send_route boolean, comments text, razon_desc text, trans text, date_limit character varying, delivery_place character varying, purch_order character varying, account character varying, no_cot character varying, matrix text[]) RETURNS character varying
+    LANGUAGE plpgsql
+    AS $_$
+DECLARE
+
+    -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    -- >> Catalog of customer order    >>
+    -- >> Version: CDGB                >>
+    -- >> Date: 20/Jul/2017            >>
+    -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    C_DELFLAG  integer := 1;
+    C_DETID integer := 2;
+    C_PRODID integer := 3;
+    C_PRESENID integer := 4;
+    C_TAXID integer := 5;
+    C_QUANTITY integer := 6;
+    C_COSTO integer := 7;
+    C_TAXVALUE integer := 8;
+    C_PROUNIID integer := 11;
+    C_IEPSID integer := 12;
+    C_IEPSTASA integer := 13;
+    C_VDESCTO integer := 14;
+    C_COTID integer := 15;
+    C_COTDETID integer := 16;    
+    C_STATUS_AUTH integer := 17;
+    C_PRICE_AUTH integer := 18;
+    C_USER_AUTH integer := 19;
+    C_REQ_AUTH integer := 20;
+    C_SAVE_REG integer := 21;
+    C_RETEID integer := 22;
+    C_RETETASA integer := 23;
+
+
+    --estas  variables se utilizan en la mayoria de los catalogos
+    valor_retorno character varying;
+    emp_id integer:=0;
+    suc_id integer:=0;
+    suc_id_consecutivo integer=0; --sucursal de donde se tomara el consecutivo
+    id_tipo_consecutivo integer=0;
+    ultimo_id integer:=0;
+    ultimo_id2 integer:=0;
+    ultimo_id_det integer:=0;
+    espacio_tiempo_ejecucion timestamp with time zone = now();
+    ano_actual integer:=0;
+    mes_actual integer:=0;
+    sql_select character varying = '';
+    sql_update character varying = '';
+    sql_insert character varying = '';
+
+    row_cells text[];
+    no_rows integer;--total de elementos de arreglo
+    counter integer;--contador de filas o posiciones del arreglo
+    str_incoterms char[];
+    iter_y integer;
+
+    --variable para pedidos
+    facpar record;--parametros de Facturacion
+    ultimo_id_proceso integer = 0;
+    id_proceso integer = 0;
+    id_proceso_flujo integer =0;
+    prefijo_consecutivo character varying = '';
+    nuevo_consecutivo bigint=0;
+    nuevo_folio character varying = '';
+    incluye_modulo_produccion boolean;
+    empresa_transportista boolean;
+    tipo_prod integer=0;
+    id_producto integer = 0;
+    total_existencia double precision = 0;
+    cantidad_produccion double precision = 0;
+    cant_reservada_anterior double precision = 0;
+    cant_reservar_nuevo double precision = 0;
+    generar_backorder boolean = false;
+    en_proceso_produccion boolean = false;
+
+    importe_del_descto_partida double precision = 0;
+    importe_partida_con_descto double precision = 0;
+    suma_descuento double precision = 0;
+    suma_subtotal_con_descuento double precision = 0;
+
+    importe_partida double precision = 0;
+    impuesto_partida double precision = 0;
+    monto_subtotal double precision = 0;
+    monto_total double precision = 0;
+    monto_impuesto double precision = 0;
+    total_retencion double precision = 0;
+    importe_ieps_partida double precision = 0;
+    suma_ieps double precision = 0;
+    retener_iva boolean = false;
+    tasa_retencion double precision = 0;
+    retencion_partida double precision = 0;
+    suma_retencion_de_partidas double precision = 0;
+
+    --variables autorizacion de pedidos
+    pedido record;
+    fila record;
+    fila2 record;
+    fila_detalle record;
+
+    exis integer = 0;
+    exis_rem_doc integer = 0;
+    tipo_movimiento_id integer =0;
+    identificador_nuevo_movimiento integer =0;
+    remision_detalle record;
+    bandera_tipo_4 boolean;
+    folio_remision character varying='';
+    obser_prefactura text='';
+
+    result character varying='';
+
+    noDecUnidad integer=0;--numero de decimales permitidos para la unidad
+    exisActualPres double precision=0;--existencia actual de la presentacion
+    equivalenciaPres double precision=0; --equivalencia de la presentacion en la unidad del producto
+    cantPres double precision=0; --Cantidad que se esta Intentando traspasar
+    cantPresAsignado double precision=0;
+    cantPresReservAnterior double precision=0;
+    controlExisPres boolean; --Variable que indica  si se debe controlar Existencias por Presentacion
+    cambiaUnidadMedida boolean:=false;
+
+    --Id de la unidad de medida del producto
+    idUnidadMedida integer:=0;
+    --Nombre de la unidad de medida del producto
+    nombreUnidadMedida character varying:=0;
+    --Densidad del producto
+    densidadProd double precision:=0;
+    --Cantidad en la unidad de Venta, esto se utiliza cuando la unidad del producto es diferente a la de venta
+    cantUnidadVenta double precision:=0;
+    --Cantidad de la existencia convertida a la unidad de venta, esto se utiliza cuando la unidad del producto es diferente a la de venta
+    cantExisUnidadVenta double precision:=0;
+    match_cadena boolean:=false;
+
+    --Variable para controlar la creacion de un registro en la tabla header de requisiciones cuando la configuracion lo permita
+    header_requisicion_generada boolean:=false;
+    --Variable que indica si una partida generÛ requisicion
+    generar_requisicion  boolean:=false;
+
+BEGIN
+    controlExisPres:=false;
+	
+    SELECT EXTRACT(YEAR FROM espacio_tiempo_ejecucion) INTO ano_actual;
+    SELECT EXTRACT(MONTH FROM espacio_tiempo_ejecucion) INTO mes_actual;
+
+    SELECT gral_suc.empresa_id, gral_usr_suc.gral_suc_id
+    FROM gral_usr_suc 
+    JOIN gral_suc ON gral_suc.id = gral_usr_suc.gral_suc_id
+    WHERE gral_usr_suc.gral_usr_id = usuario_id
+    INTO emp_id, suc_id;
+
+    valor_retorno:='0';
+
+    --Obtener parametros para la facturacion
+    SELECT * FROM fac_par WHERE gral_suc_id=suc_id INTO facpar;
+
+    --query para verificar si la Empresa actual incluye Modulo de Produccion y control de Existencias por Presentacion
+    SELECT incluye_produccion, control_exis_pres, transportista  FROM gral_emp WHERE id=emp_id INTO incluye_modulo_produccion, controlExisPres, empresa_transportista;
+
+    --Èste consecutivo es para el folio del Pedido y folio para BackOrder(poc_ped_bo)
+    suc_id_consecutivo := facpar.gral_suc_id_consecutivo;
+
+    IF cmd = 'new' THEN
+
+        --crea registro en tabla erp_proceso y retorna el id del registro creado. El flujo del proceso es 4=Pedido
+        INSERT INTO erp_proceso(proceso_flujo_id, empresa_id, sucursal_id)
+        VALUES(4, emp_id, suc_id) RETURNING id into ultimo_id_proceso;
+
+        id_tipo_consecutivo := 7; --consecutivo de pedidos
+			
+        -- aqui entra para tomar el consecutivo del pedido de la sucursal actual
+        UPDATE gral_cons SET consecutivo=( SELECT sbt.consecutivo + 1  FROM gral_cons AS sbt WHERE sbt.id=gral_cons.id )
+        WHERE gral_emp_id=emp_id AND gral_suc_id=suc_id AND gral_cons_tipo_id=id_tipo_consecutivo  RETURNING prefijo,consecutivo INTO prefijo_consecutivo,nuevo_consecutivo;
+
+        -- concatenamos el prefijo y el nuevo consecutivo para obtener el nuevo folio del pedido
+        nuevo_folio := prefijo_consecutivo || nuevo_consecutivo::character varying;
+
+        -- crear registro en la tabla poc_pedidos y retorna el id del registro creado
+        INSERT INTO  poc_pedidos(
+            folio, --nuevo_folio,
+            cxc_clie_id, --customer_id,
+            moneda_id,--currency_id,
+            observaciones, --comments,
+            tipo_cambio,--currency_val,
+            cxc_agen_id,--salesman_id,
+            cxp_prov_credias_id,--sup_credays_id,
+            orden_compra,--purch_order,
+            proceso_id,--ultimo_id_proceso,
+            fecha_compromiso,--date_limit::date,
+            lugar_entrega,--delivery_place,
+            transporte,--trans,
+            tasa_retencion_immex,--tasaretimmex,
+            fac_metodos_pago_id,--met_pago_id,
+            no_cuenta,--account,
+            enviar_ruta,--send_route,
+            inv_alm_id,--warehouse_id::smallint
+            cxc_clie_df_id,--cust_df_id,
+            enviar_obser_fac,--send_comments,
+            flete,--flete_enable,
+            subtotal,--0,
+            impuesto,--0,
+            monto_retencion,--0,
+            total,--0,
+            borrado_logico,--false,
+            cancelado,--false,
+            momento_creacion,--espacio_tiempo_ejecucion,
+            gral_usr_id_creacion,--usuario_id
+            motivo_descto, --razon_desc
+            porcentaje_descto, --perc_desc
+            folio_cot--no_cot 
+			)VALUES(nuevo_folio, customer_id, currency_id, comments, currency_val, salesman_id, sup_credays_id, purch_order, ultimo_id_proceso, date_limit::date, delivery_place, trans, tasaretimmex, met_pago_id, account, send_route, warehouse_id::smallint, cust_df_id, send_comments, flete_enable, 0, 0, 0, 0, false, false, espacio_tiempo_ejecucion, usuario_id, razon_desc, perc_desc, no_cot) 
+			RETURNING id INTO ultimo_id;
+			
+			
+			no_rows:= array_length(matrix,1);--obtiene total de elementos del arreglo
+			counter:=1;
+			FOR counter IN 1 .. no_rows LOOP
+				generar_requisicion:=false;
+				retencion_partida:=0;
+				
+				SELECT INTO row_cells string_to_array(matrix[counter],'___');
+				
+
+				--1: no esta eliminado, 0:eliminado
+                                IF row_cells[ C_DELFLAG ]::integer <> 0 THEN
+					
+					cantPresAsignado:=0;
+					equivalenciaPres:=0;
+					noDecUnidad:=0;
+					--Id de la unidad de medida del producto
+					idUnidadMedida:=0;
+					--Nombre de la unidad de medida del producto
+					nombreUnidadMedida:='';
+					--Cantidad en la unidad de Venta, esto se utiliza cuando la unidad del producto es diferente a la de venta
+					cantUnidadVenta:=0;
+					
+					--Obtener datos del Producto
+					SELECT inv_prod.tipo_de_producto_id AS tipo_producto, inv_prod.unidad_id, inv_prod_unidades.titulo, inv_prod.densidad, (CASE WHEN inv_prod_unidades.id IS NULL THEN 0 ELSE inv_prod_unidades.decimales END) AS no_dec
+					FROM inv_prod LEFT JOIN inv_prod_unidades ON inv_prod_unidades.id=inv_prod.unidad_id
+					WHERE inv_prod.id=row_cells[ C_PRODID ]::integer 
+					INTO tipo_prod, idUnidadMedida, nombreUnidadMedida, densidadProd, noDecUnidad;
+					
+					IF noDecUnidad IS NULL THEN noDecUnidad:=0; END IF;
+					
+					--Tomamos la cantidad en la unidad de Venta seleccionada por el usuario
+					cantUnidadVenta:=row_cells[ C_QUANTITY ]::double precision;
+					
+					IF facpar.cambiar_unidad_medida THEN
+						IF idUnidadMedida::integer<>row_cells[ C_PROUNIID ]::integer THEN
+							IF densidadProd IS NULL OR densidadProd=0 THEN
+								densidadProd:=1;
+							END IF;
+							
+							EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''KILO*'';' INTO match_cadena;
+							IF match_cadena=true THEN
+								--Convertir a kilos
+								row_cells[ C_QUANTITY ] := row_cells[ C_QUANTITY ]::double precision * densidadProd;
+							ELSE
+								EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''LITRO*'';' INTO match_cadena;
+								IF match_cadena=true THEN 
+									--Convertir a Litros
+									row_cells[ C_QUANTITY ] := row_cells[ C_QUANTITY ]::double precision / densidadProd;
+								END IF;
+							END IF;
+							--RAISE EXCEPTION '%',match_cadena;
+						END IF;
+					END IF;
+					
+					--Redondear la cantidad de la Partida
+					row_cells[ C_QUANTITY ] := round(row_cells[ C_QUANTITY ]::numeric,noDecUnidad)::double precision;
+					cantUnidadVenta := round(cantUnidadVenta::numeric,noDecUnidad)::double precision; 
+					
+					--Si el tipo de producto es diferente de 4, hay que RESERVAR existencias
+					--tipo=4 Servicios
+					--para el tipo servicios no se debe reservar existencias
+					IF tipo_prod<>4 THEN 
+					
+						IF incluye_modulo_produccion=FALSE THEN 
+							--Aqui entra si la Empresa NO INCLUYE Modulo de Produccion
+							
+							--reservar toda cantidad la cantidad del pedido
+							cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;
+							generar_backorder:=false;
+						ELSE
+							--RAISE EXCEPTION '%','tipo_prod='||tipo_prod;
+							
+							--Solo para productos formulados
+							IF tipo_prod=1 OR tipo_prod=2 OR tipo_prod=8 THEN
+								--llamada a proc que devuelve la existencia del producto. 
+								--El tipo de busqueda de existencia es 1=Busqueda en el almacen de la Sucursal
+								--el valor false que se le esta pasando es para indicarle que en las existencias no incluya reservados, y que solo me devualva existencias disponibles
+								SELECT inv_calculo_existencia_producto AS existencia FROM inv_calculo_existencia_producto(1,false, row_cells[ C_PRODID ]::integer, usuario_id, warehouse_id) INTO total_existencia; 
+								
+								--Redondear la existencia del producto
+								total_existencia := round(total_existencia::numeric,noDecUnidad)::double precision;
+								
+								IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+									IF total_existencia <=0 THEN 
+										--reservar cero
+										cant_reservar_nuevo=0;
+									ELSE
+										--tomar la existencia para reservar
+										cant_reservar_nuevo:=total_existencia;
+									END IF;
+									
+									generar_backorder:=true;
+								ELSE
+									--Reservar toda la cantidad del  pedido
+									cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;
+									
+									generar_backorder:=false;
+								END IF;
+							END IF;
+						END IF;
+						
+						
+						/*
+						"1";"Prod. Terminado";FALSE
+						"2";"Prod. Intermedio";FALSE
+						"3";"Kit";FALSE
+						"4";"Servicios";FALSE
+						"5";"Refacciones";FALSE
+						"6";"Accesorios";FALSE
+						"7";"Materia Prima";FALSE
+						"8";"Prod. en Desarrollo";FALSE
+						*/
+						IF facpar.permitir_req_com THEN 
+							--7=Materia Prima - Hay que generar una requisicion de compra.
+							IF tipo_prod=7 THEN 
+								--llamada a proc que devuelve la existencia del producto. 
+								--El tipo de busqueda de existencia es 1=Busqueda en el almacen de la Sucursal
+								--el valor false que se le esta pasando es para indicarle que en las existencias no incluya reservados, y que solo me devualva existencias disponibles
+								SELECT inv_calculo_existencia_producto AS existencia FROM inv_calculo_existencia_producto(1,false, row_cells[ C_PRODID ]::integer, usuario_id, warehouse_id) INTO total_existencia; 
+								
+								--Redondear la existencia del producto
+								total_existencia := round(total_existencia::numeric,noDecUnidad)::double precision;
+								
+								IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+									IF total_existencia <=0 THEN 
+										--reservar cero
+										cant_reservar_nuevo=0;
+									ELSE
+										--tomar la existencia para reservar
+										cant_reservar_nuevo:=total_existencia;
+									END IF;
+									
+									generar_requisicion:=true;
+								ELSE
+									--Reservar toda la cantidad del  pedido
+									cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;
+									
+									generar_requisicion:=false;
+								END IF;
+							END IF;
+						ELSE
+							if tipo_prod=7 then  
+								--Reservar toda cantidad la cantidad del pedido ya que no incluye
+								cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;
+								generar_backorder:=false;
+								generar_requisicion:=false;
+							end if;
+						END IF;
+						
+						--RAISE EXCEPTION '%','permitir_req_com='|| facpar.permitir_req_com ||'    tipo_prod='||tipo_prod ||'    cant_reservar_nuevo='||cant_reservar_nuevo;
+						
+						--Redondear la cantidad de a Reservar
+						cant_reservar_nuevo := round(cant_reservar_nuevo::numeric,noDecUnidad)::double precision;
+						
+						--Reservar cantidad para el  pedido
+						UPDATE inv_exi SET reservado=(reservado::double precision + cant_reservar_nuevo::double precision) WHERE inv_prod_id=row_cells[ C_PRODID ]::integer AND inv_alm_id=warehouse_id AND ano=ano_actual;
+						
+						------inicia reservar existencias en presentaciones--------------------------
+						--Verificar si hay que validar existencias de Presentaciones
+						IF controlExisPres=true THEN 
+							--Verificar si hay que validar las existencias de presentaciones desde el Pedido.
+							--TRUE = Validar presentaciones desde el Pedido
+							--FALSE = No validar presentaciones desde el Pedido
+							IF facpar.validar_pres_pedido=true THEN 
+								--buscar la equivalencia de la Presentacion
+								SELECT cantidad  FROM inv_prod_presentaciones WHERE id=row_cells[ C_PRESENID ]::integer 
+								INTO equivalenciaPres;
+								
+								IF equivalenciaPres IS NULL THEN equivalenciaPres:=0; END IF;
+								
+								--Convertir a su equivalencia en Presentacion, la cantidad de la partida actual del pedido
+								cantPresAsignado := cant_reservar_nuevo::double precision / equivalenciaPres::double precision;
+								
+								--Redondear la cantidad de Presentaciones Asignado en la partida
+								cantPresAsignado := round(cantPresAsignado::numeric,noDecUnidad)::double precision; 
+								
+								--Reservar existencia en inv_exi_pres
+								UPDATE inv_exi_pres SET reservado=(reservado::double precision + cantPresAsignado::double precision)
+								WHERE inv_alm_id=warehouse_id
+								AND inv_prod_id=row_cells[ C_PRODID ]::integer
+								AND inv_prod_presentacion_id=row_cells[ C_PRESENID ]::integer;
+								
+							END IF;
+						END IF;
+						------termina reservar existencias de Presentaciones------------------------------------
+						
+					ELSE
+						generar_backorder:=false;
+						generar_requisicion:=false;
+						cant_reservar_nuevo=0;
+					END IF;--termina IF tipo 4
+
+					--Tasa ieps
+					IF row_cells[ C_IEPSTASA ]::double precision>0 THEN 
+						row_cells[ C_IEPSTASA ]:=row_cells[ C_IEPSTASA ]::double precision/100;
+					END IF;
+
+					--Tasa retencion
+					IF row_cells[ C_RETETASA ]::double precision>0 THEN 
+						row_cells[ C_RETETASA ]:=row_cells[ C_RETETASA ]::double precision/100;
+					END IF;
+					
+					--Crea registros para tabla poc_pedidos_detalle
+					INSERT INTO poc_pedidos_detalle(poc_pedido_id, inv_prod_id, presentacion_id, gral_imp_id, cantidad, precio_unitario, valor_imp, reservado, backorder, inv_prod_unidad_id, gral_ieps_id, valor_ieps, descto, requisicion, requiere_aut, autorizado, precio_aut, gral_usr_id_aut, gral_imptos_ret_id, tasa_ret)
+					VALUES(ultimo_id,row_cells[ C_PRODID ]::integer,row_cells[ C_PRESENID ]::integer,row_cells[ C_TAXID ]::integer,cantUnidadVenta::double precision,row_cells[ C_COSTO ]::double precision,row_cells[ C_TAXVALUE ]::double precision, cant_reservar_nuevo, generar_backorder, row_cells[ C_PROUNIID ]::integer, row_cells[ C_IEPSID ]::integer, row_cells[ C_IEPSTASA ]::double precision, row_cells[ C_VDESCTO ]::double precision, generar_requisicion, row_cells[ C_REQ_AUTH ]::boolean, row_cells[ C_STATUS_AUTH ]::boolean, row_cells[ C_PRICE_AUTH]::double precision, row_cells[ C_USER_AUTH ]::integer, row_cells[ C_RETEID ]::integer, row_cells[ C_RETETASA ]::double precision) 
+					RETURNING id INTO ultimo_id_det;
+					
+					--Calcula el Importe de la Partida
+					importe_partida := round((cantUnidadVenta::double precision * row_cells[ C_COSTO ]::double precision)::numeric,4)::double precision;
+					
+					--Calcula el IEPS de la partida
+					importe_ieps_partida := round((importe_partida::double precision * row_cells[ C_IEPSTASA ]::double precision)::numeric,4)::double precision;
+					
+					--Calcula el IVA de la Partida
+					impuesto_partida := (importe_partida::double precision + importe_ieps_partida::double precision) * row_cells[ C_TAXVALUE ]::double precision;
+					
+					--row_cells[ C_RETEID ]::integer		retencion_id
+					--row_cells[ C_RETETASA ]::double precision	retencion_tasa
+					
+					--Calcular el importe de la retencion de la partida si existe la tasa de retencion
+					if row_cells[ C_RETETASA ]::double precision>0 then 
+						retencion_partida := round((importe_partida::double precision * row_cells[ C_RETETASA ]::double precision)::numeric,4)::double precision;
+					end if;
+					
+					
+					--Cargar tabla que relaciona el pedido con la cotizacion
+					IF row_cells[ C_COTDETID ]::integer>0 THEN 
+						INSERT INTO poc_ped_cot(poc_ped_id, poc_cot_id, poc_ped_det_id, poc_cot_det_id)VALUES(ultimo_id, row_cells[ C_COTID ]::integer, ultimo_id_det, row_cells[ C_COTDETID ]::integer);
+					END IF;
+					
+					IF allow_desc THEN
+						IF row_cells[ C_VDESCTO ]::double precision>0 THEN
+							--$pu_con_descto.val(parseFloat(parseFloat($campoPrecioU.val()) - (parseFloat($campoPrecioU.val()) * (parseFloat($vdescto.val())/100))).toFixed(4));
+							importe_del_descto_partida = round((importe_partida * (row_cells[ C_VDESCTO ]::double precision/100))::numeric,4)::double precision;
+
+							importe_partida_con_descto = round((importe_partida - importe_del_descto_partida)::numeric,4)::double precision;
+							
+							--Recalcular el IEPS de la partida tomando el importe_partida_con_descto
+							importe_ieps_partida := round((importe_partida_con_descto::double precision * row_cells[ C_IEPSTASA ]::double precision)::numeric,4)::double precision;
+							
+							--Recalcular el IVA de la Partida tomando el importe_partida_con_descto
+							impuesto_partida := (importe_partida_con_descto::double precision + importe_ieps_partida::double precision) * row_cells[ C_TAXVALUE ]::double precision;
+							
+							--Reclacular el nuevo el importe de la retencion de la partida si existe la tasa de retencion
+							if row_cells[ C_RETETASA ]::double precision>0 then 
+								retencion_partida := round((importe_partida::double precision * row_cells[ C_RETETASA ]::double precision)::numeric,4)::double precision;
+							end if;
+						END IF;
+					END IF;
+					
+					suma_descuento = suma_descuento + importe_del_descto_partida::double precision;
+					suma_subtotal_con_descuento = suma_subtotal_con_descuento + importe_partida_con_descto::double precision;
+					
+					monto_subtotal := monto_subtotal + importe_partida::double precision;
+					suma_ieps := suma_ieps + importe_ieps_partida::double precision; 
+					monto_impuesto := monto_impuesto + impuesto_partida::double precision;
+					suma_retencion_de_partidas := suma_retencion_de_partidas + retencion_partida::double precision;
+				END IF;
+			END LOOP;
+			
+			--Verificar si hay que retener iva para este cliente
+			SELECT empresa_immex, case when tasa_ret_immex is null then 0 else tasa_ret_immex::double precision/100 end FROM cxc_clie WHERE id=customer_id INTO retener_iva, tasa_retencion;
+			
+			IF allow_desc AND suma_descuento>0 THEN
+				IF retener_iva=true THEN 
+					total_retencion := suma_subtotal_con_descuento::double precision * tasa_retencion;
+				ELSE
+					total_retencion :=0;
+				END IF;
+				
+				if suma_retencion_de_partidas > 0 then 
+					total_retencion := round((total_retencion + suma_retencion_de_partidas)::numeric,4)::double precision;
+				end if;
+				
+				--Calcula el monto del pedido
+				monto_total:= suma_subtotal_con_descuento::double precision + suma_ieps::double precision + monto_impuesto::double precision - total_retencion::double precision;
+				
+				--Actualiza campos subtotal, impuesto, retencion, total de tabla poc_pedidos
+				UPDATE poc_pedidos SET subtotal=suma_subtotal_con_descuento, monto_descto=suma_descuento, monto_ieps=suma_ieps, impuesto=monto_impuesto, monto_retencion=total_retencion, total=monto_total
+				WHERE id=ultimo_id;
+			ELSE
+				IF retener_iva=true THEN
+					total_retencion := monto_subtotal::double precision * tasa_retencion;
+				ELSE
+					total_retencion :=0;
+				END IF;
+
+				if suma_retencion_de_partidas > 0 then 
+					total_retencion := round((total_retencion + suma_retencion_de_partidas)::numeric,4)::double precision;
+				end if;
+				
+				--Calcula el monto del pedido
+				monto_total:= monto_subtotal::double precision + suma_ieps::double precision + monto_impuesto::double precision - total_retencion::double precision;
+				
+				--Actualiza campos subtotal, impuesto, retencion, total de tabla poc_pedidos
+				UPDATE poc_pedidos SET subtotal=monto_subtotal, monto_ieps=suma_ieps, impuesto=monto_impuesto, monto_retencion=total_retencion, total=monto_total
+				WHERE id=ultimo_id;
+			END IF;
+			
+			valor_retorno := '1';
+		END IF;--termina accion NEW pedido
+		
+		
+		
+		
+		IF cmd = 'edit' THEN
+			
+			--obtener el id del proceso para este pedido
+			SELECT proceso_id FROM poc_pedidos WHERE id=pedido_id INTO id_proceso;
+			
+			--obtener el id del flujo del proceso
+			SELECT proceso_flujo_id FROM erp_proceso WHERE id=id_proceso INTO id_proceso_flujo;
+			
+			IF id_proceso_flujo::integer=4 THEN 
+				
+				UPDATE poc_pedidos SET cxc_clie_id=customer_id,moneda_id=currency_id,observaciones=comments,tipo_cambio=currency_val,cxc_agen_id=salesman_id,cxp_prov_credias_id=sup_credays_id,orden_compra=purch_order, fecha_compromiso=date_limit::date,lugar_entrega=delivery_place, transporte=trans, tasa_retencion_immex=tasaretimmex, fac_metodos_pago_id=met_pago_id, no_cuenta=account, enviar_ruta=send_route, inv_alm_id=warehouse_id::smallint, cxc_clie_df_id=cust_df_id, enviar_obser_fac=send_comments, flete=flete_enable, momento_actualizacion=espacio_tiempo_ejecucion, gral_usr_id_actualizacion=usuario_id, motivo_descto=razon_desc, porcentaje_descto=perc_desc 
+				WHERE id = pedido_id;
+				
+				no_rows:= array_length(matrix,1);--obtiene total de elementos del arreglo
+				counter:=1;
+				FOR counter IN 1 .. no_rows LOOP
+					generar_requisicion:=false;
+					generar_backorder:=false;
+					retencion_partida:=0;
+					
+					SELECT INTO row_cells string_to_array(matrix[counter],'___');
+					
+					--row_cells[ C_DELFLAG ] eliminado
+					IF row_cells[ C_DELFLAG ]::integer<>0 THEN--1: no esta eliminado, 0:eliminado
+						cant_reservada_anterior:=0;
+						cant_reservar_nuevo:=0;
+						cantPresAsignado:=0;
+						equivalenciaPres:=0;
+						noDecUnidad:=0;
+						cantPresReservAnterior:=0;
+						idUnidadMedida:=0;
+						nombreUnidadMedida:='';
+						cantUnidadVenta:=0;
+						cantExisUnidadVenta:=0;
+					
+						--Obtener datos del Producto
+						SELECT inv_prod.tipo_de_producto_id AS tipo_producto, inv_prod.unidad_id, inv_prod_unidades.titulo, inv_prod.densidad, (CASE WHEN inv_prod_unidades.id IS NULL THEN 0 ELSE inv_prod_unidades.decimales END) AS no_dec
+						FROM inv_prod LEFT JOIN inv_prod_unidades ON inv_prod_unidades.id=inv_prod.unidad_id
+						WHERE inv_prod.id=row_cells[ C_PRODID ]::integer 
+						INTO tipo_prod, idUnidadMedida, nombreUnidadMedida, densidadProd, noDecUnidad;
+						
+						IF noDecUnidad IS NULL THEN noDecUnidad:=0; END IF;
+
+						--Tomamos la cantidad en la unidad de Venta seleccionada por el usuario
+						cantUnidadVenta:=row_cells[ C_QUANTITY ]::double precision;
+					
+						IF facpar.cambiar_unidad_medida THEN
+							IF idUnidadMedida::integer<>row_cells[ C_PROUNIID ]::integer THEN
+								IF densidadProd IS NULL OR densidadProd=0 THEN
+									densidadProd:=1;
+								END IF;
+								
+								EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''KILO*'';' INTO match_cadena;
+								IF match_cadena=true THEN
+									--Convertir a kilos
+									row_cells[ C_QUANTITY ] := row_cells[ C_QUANTITY ]::double precision * densidadProd;
+								ELSE
+									EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''LITRO*'';' INTO match_cadena;
+									IF match_cadena=true THEN 
+										--Convertir a Litros
+										row_cells[ C_QUANTITY ] := row_cells[ C_QUANTITY ]::double precision / densidadProd;
+									END IF;
+								END IF;
+							END IF;
+						END IF;
+						
+						--Redondear la cantidad de la Partida
+						row_cells[ C_QUANTITY ] := round(row_cells[ C_QUANTITY ]::numeric,noDecUnidad)::double precision;
+						cantUnidadVenta := round(cantUnidadVenta::numeric,noDecUnidad)::double precision; 
+						
+						--Si el tipo de producto es diferente de 4, hay que RESERVAR existencias
+						--tipo=4 Servicios
+						--para el tipo servicios no se debe reservar existencias
+						IF tipo_prod::integer<>4 THEN 
+
+							--Solo Para productos formulados
+							IF tipo_prod=5 OR tipo_prod=6 THEN 
+								--Reservar toda cantidad de la partida del pedido
+								cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;
+								generar_backorder:=false;
+							end if;
+									
+							
+							IF incluye_modulo_produccion=false THEN
+								--Aqui entra si la Empresa NO INCLUYE Modulo de Produccion
+								
+								--Solo Para productos formulados
+								IF tipo_prod=1 OR tipo_prod=2 OR tipo_prod=8 THEN
+									--si es diferente de cero estamos en editar
+									IF row_cells[ C_DETID ]::integer > 0 THEN 
+										--Buscamos la cantidad reservada anterior
+										SELECT inv_prod_id, reservado FROM poc_pedidos_detalle WHERE id=row_cells[ C_DETID ]::integer INTO id_producto, cant_reservada_anterior;
+										
+										--redondear la cantidad de Presentaciones reservada anteriormente
+										cant_reservada_anterior := round(cant_reservada_anterior::numeric,noDecUnidad)::double precision;
+										
+										--restar la cantidad reservada anterior
+										UPDATE inv_exi SET reservado=(reservado::double precision - cant_reservada_anterior::double precision) WHERE inv_prod_id=id_producto AND inv_alm_id=warehouse_id AND ano=ano_actual;
+									END IF;
+									
+									--Reservar toda cantidad de la partida del pedido
+									cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;
+									generar_backorder:=false;
+									
+								END IF;
+							ELSE
+								--Solo Para productos formulados
+								IF tipo_prod=1 OR tipo_prod=2 OR tipo_prod=8 THEN
+									--llamada a proc que devuelve la existencia del producto. 
+									--El tipo de busqueda de existencia es 1=Busqueda en el almacen de la Sucursal
+									--el valor false que se le esta pasando es para indicarle que en las existencias no incluya reservados, y que solo me devualva existencias disponibles
+									SELECT inv_calculo_existencia_producto AS existencia FROM inv_calculo_existencia_producto(1,false, row_cells[ C_PRODID ]::integer, usuario_id, warehouse_id) INTO total_existencia; 
+									
+									--Si es diferente de cero estamos en editar
+									IF row_cells[ C_DETID ]::integer > 0 THEN 
+										--buscamos la cantidad reservada anterior
+										SELECT inv_prod_id, reservado FROM poc_pedidos_detalle WHERE id=row_cells[ C_DETID ]::integer INTO id_producto, cant_reservada_anterior;
+
+										--redondear la cantidad de Presentaciones reservada anteriormente
+										cant_reservada_anterior := round(cant_reservada_anterior::numeric,noDecUnidad)::double precision;
+										
+										--restar la cantidad reservada anterior
+										UPDATE inv_exi SET reservado=(reservado::double precision - cant_reservada_anterior::double precision) WHERE inv_prod_id=id_producto AND inv_alm_id=warehouse_id AND ano=ano_actual;
+										
+										--le sumamos a la existencia la cantidad reservada anterior para tener la existencia real
+										total_existencia := total_existencia + cant_reservada_anterior;
+									END IF;
+									
+									IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+										IF total_existencia <=0 THEN 
+											cant_reservar_nuevo=0;--reservar cero
+										ELSE
+											cant_reservar_nuevo:=total_existencia;--tomar la existencia para reservar
+										END IF;
+										
+										generar_backorder:=true;
+									ELSE
+										cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;--reservar toda la cantidad del  pedido
+										generar_backorder:=false;
+									END IF;
+								END IF;
+							END IF;
+
+
+
+							
+							
+							IF facpar.permitir_req_com THEN 
+								--7=Materia Prima - Hay que generar una requisicion de compra.
+								IF tipo_prod=7 THEN 
+									--llamada a proc que devuelve la existencia del producto. 
+									--El tipo de busqueda de existencia es 1=Busqueda en el almacen de la Sucursal
+									--el valor false que se le esta pasando es para indicarle que en las existencias no incluya reservados, y que solo me devualva existencias disponibles
+									SELECT inv_calculo_existencia_producto AS existencia FROM inv_calculo_existencia_producto(1,false, row_cells[ C_PRODID ]::integer, usuario_id, warehouse_id) INTO total_existencia; 
+									
+									--si es diferente de cero estamos en editar
+									IF row_cells[ C_DETID ]::integer > 0 THEN 
+										--Buscamos la cantidad reservada anterior
+										SELECT inv_prod_id, reservado FROM poc_pedidos_detalle WHERE id=row_cells[ C_DETID ]::integer INTO id_producto, cant_reservada_anterior;
+
+										--Redondear la cantidad de Presentaciones reservada anteriormente
+										cant_reservada_anterior := round(cant_reservada_anterior::numeric,noDecUnidad)::double precision;
+										
+										--Restar la cantidad reservada anterior
+										UPDATE inv_exi SET reservado=(reservado::double precision - cant_reservada_anterior::double precision) WHERE inv_prod_id=id_producto AND inv_alm_id=warehouse_id AND ano=ano_actual;
+										
+										--Le sumamos a la existencia la cantidad reservada anterior para tener la existencia real
+										total_existencia := total_existencia + cant_reservada_anterior;
+									END IF;
+									
+									IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+										IF total_existencia <=0 THEN 
+											--Reservar cero
+											cant_reservar_nuevo=0;
+										ELSE
+											--Tomar la existencia para reservar
+											cant_reservar_nuevo:=total_existencia;
+										END IF;
+										
+										generar_requisicion:=true;
+									ELSE
+										--Reservar toda la cantidad del  pedido
+										cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;
+										generar_requisicion:=false;
+									END IF;
+								END IF;
+							ELSE
+								if tipo_prod=7 then  
+									--llamada a proc que devuelve la existencia del producto. 
+									--El tipo de busqueda de existencia es 1=Busqueda en el almacen de la Sucursal
+									--el valor false que se le esta pasando es para indicarle que en las existencias no incluya reservados, y que solo me devualva existencias disponibles
+									SELECT inv_calculo_existencia_producto AS existencia FROM inv_calculo_existencia_producto(1,false, row_cells[ C_PRODID ]::integer, usuario_id, warehouse_id) INTO total_existencia; 
+									
+									--si es diferente de cero estamos en editar
+									IF row_cells[ C_DETID ]::integer > 0 THEN 
+										--Buscamos la cantidad reservada anterior
+										SELECT inv_prod_id, reservado FROM poc_pedidos_detalle WHERE id=row_cells[ C_DETID ]::integer INTO id_producto, cant_reservada_anterior;
+
+										--Redondear la cantidad de Presentaciones reservada anteriormente
+										cant_reservada_anterior := round(cant_reservada_anterior::numeric,noDecUnidad)::double precision;
+										
+										--Restar la cantidad reservada anterior
+										UPDATE inv_exi SET reservado=(reservado::double precision - cant_reservada_anterior::double precision) WHERE inv_prod_id=id_producto AND inv_alm_id=warehouse_id AND ano=ano_actual;
+										
+										--Le sumamos a la existencia la cantidad reservada anterior para tener la existencia real
+										total_existencia := total_existencia + cant_reservada_anterior;
+									END IF;
+									
+									IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+										IF total_existencia <=0 THEN 
+											--Reservar cero
+											cant_reservar_nuevo=0;
+										ELSE
+											--Tomar la existencia para reservar
+											cant_reservar_nuevo:=total_existencia;
+										END IF;
+										
+										generar_requisicion:=false;
+									ELSE
+										--Reservar toda la cantidad del  pedido
+										cant_reservar_nuevo := row_cells[ C_QUANTITY ]::double precision;
+										generar_requisicion:=false;
+									END IF;
+								end if;
+							END IF;
+							
+							--Redondear la nueva cantidad a reservar
+							cant_reservar_nuevo := round(cant_reservar_nuevo::numeric,noDecUnidad)::double precision;
+							
+							--Reservar cantidad para el  pedido
+							UPDATE inv_exi SET reservado=(reservado::double precision + cant_reservar_nuevo::double precision) WHERE inv_prod_id=row_cells[ C_PRODID ]::integer AND inv_alm_id=warehouse_id AND ano=ano_actual;
+							
+							------inicia reservar existencias en presentaciones--------------------------
+							--verificar si hay que validar existencias de Presentaciones
+							IF controlExisPres=true THEN 
+								--Verificar si hay que validar las existencias de presentaciones desde el Pedido.
+								--TRUE = Validar presentaciones desde el Pedido
+								--FALSE = No validar presentaciones desde el Pedido
+								IF facpar.validar_pres_pedido=true THEN 
+									--buscar la equivalencia de la Presentacion
+									SELECT cantidad  FROM inv_prod_presentaciones WHERE id=row_cells[ C_PRESENID ]::integer 
+									INTO equivalenciaPres;
+									
+									IF equivalenciaPres IS NULL THEN equivalenciaPres:=0; END IF;
+									
+									--si es diferente de cero estamos en editar
+									IF row_cells[ C_DETID ]::integer > 0 THEN 
+										cantPresReservAnterior := cant_reservada_anterior::double precision / equivalenciaPres::double precision;
+
+										--redondear la cantidad de Presentaciones Reservada anteriormente
+										cantPresReservAnterior := round(cantPresReservAnterior::numeric,noDecUnidad)::double precision; 
+										
+										--Quitar la Cantidad Reservada anteriormente
+										UPDATE inv_exi_pres SET reservado=(reservado::double precision - cantPresReservAnterior::double precision)
+										WHERE inv_alm_id=warehouse_id AND inv_prod_id=row_cells[ C_PRODID ]::integer AND inv_prod_presentacion_id=row_cells[ C_PRESENID ]::integer;
+									END IF;
+									
+									
+									--convertir a su equivalencia en Presentacion, la cantidad de la partida actual del pedido
+									cantPresAsignado := cant_reservar_nuevo::double precision / equivalenciaPres::double precision;
+									
+									--redondear la cantidad de Presentaciones Asignado en la partida
+									cantPresAsignado := round(cantPresAsignado::numeric,noDecUnidad)::double precision; 
+									
+									--Reservar existencia en inv_exi_pres
+									UPDATE inv_exi_pres SET reservado=(reservado::double precision + cantPresAsignado::double precision)
+									WHERE inv_alm_id=warehouse_id AND inv_prod_id=row_cells[ C_PRODID ]::integer AND inv_prod_presentacion_id=row_cells[ C_PRESENID ]::integer;
+									
+								END IF;
+							END IF;
+							------termina reservar existencias de Presentaciones------------------------------------
+						ELSE
+							generar_backorder:=false;
+							cant_reservar_nuevo=0;
+						END IF;--termina if tipo_prod!=4
+						
+						--Dividir entre 100 la tasa del IEPS
+						IF row_cells[ C_IEPSTASA ]::double precision>0 THEN 
+							row_cells[ C_IEPSTASA ]:=row_cells[ C_IEPSTASA ]::double precision/100;
+						END IF;
+
+						--Tasa retencion
+						IF row_cells[ C_RETETASA ]::double precision>0 THEN 
+							row_cells[ C_RETETASA ]:=row_cells[ C_RETETASA ]::double precision/100;
+						END IF;
+
+						--requiere_aut=row_cells[ C_REQ_AUTH ]::boolean, autorizado=row_cells[ C_STATUS_AUTH ]::boolean, precio_aut=row_cells[ C_PRICE_AUTH]::double precision, gral_usr_id_aut=row_cells[ C_USER_AUTH ]::integer 
+						--requiere_aut, autorizado, precio_aut, gral_usr_id_aut
+						--row_cells[ C_REQ_AUTH ]::boolean, row_cells[ C_STATUS_AUTH ]::boolean, row_cells[ C_PRICE_AUTH]::double precision, row_cells[ C_USER_AUTH ]::integer 
+						
+						--row_cells[ C_DETID ]=0 Es registro Nuevo
+						--row_cells[ C_DETID ]>0 El registro ya existe, solo hay que actualizar
+						IF row_cells[ C_DETID ]::integer = 0 THEN
+							--Crea registro nuevo en tabla poc_pedidos_detalle
+							INSERT INTO poc_pedidos_detalle(poc_pedido_id,inv_prod_id,presentacion_id,gral_imp_id,cantidad,precio_unitario,valor_imp, reservado, backorder, inv_prod_unidad_id, gral_ieps_id, valor_ieps, descto, requisicion, requiere_aut, autorizado, precio_aut, gral_usr_id_aut, gral_imptos_ret_id, tasa_ret)
+							VALUES(pedido_id,row_cells[ C_PRODID ]::integer,row_cells[ C_PRESENID ]::integer,row_cells[ C_TAXID ]::integer, cantUnidadVenta::double precision,row_cells[ C_COSTO ]::double precision,row_cells[ C_TAXVALUE ]::double precision, cant_reservar_nuevo, generar_backorder, row_cells[ C_PROUNIID ]::integer, row_cells[ C_IEPSID ]::integer, row_cells[ C_IEPSTASA ]::double precision, row_cells[ C_VDESCTO ]::double precision, generar_requisicion, row_cells[ C_REQ_AUTH ]::boolean, row_cells[ C_STATUS_AUTH ]::boolean, row_cells[ C_PRICE_AUTH]::double precision, row_cells[ C_USER_AUTH ]::integer, row_cells[ C_RETEID ]::integer, row_cells[ C_RETETASA ]::double precision); 
+						ELSE
+							--Actualiza registro
+							UPDATE poc_pedidos_detalle SET poc_pedido_id=pedido_id, inv_prod_id=row_cells[ C_PRODID ]::integer, presentacion_id=row_cells[ C_PRESENID ]::integer, gral_imp_id=row_cells[ C_TAXID ]::integer, cantidad=cantUnidadVenta::double precision, precio_unitario=row_cells[ C_COSTO ]::double precision, valor_imp=row_cells[ C_TAXVALUE ]::double precision, reservado=cant_reservar_nuevo, backorder=generar_backorder,inv_prod_unidad_id=row_cells[ C_PROUNIID ]::integer, valor_ieps=row_cells[ C_IEPSTASA ]::double precision, descto=row_cells[ C_VDESCTO ]::double precision, requisicion=generar_requisicion, requiere_aut=row_cells[ C_REQ_AUTH ]::boolean, autorizado=row_cells[ C_STATUS_AUTH ]::boolean, precio_aut=row_cells[ C_PRICE_AUTH]::double precision, gral_usr_id_aut=row_cells[ C_USER_AUTH ]::integer, gral_imptos_ret_id=row_cells[ C_RETEID ]::integer, tasa_ret=row_cells[ C_RETETASA ]::double precision  
+							WHERE id=row_cells[ C_DETID ]::integer AND poc_pedido_id=pedido_id;
+						END IF;
+						
+						--Calcular el Importe de la partida y redondealo a 4 digitos
+						importe_partida := round((cantUnidadVenta::double precision * row_cells[ C_COSTO ]::double precision)::numeric,4)::double precision;
+						
+						--Calcula el IEPS de la partida y redondear a 4 digitos
+						importe_ieps_partida := round((importe_partida::double precision * row_cells[ C_IEPSTASA ]::double precision)::numeric,4)::double precision;
+						
+						--Calcula el IVA de la Partida
+						impuesto_partida := (importe_partida::double precision + importe_ieps_partida::double precision) * row_cells[ C_TAXVALUE ]::double precision;
+
+						--Calcular el importe de la retencion de la partida si existe la tasa de retencion
+						if row_cells[ C_RETETASA ]::double precision>0 then 
+							retencion_partida := round((importe_partida::double precision * row_cells[ C_RETETASA ]::double precision)::numeric,4)::double precision;
+						end if;
+						
+						IF allow_desc THEN
+							IF row_cells[ C_VDESCTO ]::double precision>0 THEN
+								importe_del_descto_partida = round((importe_partida * (row_cells[ C_VDESCTO ]::double precision/100))::numeric,4)::double precision;
+								
+								importe_partida_con_descto = round((importe_partida - importe_del_descto_partida)::numeric,4)::double precision;
+								
+								--Recalcular el IEPS de la partida tomando el importe_partida_con_descto
+								importe_ieps_partida := round((importe_partida_con_descto::double precision * row_cells[ C_IEPSTASA ]::double precision)::numeric,4)::double precision;
+								
+								--Recalcular el IVA de la Partida tomando el importe_partida_con_descto
+								impuesto_partida := (importe_partida_con_descto::double precision + importe_ieps_partida::double precision) * row_cells[ C_TAXVALUE ]::double precision;
+
+								--Reclacular el nuevo el importe de la retencion de la partida si existe la tasa de retencion
+								if row_cells[ C_RETETASA ]::double precision>0 then 
+									retencion_partida := round((importe_partida_con_descto::double precision * row_cells[ C_RETETASA ]::double precision)::numeric,4)::double precision;
+								end if;
+							END IF;
+						END IF;
+						
+						suma_descuento = suma_descuento + importe_del_descto_partida::double precision;
+						suma_subtotal_con_descuento = suma_subtotal_con_descuento + importe_partida_con_descto::double precision;
+						
+						monto_subtotal := monto_subtotal + importe_partida::double precision;
+						suma_ieps := suma_ieps + importe_ieps_partida::double precision; 
+						monto_impuesto := monto_impuesto + impuesto_partida::double precision;
+						suma_retencion_de_partidas := suma_retencion_de_partidas + retencion_partida::double precision;
+					ELSE
+						IF trim(row_cells[ C_DETID ])='' THEN
+							--Aqui solo entra cuando se ha eliminado un registro nuevo que nunca fue guardado
+							row_cells[ C_DETID ]:='0';
+						END IF;
+						
+						--Extraer datos del registro eliminado
+						sql_select:='SELECT * FROM poc_pedidos_detalle WHERE id='||row_cells[ C_DETID ]||'::integer AND poc_pedido_id='||pedido_id;
+						
+						--Regresar existencias reservadas
+						FOR fila IN EXECUTE (sql_select) LOOP
+							UPDATE inv_exi SET reservado=(reservado::double precision - fila.reservado::double precision) WHERE inv_prod_id=fila.inv_prod_id AND inv_alm_id=warehouse_id AND ano=ano_actual;
+						END LOOP;
+						
+						--Elimina registro que se elimino en el grid del navegador
+						DELETE FROM poc_pedidos_detalle where id=row_cells[ C_DETID ]::integer AND poc_pedido_id=pedido_id;
+						
+						--Eliminar el registro de la tabla que relaciona la Cotizacion con el Pedido
+						DELETE FROM poc_ped_cot where poc_ped_det_id=row_cells[ C_DETID ]::integer AND poc_ped_id=pedido_id;
+					END IF;
+				END LOOP;
+				
+				--Verificar si hay que retener iva para este cliente
+				SELECT empresa_immex, case when tasa_ret_immex is null then 0 else tasa_ret_immex/100 end FROM cxc_clie WHERE id=customer_id INTO retener_iva, tasa_retencion;
+				
+				--RAISE EXCEPTION '%','desct: '||allow_desc||'        suma_descuento:'||suma_descuento;
+				IF allow_desc AND suma_descuento>0 THEN
+					IF retener_iva=true THEN
+						total_retencion := suma_subtotal_con_descuento::double precision * tasa_retencion;
+					ELSE 
+						total_retencion :=0;
+					END IF;
+					
+					if suma_retencion_de_partidas > 0 then 
+						total_retencion := round((total_retencion + suma_retencion_de_partidas)::numeric,4)::double precision;
+					end if;
+					
+					---RAISE EXCEPTION '%','suma_subtotal_con_descuento:'||suma_subtotal_con_descuento||'        suma_ieps:'||suma_ieps||'        monto_impuesto:'||monto_impuesto;
+					--Calcula el monto del pedido
+					monto_total:= suma_subtotal_con_descuento::double precision + suma_ieps::double precision + monto_impuesto::double precision - total_retencion::double precision;
+					
+					--Actualiza campos subtotal, impuesto, retencion, total de tabla poc_pedidos
+					UPDATE poc_pedidos SET subtotal=suma_subtotal_con_descuento, monto_descto=suma_descuento, monto_ieps=suma_ieps, impuesto=monto_impuesto, monto_retencion=total_retencion, total=monto_total
+					WHERE id=pedido_id;
+				ELSE 
+					IF retener_iva=true THEN
+						total_retencion := monto_subtotal * tasa_retencion;
+					ELSE
+						total_retencion :=0;
+					END IF;
+					
+					if suma_retencion_de_partidas > 0 then 
+						total_retencion := round((total_retencion + suma_retencion_de_partidas)::numeric,4)::double precision;
+					end if;
+					
+					--Calcula el monto Total del pedido
+					monto_total:= monto_subtotal::double precision + suma_ieps::double precision + monto_impuesto::double precision - total_retencion::double precision;
+					
+					--Actualiza campos subtotal, impuesto, retencion, total de tabla poc_pedidos
+					UPDATE poc_pedidos SET subtotal=monto_subtotal, monto_ieps=suma_ieps, impuesto=monto_impuesto, monto_retencion=total_retencion, total=monto_total
+					WHERE id=pedido_id;
+				END IF;
+				
+				valor_retorno := '1';
+			ELSE
+				IF id_proceso_flujo=2 THEN 
+					valor_retorno := 'El pedido no pudo ser Actualizado ya fue autorizado. Se encuentra en proceso de Facturacion.';
+				END IF;
+				
+				IF id_proceso_flujo=3 THEN 
+					valor_retorno := 'El pedido no pudo ser Actualizado, ya fue Facturado.';
+				END IF;
+			END IF;
+		END IF;--termina edit pedido
+		
+		
+		
+		
+		--Aqui entra cuando la persona que cancela es la misma que hizo el pedido
+		IF cmd = 'cancelar' THEN
+			
+			--Obtener el id del proceso para este pedido
+			SELECT proceso_id FROM poc_pedidos WHERE id=pedido_id INTO id_proceso;
+			
+			--obtener el id del flujo del proceso
+			SELECT proceso_flujo_id FROM erp_proceso WHERE id=id_proceso INTO id_proceso_flujo;
+			
+			IF id_proceso_flujo=4 THEN 
+				UPDATE poc_pedidos SET cancelado=true, momento_cancelacion=espacio_tiempo_ejecucion,gral_usr_id_cancelacion=usuario_id
+				WHERE id=pedido_id
+				RETURNING inv_alm_id INTO warehouse_id;
+				
+				--extraer datos del detalle del pedido
+				sql_select:='SELECT * FROM poc_pedidos_detalle WHERE poc_pedido_id='||pedido_id;
+				
+				--crea devolver existencias reservadas
+				FOR fila IN EXECUTE (sql_select) LOOP
+					cantPresReservAnterior:=0;
+					noDecUnidad:=0;
+					equivalenciaPres:=0;
+					
+					--obtener el tipo de producto y el numero de Decimales Permitidos
+					SELECT inv_prod.tipo_de_producto_id AS tipo_producto,(CASE WHEN inv_prod_unidades.id IS NULL THEN 0 ELSE inv_prod_unidades.decimales END) AS no_dec
+					FROM inv_prod LEFT JOIN inv_prod_unidades ON inv_prod_unidades.id=inv_prod.unidad_id
+					WHERE inv_prod.id=fila.inv_prod_id 
+					INTO tipo_prod, noDecUnidad;
+					
+					IF noDecUnidad IS NULL THEN noDecUnidad:=0; END IF;
+					
+					--Redondear la cantidad reservada
+					fila.reservado := round(fila.reservado::numeric,noDecUnidad)::double precision;
+					
+					--Quitar reservado de la tabla inv_exi
+					UPDATE inv_exi SET reservado=(reservado::double precision - fila.reservado::double precision) WHERE inv_prod_id=fila.inv_prod_id AND inv_alm_id=warehouse_id AND ano=ano_actual;
+					
+					------Inicia quitar existencias reservadas en inv_exi_pres--------------------------
+					--Verificar si la configuracion indica que se esta controlando existencias por presentaciones
+					IF controlExisPres=true THEN 
+						--Verificar si hay que validar las existencias de presentaciones desde el Pedido.
+						--TRUE = Validar presentaciones desde el Pedido
+						--FALSE = No validar presentaciones desde el Pedido
+						IF facpar.validar_pres_pedido=true THEN 
+							--buscar la equivalencia de la Presentacion
+							SELECT cantidad  FROM inv_prod_presentaciones WHERE id=fila.presentacion_id::integer 
+							INTO equivalenciaPres;
+							
+							IF equivalenciaPres IS NULL THEN equivalenciaPres:=0; END IF;
+							
+							--convertir a Presentaciones la cantidad Reservada
+							cantPresReservAnterior := fila.reservado::double precision / equivalenciaPres::double precision;
+							
+							--redondear la cantidad de Presentaciones Reservada anteriormente
+							cantPresReservAnterior := round(cantPresReservAnterior::numeric,noDecUnidad)::double precision; 
+							
+							--Quitar la Cantidad Reservada anteriormente
+							UPDATE inv_exi_pres SET reservado=(reservado::double precision - cantPresReservAnterior::double precision)
+							WHERE inv_alm_id=warehouse_id AND inv_prod_id=fila.inv_prod_id::integer AND inv_prod_presentacion_id=fila.presentacion_id::integer;
+						END IF;
+					END IF;
+					
+				END LOOP;
+				
+				valor_retorno := '1';
+			ELSE
+				IF id_proceso_flujo=2 THEN 
+					valor_retorno := 'El pedido ya fue Autorizado, se encuentra en Facturacion. No se puede Cancelar.';
+				END IF;
+				
+				IF id_proceso_flujo=3 THEN 
+					valor_retorno := 'El pedido ya fue Facturado. No se puede Cancelar.';
+				END IF;
+			END IF;
+		END IF;
+
+    RETURN valor_retorno;
+
+END;
+$_$;
+
+
+ALTER FUNCTION public.poc_cat_cusorder(cmd character varying, usuario_id integer, salesman_id integer, customer_id integer, cust_df_id integer, warehouse_id integer, currency_id integer, sup_credays_id integer, met_pago_id integer, pedido_id integer, tasaretimmex double precision, currency_val double precision, perc_desc double precision, allow_desc boolean, send_comments boolean, flete_enable boolean, send_route boolean, comments text, razon_desc text, trans text, date_limit character varying, delivery_place character varying, purch_order character varying, account character varying, no_cot character varying, matrix text[]) OWNER TO instance01;
+
+--
+-- Name: poc_val_cusorder(integer, character varying, character varying, integer, character varying, text[]); Type: FUNCTION; Schema: public; Owner: instance01
+--
+
+CREATE FUNCTION poc_val_cusorder(usr_id integer, curr_val character varying, date_lim character varying, pay_met integer, account character varying, matrix text[]) RETURNS text
+    LANGUAGE plpgsql
+    AS $_$
+
+DECLARE
+
+    -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    -- >> Validation of customer order >>
+    -- >> Version: CDGB                >>
+    -- >> Date: 20/Jul/2017            >>
+    -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    valor_retorno text := '';
+    total_existencia double precision;
+    incluye_modulo_produccion boolean;
+
+    -- Variable que indica si se debe controlar las existencias por presentaciones
+    controlExisPres boolean := false;
+
+    emp_id integer;
+    suc_id integer;
+    id_almacen integer;
+    facpar record;
+    mask_general character varying;
+    match_cadena boolean;
+    
+    -- number of rows within matrix
+    no_rows integer;
+    
+    -- row with cell values
+    row_cells text[];
+    
+    -- a counter for loops iterations
+    counter integer;
+    
+    -- Cantidad en la unidad de Venta, esto se utiliza cuando la unidad del producto es diferente a la de venta
+    cantUnidadVenta double precision := 0;
+
+    -- Cantidad de la existencia convertida a la unidad de venta, esto se utiliza cuando la unidad del producto es diferente a la de venta
+    cantExisUnidadVenta double precision:=0;
+
+    cant_reservada_anterior double precision:=0;
+    cantPresReservAnterior double precision:=0;
+    cantPresAsignado double precision:=0;
+    cambiaUnidadMedida boolean:=false;
+
+    --Equivalencia de la presentacion en la unidad del producto
+    equivalenciaPres double precision:=0;
+
+    -- Existencia actual de la presentacion
+    exisActualPres double precision:=0;
+	
+    -- Id de la unidad de medida del producto
+    idUnidadMedida integer := 0;
+    tipo integer;
+	
+    -- Nombre de la unidad de medida del producto
+    nombreUnidadMedida character varying := '';
+	
+    -- Densidad del producto
+    densidadProd double precision := 0;
+    
+    -- Numero de decimales permitidos para la unidad
+    noDecUnidad integer := 0;
+    
+    -- cell indexes as per column order inside matrix
+    C_DELFLAG  integer := 1;
+    C_DETID    integer := 2;
+    C_PRODID   integer := 3;
+    C_PRESENID integer := 4;
+    C_QUANTITY integer := 6;
+    C_NOTR     integer := 9;
+    C_SELECT   integer := 10;
+    C_UNIT     integer := 11;    
+
+BEGIN
+
+    -- obtiene empresa_id, sucursal_id y sucursal_id
+    SELECT gral_suc.empresa_id,
+        gral_usr_suc.gral_suc_id,
+        inv_suc_alm.almacen_id
+    FROM gral_usr_suc
+    JOIN gral_suc ON gral_suc.id = gral_usr_suc.gral_suc_id
+    JOIN inv_suc_alm ON inv_suc_alm.sucursal_id = gral_suc.id
+    WHERE gral_usr_suc.gral_usr_id = usr_id
+    INTO emp_id, suc_id, id_almacen;
+
+    -- Obtener parametros para la facturacion
+    SELECT * FROM fac_par WHERE gral_suc_id = suc_id INTO facpar;
+    
+    -- query para verificar si la Empresa actual incluye Modulo de Produccion
+    SELECT incluye_produccion, control_exis_pres
+    FROM gral_emp WHERE id = emp_id
+    INTO incluye_modulo_produccion, controlExisPres;
+
+    --tomar el id del almacen para ventas
+    id_almacen := facpar.inv_alm_id;
+  
+    IF curr_val = '' THEN
+        -- Es necesario ingresar el tipo de cambio
+        valor_retorno := ''||valor_retorno||'tc:Es necesario ingresar el tipo de cambio___';
+    END IF;
+    
+    IF date_lim = '' THEN
+        -- Es necesario ingresar la Fecha de Compromiso
+        valor_retorno := ''||valor_retorno||'fcompromiso:Es necesario ingresar la Fecha de Compromiso___';
+    END IF;
+
+    IF pay_met = 2 OR pay_met = 3 THEN
+        IF account = '' THEN
+            -- Es necesario ingresar los ultimos 4 digitos de la tarjeta
+            valor_retorno := ''||valor_retorno||'nocuenta:Es necesario ingresar los ultimos 4 digitos de la tarjeta___';
+        ELSE
+            IF (SELECT account ~ '^([0-9]{4})+["NA"]{2}$') THEN
+                -- Es necesario ingresar 4 digitos
+                valor_retorno := ''||valor_retorno|| 'nocuenta:Es necesario ingresar 4 digitos.___';
+            END IF;
+        END IF;
+    END IF;
+
+    no_rows := array_length(matrix, 1);
+    counter := 1;
+    IF matrix[1] != 'sin datos' THEN
+        FOR counter IN 1 .. no_rows LOOP
+            SELECT INTO row_cells string_to_array(matrix[counter], '___');
+
+            --1: no esta eliminado, 0:eliminado
+            IF row_cells[ C_DELFLAG ]::integer <> 0 THEN
+                IF trim( row_cells[ C_QUANTITY ] ) = '' THEN
+                    -- Es necesario ingresar la cantidad
+                    valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ]||':Es necesario ingresar la cantidad___';
+                ELSE
+                    IF (SELECT trim( row_cells[ C_QUANTITY ] ) ~ '^([0-9]+[.]?[0-9]*|[.][0-9]+)$') THEN
+                        IF row_cells[ C_QUANTITY ]::double precision < 0.000001 THEN
+                            -- La cantidad debe ser mayor que cero
+                            valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ]||':La cantidad debe ser mayor que cero___';
+                        ELSE
+                            --obtener el tipo de producto y el numero de Decimales Permitidos
+                            SELECT inv_prod.tipo_de_producto_id AS tipo_producto, inv_prod.unidad_id,
+                                inv_prod_unidades.titulo, inv_prod.densidad,
+                                (CASE WHEN inv_prod_unidades.id IS NULL THEN 0 ELSE inv_prod_unidades.decimales END) AS no_dec
+                            FROM inv_prod LEFT JOIN inv_prod_unidades ON inv_prod_unidades.id = inv_prod.unidad_id
+                            WHERE inv_prod.id = row_cells[ C_PRODID ]::integer 
+                            INTO tipo, idUnidadMedida, nombreUnidadMedida, densidadProd, noDecUnidad;
+
+                            --Tomamos la cantidad en la unidad de Venta seleccionada por el usuario
+                            cantUnidadVenta := row_cells[ C_QUANTITY ]::double precision;
+								
+                            IF cambiaUnidadMedida THEN
+                                IF idUnidadMedida::integer <> row_cells[ C_UNIT ]::integer THEN
+                                    IF densidadProd IS NULL OR densidadProd=0 THEN
+                                        densidadProd := 1;
+                                    END IF;
+                                    EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''KILO*'';' INTO match_cadena;
+                                    IF match_cadena=true THEN
+                                        --Convertir a kilos
+                                        row_cells[ C_QUANTITY ] := row_cells[ C_QUANTITY ]::double precision * densidadProd;
+                                    ELSE
+                                        EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''LITRO*'';' INTO match_cadena;
+                                        IF match_cadena=true THEN
+                                            --Convertir a Litros
+                                            row_cells[ C_QUANTITY ] := row_cells[ C_QUANTITY ]::double precision / densidadProd;
+                                        END IF;
+                                    END IF;
+                                END IF;
+                            END IF;
+                            
+                            -- Redondear la Cantidad
+                            row_cells[ C_QUANTITY ] := round(row_cells[ C_QUANTITY ]::numeric, noDecUnidad)::double precision; 
+                            cantUnidadVenta := round(cantUnidadVenta::numeric, noDecUnidad)::double precision; 
+
+                            -- Si el tipo de producto es diferente de 4, hay que validar existencias
+                            -- tipo=4 Servicios
+                            -- para el tipo servicios no se debe validar existencias
+                            IF tipo <> 4 THEN
+                                IF incluye_modulo_produccion = FALSE THEN
+                                    -- Aqui entra si la Empresa NO INCLUYE Modulo de Produccion
+                                    -- Se debe validar existencias de los productos tipo 1,2,5,6,7,8
+                                    -- tipo = 1 Normal o Terminado
+                                    -- tipo = 2 Subensable o Formulacion o Intermedio
+                                    -- tipo = 5 Refacciones
+                                    -- tipo = 6 Accesorios
+                                    -- tipo = 7 Materia Prima
+                                    -- tipo = 8 Prod. en Desarrollo
+                                    IF tipo::integer = 1 OR tipo::integer = 2 OR tipo::integer = 5 OR tipo::integer = 6 OR tipo::integer = 7 OR tipo::integer = 8 THEN
+                                        -- Llamada a proc que devuelve la existencia del producto.
+                                        -- El tipo de busqueda de existencia es 1=Busqueda en el almacen de la Sucursal
+                                        -- el valor false que se le esta pasando es para indicarle que en las existencias
+                                        -- no incluya reservados, y que solo me devualva existencias disponibles
+                                        SELECT inv_calculo_existencia_producto AS existencia
+                                        FROM inv_calculo_existencia_producto(1, false, row_cells[ C_PRODID ]::integer, usr_id, id_almacen)
+                                        INTO total_existencia;
+
+                                        -- Asignanos el total de la venta
+                                        cantExisUnidadVenta := total_existencia;
+                                        IF cambiaUnidadMedida THEN
+                                            IF idUnidadMedida::integer <> row_cells[ C_UNIT ]::integer THEN
+                                                EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''KILO*'';' INTO match_cadena;
+                                                IF match_cadena = true THEN
+                                                    -- Convertir a litros la existencia para mostrar el warning
+                                                    cantExisUnidadVenta := cantExisUnidadVenta::double precision / densidadProd::double precision;
+                                                ELSE
+                                                    EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''LITRO*'';' INTO match_cadena;
+                                                    IF match_cadena = true THEN
+                                                        -- Convertir a Kilos la existencia para mostrar el warning
+                                                        cantExisUnidadVenta := cantExisUnidadVenta::double precision * densidadProd::double precision;
+                                                    END IF;
+                                                END IF;
+                                            END IF;
+                                        END IF;
+
+                                        -- si es diferente de cero estamos en editar
+                                        IF row_cells[ C_DETID ]::integer > 0 THEN
+                                            -- Buscamos la cantidad reservada anterior
+                                            SELECT reservado FROM poc_pedidos_detalle WHERE id = row_cells[ C_DETID ]::integer INTO cant_reservada_anterior;
+
+                                            -- le sumamos a la existencia la cantidad reservada anterior para tener la existencia real
+                                            total_existencia := total_existencia::double precision + cant_reservada_anterior::double precision;
+                                        END IF;
+
+                                        -- Redondear el total_existencia
+                                        total_existencia := round(total_existencia::numeric, noDecUnidad)::double precision;
+
+                                        IF facpar.permitir_req_com THEN
+                                            -- AQUI ENTRA CUANDO LA CONFIGURACION PERMITE GENERAR REQUISICION DE COMPRA
+                                            -- tipo = 7 Materia Prima
+                                            IF tipo::integer = 7 THEN
+                                                -- Seleccionado = 0 indica que no se ha marcado para enviar a produccion la cantidad que falta
+                                                IF row_cells[ C_SELECT ]='0' THEN
+                                                    IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                        valor_retorno := ''|| valor_retorno || 'backorder:cantidad' || row_cells[ C_NOTR ] ||
+                                                            ':' || cantExisUnidadVenta || '___';
+                                                    END IF;
+
+                                                    IF total_existencia<=0 THEN
+                                                        valor_retorno := ''|| valor_retorno || 'cantidad' || row_cells[ C_NOTR ] ||
+                                                            ':Disponible=0,  Pedido=' || cantUnidadVenta ||
+                                                            '. Seleccione la casilla para enviar una Requisici&oacute;n de Compra.___';
+                                                    ELSE
+                                                       	IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                            valor_retorno := '' || valor_retorno ||'cantidad'|| row_cells[ C_NOTR ] ||
+                                                                ':Disponible=' || cantExisUnidadVenta ||',  Pedido='|| cantUnidadVenta ||
+                                                                '. Seleccione la casilla para enviar una Requisici&oacute;n de Compra.___';
+                                                        END IF;
+                                                    END IF;
+                                                END IF;
+                                            END IF;
+
+                                            -- Solo se debe validar existencias de productos tipo 5,6
+                                            -- tipo = 5 Refacciones
+                                            -- tipo=6 Accesorios
+                                            IF tipo::integer = 1 OR tipo::integer = 2 OR tipo::integer = 5 OR tipo::integer = 6 OR tipo::integer = 8 THEN
+                                                IF total_existencia<=0 THEN
+                                                    valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ]||':El producto tiene Existencia 0 en Almacen.___';
+                                                ELSE
+                                                    IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                        valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ]||':Disponibles '||cantExisUnidadVenta||',  usted esta intentando vender '||cantUnidadVenta||'___';
+                                                    END IF;
+                                                END IF;
+                                            END IF;
+                                        ELSE
+                                            -- AQUI ENTRA CUANDO LA CONFIGURACION NO PERMITE GENERAR REQUISICION DE COMPRA
+                                            IF total_existencia<=0 THEN
+                                                valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ]||':El producto tiene Existencia 0 en Almacen.___';
+                                            ELSE
+                                                IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                    valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ]||':Disponibles '||cantExisUnidadVenta||',  usted esta intentando vender '||cantUnidadVenta||'___';
+                                                END IF;
+                                            END IF;
+                                        END IF;
+                                    END IF;
+                                ELSE
+                                    -- Aqui entra si la Empresa SI INCLUYE Modulo de Produccion
+                                    -- llamada a proc que devuelve la existencia del producto.
+                                    -- El tipo de busqueda de existencia es 1=Busqueda en el almacen de la Sucursal
+                                    -- el valor false que se le esta pasando es para indicarle que en las
+                                    -- existencias no incluya reservados, y que solo me devualva existencias disponibles
+                                    SELECT inv_calculo_existencia_producto AS existencia FROM inv_calculo_existencia_producto(1, false, row_cells[ C_PRODID ]::integer, row_cells[ C_PRODID ]::integer, id_almacen) INTO total_existencia; 
+
+                                    -- Asignanos el total de la venta
+                                    cantExisUnidadVenta := total_existencia;
+                                    IF cambiaUnidadMedida THEN
+                                        IF idUnidadMedida::integer <> row_cells[ C_UNIT ]::integer THEN
+                                            EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''KILO*'';' INTO match_cadena;
+                                            IF match_cadena = true THEN
+                                                -- Convertir a litros la existencia para mostrar el warning
+                                                cantExisUnidadVenta := cantExisUnidadVenta::double precision / densidadProd::double precision;
+                                            ELSE
+                                                EXECUTE 'select '''||nombreUnidadMedida||''' ~* ''LITRO*'';' INTO match_cadena;
+                                                IF match_cadena=true THEN
+                                                    -- Convertir a Kilos la existencia para mostrar el warning
+                                                    cantExisUnidadVenta := cantExisUnidadVenta::double precision * densidadProd::double precision;
+                                                END IF;
+                                            END IF;
+                                        END IF;
+                                    END IF;
+
+                                    -- Si es diferente de cero estamos en editar
+                                    IF row_cells[ C_DETID ]::integer > 0 THEN
+                                        -- buscamos la cantidad reservada anterior
+                                        SELECT reservado FROM poc_pedidos_detalle
+                                        WHERE id = row_cells[ C_DETID ]::integer
+                                        INTO cant_reservada_anterior;
+
+                                        -- le sumamos a la existencia la cantidad reservada anterior para tener la existencia real
+                                        total_existencia := total_existencia + cant_reservada_anterior;
+                                    END IF;
+
+                                    -- Redondear el total_existencia
+                                    total_existencia := round(total_existencia::numeric, noDecUnidad)::double precision;
+
+                                    -- tipo = 1 Normal o Terminado
+                                    -- tipo = 2 Subensable o Formulacion o Intermedio
+                                    -- tipo = 8 Prod. en Desarrollo
+                                    IF tipo::integer = 1 OR tipo::integer = 2 OR tipo::integer = 8 THEN
+                                        -- seleccionado=0 indica que no se ha marcado para enviar a produccion la cantidad que falta
+                                        IF row_cells[ C_SELECT ] = '0' THEN
+                                            IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                valor_retorno := ''||valor_retorno||'backorder:cantidad'||row_cells[ C_NOTR ]||':'||cantExisUnidadVenta||'___';
+                                            END IF;
+
+                                            IF total_existencia <= 0 THEN
+                                                valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ] ||
+                                                    ':Disponible=0,  Pedido='||cantUnidadVenta||'. Seleccione la casilla para enviar a producci&oacute;n.___';
+                                            ELSE
+                                                IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                    valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ] ||
+                                                        ':Disponible='||cantExisUnidadVenta||',  Pedido='||cantUnidadVenta ||
+                                                        '. Seleccione la casilla para enviar a producci&oacute;n.___';
+                                                END IF;
+                                            END IF;
+                                        END IF;
+                                    END IF;
+
+                                    IF facpar.permitir_req_com THEN
+                                        -- AQUI ENTRA CUANDO LA CONFIGURACION PERMITE GENERAR REQUISICION DE COMPRA
+                                        -- tipo = 7 Materia Prima
+                                        IF tipo::integer = 7 THEN
+                                            -- seleccionado=0 indica que no se ha marcado para enviar a produccion la cantidad que falta
+                                            IF row_cells[ C_SELECT ] = '0' THEN
+                                                IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                    valor_retorno := ''||valor_retorno||'backorder:cantidad'||row_cells[ C_NOTR ]||':'||cantExisUnidadVenta||'___';
+                                                END IF;
+
+                                                IF total_existencia <= 0 THEN
+                                                    valor_retorno := ''|| valor_retorno || 'cantidad' || row_cells[ C_NOTR ] ||
+                                                        ':Disponible=0,  Pedido='||cantUnidadVenta ||
+                                                        '. Seleccione la casilla para enviar una Requisici&oacute;n de Compra.___';
+                                                ELSE
+
+                                                IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                    valor_retorno := ''|| valor_retorno || 'cantidad' || row_cells[ C_NOTR ] ||
+                                                        ':Disponible=' || cantExisUnidadVenta || ',  Pedido='||cantUnidadVenta ||
+                                                        '. Seleccione la casilla para enviar una Requisici&oacute;n de Compra.___';
+                                                END IF;
+                                            END IF;
+                                        END IF;
+                                    END IF;
+
+                                    -- Solo se debe validar existencias de productos tipo 5,6
+                                    -- tipo = 5 Refacciones
+                                    -- tipo = 6 Accesorios
+                                    IF tipo::integer = 5 OR tipo::integer = 6 THEN
+                                        IF total_existencia <= 0 THEN
+                                            valor_retorno := ''|| valor_retorno || 'cantidad' || row_cells[ C_NOTR ] ||
+                                                ':El producto tiene Existencia 0 en Almacen___';
+                                        ELSE
+                                            IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                valor_retorno := ''|| valor_retorno || 'presentacion' || row_cells[ C_NOTR ] ||
+                                                    ':Disponibles '|| cantExisUnidadVenta ||',  usted esta intentando vender '||cantUnidadVenta||'___';
+                                            END IF;
+                                        END IF;
+                                    END IF;
+                                ELSE
+                                    -- AQUI ENTRA CUANDO LA CONFIGURACION NO PERMITE GENERAR REQUISICION DE COMPRA
+                                    -- Solo se debe validar existencias de productos tipo 5,6,7
+                                    -- tipo = 5 Refacciones
+                                    -- tipo = 6 Accesorios
+                                    -- tipo = 7 Materia Prima
+                                    IF tipo::integer = 5 OR tipo::integer = 6 OR tipo::integer = 7 THEN
+                                        IF total_existencia <= 0 THEN
+                                            valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ]||
+                                                ':El producto tiene Existencia 0 en Almacen___';
+                                        ELSE
+                                            IF total_existencia < row_cells[ C_QUANTITY ]::double precision THEN
+                                                valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ]||
+                                                    ':Disponibles '||cantExisUnidadVenta||',  usted esta intentando vender '||cantUnidadVenta||'___';
+                                            END IF;
+                                        END IF;
+                                    END IF;
+                                END IF;
+                            END IF;
+
+                            -- verificar si hay que validar existencias de Presentaciones
+                            IF controlExisPres = true THEN
+                                -- Verificar si hay que validar las existencias de presentaciones desde el Pedido.
+                                -- TRUE = Validar presentaciones desde el Pedido
+                                -- FALSE = No validar presentaciones desde el Pedido
+                                IF facpar.validar_pres_pedido = true THEN
+                                    -- Buscar la existencia actual de la Presentacion
+                                    SELECT (inicial::double precision + entradas::double precision - salidas::double precision -reservado::double precision) AS exi
+                                    FROM inv_exi_pres WHERE inv_alm_id=id_almacen::integer AND inv_prod_id=row_cells[ C_PRODID ]::integer AND inv_prod_presentacion_id=row_cells[ C_PRESENID ]::integer 
+                                    INTO exisActualPres;
+
+                                    IF exisActualPres IS NULL THEN
+                                        exisActualPres := 0;
+                                    END IF;
+
+                                    IF exisActualPres > 0 THEN
+                                        -- Si es diferente de cero estamos en editar,por lo tanto hay que buscar la cantidad reservada anterior.
+                                        IF row_cells[ C_DETID ]::integer > 0 THEN
+                                            -- buscamos la cantidad reservada anterior
+                                            SELECT (poc_pedidos_detalle.reservado::double precision / inv_prod_presentaciones.cantidad::double precision) AS cant_pres
+                                            FROM poc_pedidos_detalle
+                                            JOIN inv_prod_presentaciones ON inv_prod_presentaciones.id=poc_pedidos_detalle.presentacion_id
+                                            WHERE poc_pedidos_detalle.id=row_cells[ C_DETID ]::integer
+                                            INTO cantPresReservAnterior;
+
+                                            -- redondear la Cantidad de la Presentacion reservada Anteriormente
+                                            cantPresReservAnterior := round(cantPresReservAnterior::numeric, noDecUnidad)::double precision;
+
+                                            -- sumar la cantidad reservada anterior para tener la existencia real
+                                            exisActualPres = exisActualPres::double precision + cantPresReservAnterior::double precision;
+                                        END IF;
+
+					                    -- redondear la Existencia actual de Presentaciones
+                                        exisActualPres := round(exisActualPres::numeric, noDecUnidad)::double precision;
+
+                                        -- buscar la equivalencia de la Presentacion
+                                        SELECT cantidad  FROM inv_prod_presentaciones WHERE id = row_cells[ C_PRESENID ]::integer INTO equivalenciaPres;
+
+                                        -- convertir a su equivalencia en Presentacion, la cantidad de la partida actual del pedido
+                                        cantPresAsignado := row_cells[ C_QUANTITY ]::double precision / equivalenciaPres::double precision;
+
+                                        -- redondear la cantidad de Presentaciones Asignado en la partida
+                                        cantPresAsignado := round(cantPresAsignado::numeric, noDecUnidad)::double precision;
+
+                                        IF exisActualPres::double precision < cantPresAsignado::double precision THEN
+                                                IF incluye_modulo_produccion=true OR facpar.permitir_req_com=TRUE THEN
+
+                                                    -- Si incluye modulo de produccion Û la configuracion permite generar requisiciones cuando no hay exisencia
+                                                    IF incluye_modulo_produccion THEN
+                                                        IF tipo::integer = 1 OR tipo::integer = 2 OR tipo::integer = 8 THEN
+                                                            IF row_cells[ C_SELECT ] = '0' THEN
+                                                                valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ] ||
+                                                                    ':Disponibles='||exisActualPres||',  Venta='||cantPresAsignado ||
+                                                                    '. No hay existencia suficiente en esta presentacion.___';
+                                                            END IF;
+                                                        END IF;
+                                                    END IF;
+
+                                                    -- Si la configuracion permite generar requisiciones en automatico
+                                                    IF facpar.permitir_req_com THEN
+                                                        IF tipo::integer = 7 THEN
+                                                            IF row_cells[ C_SELECT ] = '0' THEN
+                                                                valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ] ||
+                                                                    ':Disponibles='||exisActualPres||',  Venta='||cantPresAsignado ||
+                                                                    '. No hay existencia suficiente en esta presentacion.___';
+                                                            END IF;
+                                                        END IF;
+                                                    END IF;
+
+                                                    IF tipo::integer = 5 OR tipo::integer = 6 THEN
+                                                        valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ]||
+                                                            ':Disponibles='||exisActualPres||',  Venta='||cantPresAsignado||
+                                                            '. No hay existencia suficiente en esta presentacion.___';
+                                                    END IF;
+                                                ELSE
+                                                    valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ]||
+                                                        ':Disponibles='||exisActualPres||',  Venta='||cantPresAsignado||
+                                                        '. No hay existencia suficiente en esta presentacion.___';
+                                                END IF;
+                                            END IF;
+                                        ELSE
+                                            IF incluye_modulo_produccion=true OR facpar.permitir_req_com=TRUE THEN 
+                                                -- Si incluye modulo de produccion Û la configuracion
+                                                -- permite generar requisiciones cuando no hay exisencia
+
+                                                IF incluye_modulo_produccion THEN 
+                                                    IF tipo::integer = 1 OR tipo::integer = 2 OR tipo::integer = 8 THEN
+                                                        IF row_cells[ C_SELECT ] = '0' THEN
+                                                            valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ]||
+                                                                ':No hay existencia en esta presentacion.___';
+                                                        END IF;
+                                                    END IF;
+                                                END IF;
+
+                                                IF facpar.permitir_req_com THEN 
+                                                    IF tipo::integer = 7 THEN 
+                                                        IF row_cells[ C_SELECT ] = '0' THEN
+                                                            valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ]||
+                                                                ':No hay existencia en esta presentacion.___';
+                                                        END IF;
+                                                    END IF;
+                                                END IF;
+
+                                                IF tipo::integer = 5 OR tipo::integer = 6 THEN
+                                                    valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ] ||
+                                                        ':No hay existencia en esta presentacion.___';
+                                                END IF;
+                                            ELSE
+                                                valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ] ||
+                                                    ':No hay existencia en esta presentacion.___';
+                                            END IF;
+                                        END IF;
+                                    END IF;
+                                END IF;
+                            END IF;
+                        END IF;
+                    ELSE
+                        -- Aqui entra porque el campo cantidad trae un valor no numerico
+                        valor_retorno := ''||valor_retorno||'cantidad'||row_cells[ C_NOTR ]||':El valor para Cantidad es incorrecto, tiene mas de un punto('||row_cells[ C_QUANTITY ]||')___';
+                    END IF;
+                END IF;
+            END IF;
+        END LOOP;
+    END IF;
+    
+    IF valor_retorno = '' THEN
+        valor_retorno := 'true';
+	RETURN valor_retorno;
+    ELSE
+        RETURN valor_retorno;
+    END IF;
+	
+END;
+
+$_$;
+
+
+ALTER FUNCTION public.poc_val_cusorder(usr_id integer, curr_val character varying, date_lim character varying, pay_met integer, account character varying, matrix text[]) OWNER TO instance01;
 
 --
 -- Name: pro_adm_procesos(text, text[]); Type: FUNCTION; Schema: public; Owner: instance01
@@ -50711,13 +53416,13 @@ BEGIN
 				nuevo_lote=to_hex(nuevo_consecutivo);
 				
 				--tipo_movimiento_id=10 ENTRADA PRODUCCION
-				--extraer los dos digitos del a√±o
+				--extraer los dos digitos del aÒo
 				SELECT to_char(espacio_tiempo_ejecucion,'yy') INTO ano_actual_2_digitos;
 				 
 				--agregar ceros a la izquierda para acompletar 6 caracteres con lpad y convertir a mayusculas con upper
 				nuevo_lote := upper(lpad(nuevo_lote, 6, '0'));
 				
-				--agregar a√±o y mes al consecutivo del lote para acompletar 10 caractares
+				--agregar aÒo y mes al consecutivo del lote para acompletar 10 caractares
 				nuevo_lote := ano_actual_2_digitos || mes_actual00 || nuevo_lote;
 				
 				
@@ -50893,13 +53598,13 @@ BEGIN
 			nuevo_lote=to_hex(nuevo_consecutivo);
 			
 			--tipo_movimiento_id=10 ENTRADA PRODUCCION
-			--extraer los dos digitos del a√±o
+			--extraer los dos digitos del aÒo
 			SELECT to_char(espacio_tiempo_ejecucion,'yy') INTO ano_actual_2_digitos;
 			 
 			--agregar ceros a la izquierda para acompletar 6 caracteres con lpad y convertir a mayusculas con upper
 			nuevo_lote := upper(lpad(nuevo_lote, 6, '0'));
 			
-			--agregar a√±o y mes al consecutivo del lote para acompletar 10 caractares
+			--agregar aÒo y mes al consecutivo del lote para acompletar 10 caractares
 			nuevo_lote := ano_actual_2_digitos || mes_actual00 || nuevo_lote;
 			
 			insert into pro_orden_prod(gral_emp_id, gral_suc_id, momento_creacion, folio, observaciones, id_usuario_creacion, pro_orden_tipos_id, fecha_elavorar, pro_proceso_id, lote, pro_estruc_id) 
@@ -51672,7 +54377,7 @@ BEGIN
 							VALUES(identificador_nuevo_movimiento_entrada, record1.inv_alm_id ,id_almacen, record1.inv_prod_id, cantidad_calculada, precio_unitario, record1.inv_prod_presentacion_id);
 							
 							sql_select := '';
-							--query para verificar existencia del producto en el almacen y en el a√±o actual
+							--query para verificar existencia del producto en el almacen y en el aÒo actual
 							sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||record1.inv_prod_id||' AND inv_alm_id = '||id_almacen||' AND ano = '||ano_actual;
 							EXECUTE sql_select INTO exis;
 							
@@ -51975,7 +54680,7 @@ BEGIN
 									/*
 									Actualizar el registo del Movimiento de Entrada por Traspaso
 									Se utiliza la sumaCantidadUsada, porque el registro solo se actualiza, si son dos o mas lotes,
-									se actualizar√° varias veces quedando con la ultima suma que es la que nos interesa que se guarde
+									se actualizar· varias veces quedando con la ultima suma que es la que nos interesa que se guarde
 									*/
 									UPDATE inv_mov_detalle SET cantidad=sumaCantidadUsada WHERE inv_mov_id=record4.id_mov AND producto_id=str_filas[3]::integer;
 									--AND inv_prod_presentacion_id=idPresDefault
@@ -51985,7 +54690,7 @@ BEGIN
 									/*
 									Actualizar registro de la Orden de Traspaso cuando la nueva cantidad es menor que la anterior
 									Se utiliza la sumaCantidadUsada, porque el registro solo se actualiza, si son dos o mas lotes,
-									se actualizar√° varias veces quedando con la ultima suma que es la que nos interesa que se guarde
+									se actualizar· varias veces quedando con la ultima suma que es la que nos interesa que se guarde
 									*/
 									UPDATE inv_otras_det SET cantidad_tras=sumaCantidadUsada  WHERE id=str_filas[2]::integer;
 									
@@ -51996,7 +54701,7 @@ BEGIN
 									--Actualizar la existencia del Lote
 									UPDATE inv_lote SET entradas=(entradas + cantDiferencia::double precision) WHERE id=idLote;
 									
-									--Actualizar registro del inv_lote_mov_det, esto actualizar√° origen y destino
+									--Actualizar registro del inv_lote_mov_det, esto actualizar· origen y destino
 									UPDATE inv_lote_mov_det SET cantidad = (cantidad - cantDiferencia::double precision )
 									WHERE inv_lote_mov_det.referencia_det_id=str_filas[2]::integer;
 									--AND inv_lote_mov_det.inv_lote_id=idLote;
@@ -52339,7 +55044,7 @@ BEGIN
 							VALUES(identificador_nuevo_movimiento_entrada, record1.inv_alm_id_destino ,record1.inv_alm_id_origen, record1.inv_prod_id, cantidad_calculada, precio_unitario, record1.inv_prod_presentacion_id);
 							
 							sql_select := '';
-							--query para verificar existencia del producto en el almacen y en el a√±o actual
+							--query para verificar existencia del producto en el almacen y en el aÒo actual
 							sql_select := 'SELECT count(id) FROM inv_exi WHERE inv_prod_id = '||record1.inv_prod_id||' AND inv_alm_id = '||id_almacen||' AND ano = '||ano_actual;
 							EXECUTE sql_select INTO exis;
 							
@@ -52398,7 +55103,7 @@ BEGIN
 						END IF;
 						
 						/*==============  Detalle De la Salida a la requicicion de la materioa prima que en realidad se utilizo ============*/
-						--obtener costo promedio actual del producto o materia prima que se utilizo en √±la formula
+						--obtener costo promedio actual del producto o materia prima que se utilizo en Òla formula
 						SELECT * FROM inv_obtiene_costo_promedio_actual(record1.inv_prod_id, espacio_tiempo_ejecucion) INTO costo_promedio_actual;
 						
 						--Guarda el detalle de inv_mov para la requisicion
@@ -52434,9 +55139,9 @@ BEGIN
 					
 					/*
 					iisudasdua sdu asud asdgags d asudjhajsdn alsdmaAS$%
-					4545$%$%/&/&/&/&%$¬∑"$%&/(/&%
-					/(()/&%$¬∑$%&/()=(/&%$&/(&%$&/())/&%$¬∑$$%&/(
-					%&/()(&/%&$¬∑$%%&/(/&%%$¬∑$$%&(/&&%$¬∑$%%&
+					4545$%$%/&/&/&/&%$∑"$%&/(/&%
+					/(()/&%$∑$%&/()=(/&%$&/(&%$&/())/&%$∑$$%&/(
+					%&/()(&/%&$∑$%%&/(/&%%$∑$$%&(/&&%$∑$%%&
 					*/
 					
 					--=========Record para hacer registro de entradas y movimientos de inventarios de acuerdo a los productos que se produjeron en la orden de produccion
@@ -52559,7 +55264,7 @@ BEGIN
 						/***
 						***Este es el ultimo cambio para corregir el calculo de costo al terminar la OP
 						***La cantidad total en Kilos, se convierte a la Unidad de Medida del Producto.
-						***Una vez hecha la conversi√≥n, se divide el Costo total/Cantidad en unidad del Producto
+						***Una vez hecha la conversiÛn, se divide el Costo total/Cantidad en unidad del Producto
 						***/
 						--Obtener la cantidad real de la produccion en Kilos
 						select sum(cantidad_usada) AS cantidad FROM (select * from pro_get_detalle_orden_produccionv2(record1.inv_prod_id,str_data[4]::integer,1, 0)  as foo(id integer, inv_prod_id integer, sku character varying,descripcion character varying, requiere_numero_lote boolean ,cantidad_adicional double precision,id_reg_det integer, cantidad double precision,elemento integer, lote character varying, inv_osal_id integer, inv_alm_id integer, gral_suc_id integer, agregado boolean, cantidad_usada double precision, guardado boolean) order by elemento) AS abt 
@@ -54126,6 +56831,219 @@ ALTER TABLE categorias_de_formulaciones_id_seq OWNER TO instance01;
 --
 
 ALTER SEQUENCE categorias_de_formulaciones_id_seq OWNED BY erp_categorias_de_productos.id;
+
+
+--
+-- Name: cfdi_c_impuesto; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE cfdi_c_impuesto (
+    id integer NOT NULL,
+    clave character varying,
+    descripcion character varying DEFAULT ''::character varying NOT NULL,
+    momento_creacion timestamp with time zone NOT NULL,
+    momento_actualizacion timestamp with time zone,
+    momento_baja timestamp with time zone,
+    id_usuario_creacion integer DEFAULT 0,
+    id_usuario_actualizacion integer DEFAULT 0,
+    id_usuario_baja integer DEFAULT 0
+);
+
+
+ALTER TABLE cfdi_c_impuesto OWNER TO instance01;
+
+--
+-- Name: cfdi_c_impuesto_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE cfdi_c_impuesto_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cfdi_c_impuesto_id_seq OWNER TO instance01;
+
+--
+-- Name: cfdi_c_impuesto_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE cfdi_c_impuesto_id_seq OWNED BY cfdi_c_impuesto.id;
+
+
+--
+-- Name: cfdi_claveprodserv; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE cfdi_claveprodserv (
+    id integer NOT NULL,
+    clave character varying,
+    descripcion character varying DEFAULT ''::character varying NOT NULL,
+    fecha_inicio_vigencia timestamp with time zone NOT NULL,
+    fecha_fin_vigencia timestamp with time zone,
+    momento_creacion timestamp with time zone NOT NULL,
+    momento_actualizacion timestamp with time zone,
+    momento_baja timestamp with time zone,
+    id_usuario_creacion integer DEFAULT 0,
+    id_usuario_actualizacion integer DEFAULT 0,
+    id_usuario_baja integer DEFAULT 0
+);
+
+
+ALTER TABLE cfdi_claveprodserv OWNER TO instance01;
+
+--
+-- Name: cfdi_claveprodserv_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE cfdi_claveprodserv_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cfdi_claveprodserv_id_seq OWNER TO instance01;
+
+--
+-- Name: cfdi_claveprodserv_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE cfdi_claveprodserv_id_seq OWNED BY cfdi_claveprodserv.id;
+
+
+--
+-- Name: cfdi_claveunidad; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE cfdi_claveunidad (
+    id integer NOT NULL,
+    clave character varying,
+    nombre character varying DEFAULT ''::character varying NOT NULL,
+    descripcion character varying DEFAULT ''::character varying NOT NULL,
+    fecha_inicio_vigencia timestamp with time zone NOT NULL,
+    fecha_fin_vigencia timestamp with time zone,
+    momento_creacion timestamp with time zone NOT NULL,
+    momento_actualizacion timestamp with time zone,
+    momento_baja timestamp with time zone,
+    id_usuario_creacion integer DEFAULT 0,
+    id_usuario_actualizacion integer DEFAULT 0,
+    id_usuario_baja integer DEFAULT 0
+);
+
+
+ALTER TABLE cfdi_claveunidad OWNER TO instance01;
+
+--
+-- Name: cfdi_claveunidad_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE cfdi_claveunidad_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cfdi_claveunidad_id_seq OWNER TO instance01;
+
+--
+-- Name: cfdi_claveunidad_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE cfdi_claveunidad_id_seq OWNED BY cfdi_claveunidad.id;
+
+
+--
+-- Name: cfdi_regimenes; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE cfdi_regimenes (
+    id integer NOT NULL,
+    numero_control character varying,
+    descripcion character varying DEFAULT ''::character varying NOT NULL,
+    aplica_persona_fisica boolean DEFAULT true,
+    aplica_persona_moral boolean DEFAULT true,
+    fecha_inicio_vigencia timestamp with time zone NOT NULL,
+    fecha_fin_vigencia timestamp with time zone,
+    momento_creacion timestamp with time zone NOT NULL,
+    momento_actualizacion timestamp with time zone,
+    momento_baja timestamp with time zone,
+    id_usuario_creacion integer DEFAULT 0,
+    id_usuario_actualizacion integer DEFAULT 0,
+    id_usuario_baja integer DEFAULT 0
+);
+
+
+ALTER TABLE cfdi_regimenes OWNER TO instance01;
+
+--
+-- Name: cfdi_regimenes_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE cfdi_regimenes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cfdi_regimenes_id_seq OWNER TO instance01;
+
+--
+-- Name: cfdi_regimenes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE cfdi_regimenes_id_seq OWNED BY cfdi_regimenes.id;
+
+
+--
+-- Name: cfdi_usos; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE cfdi_usos (
+    id integer NOT NULL,
+    numero_control character varying,
+    descripcion character varying DEFAULT ''::character varying NOT NULL,
+    aplica_persona_fisica boolean DEFAULT true,
+    aplica_persona_moral boolean DEFAULT true,
+    fecha_inicio_vigencia timestamp with time zone NOT NULL,
+    fecha_fin_vigencia timestamp with time zone,
+    momento_creacion timestamp with time zone NOT NULL,
+    momento_actualizacion timestamp with time zone,
+    momento_baja timestamp with time zone,
+    id_usuario_creacion integer DEFAULT 0,
+    id_usuario_actualizacion integer DEFAULT 0,
+    id_usuario_baja integer DEFAULT 0
+);
+
+
+ALTER TABLE cfdi_usos OWNER TO instance01;
+
+--
+-- Name: cfdi_usos_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE cfdi_usos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cfdi_usos_id_seq OWNER TO instance01;
+
+--
+-- Name: cfdi_usos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE cfdi_usos_id_seq OWNED BY cfdi_usos.id;
 
 
 --
@@ -55850,7 +58768,7 @@ COMMENT ON COLUMN crm_registro_casos.tipo IS '     identifica el tipo 1:_ si el 
 -- Name: COLUMN crm_registro_casos.tipo_caso; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN crm_registro_casos.tipo_caso IS ' 0:ninguno 2:Producto 3:Garantia 4:Distribucion 5:Da√±os 6:Devoluciones 7:Cobranza 8:Varios';
+COMMENT ON COLUMN crm_registro_casos.tipo_caso IS ' 0:ninguno 2:Producto 3:Garantia 4:Distribucion 5:DaÒos 6:Devoluciones 7:Cobranza 8:Varios';
 
 
 --
@@ -55991,7 +58909,7 @@ COMMENT ON COLUMN crm_registro_llamadas.gral_empleado_id IS 'ID del agente de ve
 -- Name: COLUMN crm_registro_llamadas.duracion; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN crm_registro_llamadas.duracion IS 'Hora  y mitad de Hora(1:30) indicando que la visita duro 1 hora y media. √âsta diraci√≥n incluye tiempo de traslado';
+COMMENT ON COLUMN crm_registro_llamadas.duracion IS 'Hora  y mitad de Hora(1:30) indicando que la visita duro 1 hora y media. …sta diraciÛn incluye tiempo de traslado';
 
 
 --
@@ -56061,7 +58979,8 @@ CREATE TABLE crm_registro_proyecto (
     kg double precision DEFAULT 0 NOT NULL,
     periodicidad double precision DEFAULT 0 NOT NULL,
     cxc_clie_clas1_id integer DEFAULT 0 NOT NULL,
-    cxc_clie_clas2_id integer DEFAULT 0 NOT NULL
+    cxc_clie_clas2_id integer DEFAULT 0 NOT NULL,
+    precio double precision DEFAULT 0 NOT NULL
 );
 
 
@@ -56196,7 +59115,7 @@ COMMENT ON COLUMN crm_registro_visitas.gral_empleado_id IS 'ID del agente de ven
 -- Name: COLUMN crm_registro_visitas.duracion; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN crm_registro_visitas.duracion IS 'Hora  y mitad de Hora(1:30) indicando que la visita duro 1 hora y media. √âsta diraci√≥n incluye tiempo de traslado';
+COMMENT ON COLUMN crm_registro_visitas.duracion IS 'Hora  y mitad de Hora(1:30) indicando que la visita duro 1 hora y media. …sta diraciÛn incluye tiempo de traslado';
 
 
 --
@@ -56421,6 +59340,48 @@ ALTER SEQUENCE crm_tipos_seguimiento_visita_id_seq OWNED BY crm_tipos_seguimient
 
 
 --
+-- Name: ctb_sdo_cta; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE ctb_sdo_cta (
+    id integer NOT NULL,
+    gral_suc_id integer DEFAULT 0 NOT NULL,
+    ano integer DEFAULT 0 NOT NULL,
+    mes smallint DEFAULT 0 NOT NULL,
+    cta_mayor smallint DEFAULT 0 NOT NULL,
+    clasifica smallint DEFAULT 0 NOT NULL,
+    cta character varying DEFAULT ''::character varying,
+    saldo_ini double precision DEFAULT 0 NOT NULL,
+    debe double precision DEFAULT 0 NOT NULL,
+    haber double precision DEFAULT 0 NOT NULL,
+    saldo_fin double precision DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE ctb_sdo_cta OWNER TO instance01;
+
+--
+-- Name: ctb-sdo_cta_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE "ctb-sdo_cta_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "ctb-sdo_cta_id_seq" OWNER TO instance01;
+
+--
+-- Name: ctb-sdo_cta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE "ctb-sdo_cta_id_seq" OWNED BY ctb_sdo_cta.id;
+
+
+--
 -- Name: ctb_app; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
 --
 
@@ -56570,6 +59531,7 @@ CREATE TABLE ctb_cta (
     tipo integer DEFAULT 0 NOT NULL,
     naturaleza integer DEFAULT 0 NOT NULL,
     ctb_app_id integer DEFAULT 0 NOT NULL,
+    ctb_cta_sat_id integer DEFAULT 0 NOT NULL,
     CONSTRAINT ch_ctb_cta_cta CHECK (((cta >= 0) AND (cta <= 99999))),
     CONSTRAINT ch_ctb_cta_detalle CHECK (((detalle >= 0) AND (detalle <= 1))),
     CONSTRAINT ch_ctb_cta_estatus CHECK (((estatus >= 1) AND (estatus <= 2))),
@@ -56630,6 +59592,42 @@ ALTER TABLE ctb_cta_id_seq OWNER TO instance01;
 --
 
 ALTER SEQUENCE ctb_cta_id_seq OWNED BY ctb_cta.id;
+
+
+--
+-- Name: ctb_cta_sat; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE ctb_cta_sat (
+    id integer NOT NULL,
+    nivel smallint DEFAULT 0 NOT NULL,
+    codigo character varying NOT NULL,
+    nombre character varying NOT NULL,
+    borrado_logico boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE ctb_cta_sat OWNER TO instance01;
+
+--
+-- Name: ctb_cta_sat_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE ctb_cta_sat_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE ctb_cta_sat_id_seq OWNER TO instance01;
+
+--
+-- Name: ctb_cta_sat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE ctb_cta_sat_id_seq OWNED BY ctb_cta_sat.id;
 
 
 --
@@ -56727,6 +59725,46 @@ CREATE TABLE ctb_par (
 ALTER TABLE ctb_par OWNER TO instance01;
 
 --
+-- Name: ctb_par_er; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE ctb_par_er (
+    id integer NOT NULL,
+    gral_emp_id integer DEFAULT 0 NOT NULL,
+    cta_mayor smallint DEFAULT 0 NOT NULL,
+    clasifica smallint DEFAULT 0 NOT NULL,
+    descripcion character varying DEFAULT ''::character varying,
+    cta character varying DEFAULT ''::character varying,
+    detalle boolean DEFAULT false NOT NULL,
+    operacion smallint DEFAULT 0 NOT NULL,
+    orden smallint DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE ctb_par_er OWNER TO instance01;
+
+--
+-- Name: ctb_par_er_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE ctb_par_er_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE ctb_par_er_id_seq OWNER TO instance01;
+
+--
+-- Name: ctb_par_er_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE ctb_par_er_id_seq OWNED BY ctb_par_er.id;
+
+
+--
 -- Name: ctb_par_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
 --
 
@@ -56779,12 +59817,50 @@ CREATE TABLE ctb_pol (
     borrado_logico boolean DEFAULT false,
     descripcion character varying DEFAULT ''::character varying NOT NULL,
     referencia character varying DEFAULT ''::character varying NOT NULL,
+    fecha timestamp with time zone,
     CONSTRAINT ch_ctb_pol_ano CHECK (((ano >= 2000) AND (ano <= 2100))),
     CONSTRAINT ch_ctb_pol_mes CHECK (((mes >= 1) AND (mes <= 12)))
 );
 
 
 ALTER TABLE ctb_pol OWNER TO instance01;
+
+--
+-- Name: ctb_pol_anios; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE ctb_pol_anios (
+    id integer NOT NULL,
+    gral_emp_id integer NOT NULL,
+    anio integer NOT NULL,
+    cerrado boolean DEFAULT false NOT NULL,
+    fecha_cierre timestamp with time zone,
+    glal_usr_id integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE ctb_pol_anios OWNER TO instance01;
+
+--
+-- Name: ctb_pol_anios_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE ctb_pol_anios_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE ctb_pol_anios_id_seq OWNER TO instance01;
+
+--
+-- Name: ctb_pol_anios_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE ctb_pol_anios_id_seq OWNED BY ctb_pol_anios.id;
+
 
 --
 -- Name: ctb_pol_cons; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
@@ -57655,7 +60731,7 @@ ALTER TABLE cxc_clie_df OWNER TO instance01;
 -- Name: TABLE cxc_clie_df; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON TABLE cxc_clie_df IS 'Tabla de direcciones fiscales de clientes. En √©sta tabla existe un registro con el ID=1. √âste registro es para  utilizarla como llave foranea en las tablas poc_pedidos, erp_prefacturas, fac_docs y fac_rems en el caso de que la direcci√≥n de Facturaci√≥n sea la DEFAULT, es decir, la direcci√≥n que se encuentra en la tabla de Clientes(cxc_clie)';
+COMMENT ON TABLE cxc_clie_df IS 'Tabla de direcciones fiscales de clientes. En Èsta tabla existe un registro con el ID=1. …ste registro es para  utilizarla como llave foranea en las tablas poc_pedidos, erp_prefacturas, fac_docs y fac_rems en el caso de que la direcciÛn de FacturaciÛn sea la DEFAULT, es decir, la direcciÛn que se encuentra en la tabla de Clientes(cxc_clie)';
 
 
 --
@@ -60254,7 +63330,7 @@ COMMENT ON COLUMN erp_monedavers.momento_creacion IS 'momento en el espacio tiem
 -- Name: COLUMN erp_monedavers.moneda_id; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN erp_monedavers.moneda_id IS 'Identificador que se√±ala a que denominacion pertenece esta version de denominacion';
+COMMENT ON COLUMN erp_monedavers.moneda_id IS 'Identificador que seÒala a que denominacion pertenece esta version de denominacion';
 
 
 --
@@ -61267,14 +64343,14 @@ ALTER TABLE fac_cfds_conf OWNER TO instance01;
 -- Name: COLUMN fac_cfds_conf.archivo_certificado; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN fac_cfds_conf.archivo_certificado IS 'Archivo de la llave p√∫blica del CSD que deber√° estar incluida en el archivo CFD y CFDI con Timbre Fiscal en el atributo "certificado" y codificada en base64. No aplica para CFDI con Conector Fiscal.';
+COMMENT ON COLUMN fac_cfds_conf.archivo_certificado IS 'Archivo de la llave p˙blica del CSD que deber· estar incluida en el archivo CFD y CFDI con Timbre Fiscal en el atributo "certificado" y codificada en base64. No aplica para CFDI con Conector Fiscal.';
 
 
 --
 -- Name: COLUMN fac_cfds_conf.numero_certificado; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN fac_cfds_conf.numero_certificado IS 'Informaci√≥n del n√∫mero de certificado que se est√° utilizando para el firmado del comprobante CFD y  CFDI con Timbre Fiscal. No aplica para CFDI con Conector Fiscal.';
+COMMENT ON COLUMN fac_cfds_conf.numero_certificado IS 'InformaciÛn del n˙mero de certificado que se est· utilizando para el firmado del comprobante CFD y  CFDI con Timbre Fiscal. No aplica para CFDI con Conector Fiscal.';
 
 
 --
@@ -61288,7 +64364,7 @@ COMMENT ON COLUMN fac_cfds_conf.archivo_llave IS 'Archivo de la llave privada de
 -- Name: COLUMN fac_cfds_conf.password_llave; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN fac_cfds_conf.password_llave IS 'Contrase√±a de la llave privada del CSD para el firmado de la cadena original del CFD y  CFDI con Timbre Fiscal. No aplica para CFDI con Conector Fiscal.';
+COMMENT ON COLUMN fac_cfds_conf.password_llave IS 'ContraseÒa de la llave privada del CSD para el firmado de la cadena original del CFD y  CFDI con Timbre Fiscal. No aplica para CFDI con Conector Fiscal.';
 
 
 --
@@ -61309,7 +64385,7 @@ COMMENT ON COLUMN fac_cfds_conf.archivo_xsd_cfdi IS 'Archivo de esquema del CFDi
 -- Name: COLUMN fac_cfds_conf.archivo_wsdl_timbrado_cfdi; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN fac_cfds_conf.archivo_wsdl_timbrado_cfdi IS 'Archivo WSDL, contiene la definici√≥n del servicio web que deber√° invocar el desarrollo y as√≠ utilizar el servicio de timbre fiscal. Solo para facturacion con Timbre Fiscal.';
+COMMENT ON COLUMN fac_cfds_conf.archivo_wsdl_timbrado_cfdi IS 'Archivo WSDL, contiene la definiciÛn del servicio web que deber· invocar el desarrollo y asÌ utilizar el servicio de timbre fiscal. Solo para facturacion con Timbre Fiscal.';
 
 
 --
@@ -61330,7 +64406,7 @@ COMMENT ON COLUMN fac_cfds_conf.usuario IS 'Nombre de Usuario para conexion a WS
 -- Name: COLUMN fac_cfds_conf.contrasena; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN fac_cfds_conf.contrasena IS 'Contrase√±a de Usuario para conexion a WS ServiSim';
+COMMENT ON COLUMN fac_cfds_conf.contrasena IS 'ContraseÒa de Usuario para conexion a WS ServiSim';
 
 
 --
@@ -61458,7 +64534,7 @@ COMMENT ON COLUMN fac_docs.enviar_ruta IS 'True=Debe aparecer en la busqueda de 
 -- Name: COLUMN fac_docs.inv_alm_id; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN fac_docs.inv_alm_id IS 'Almacen de donde se di√≥ salida los productos Facturados';
+COMMENT ON COLUMN fac_docs.inv_alm_id IS 'Almacen de donde se diÛ salida los productos Facturados';
 
 
 --
@@ -63453,11 +66529,19 @@ CREATE TABLE gral_ieps (
     gral_usr_id_actualiza integer DEFAULT 0,
     gral_usr_id_cancela integer DEFAULT 0,
     gral_emp_id integer DEFAULT 0,
-    gral_suc_id integer DEFAULT 0
+    gral_suc_id integer DEFAULT 0,
+    cfdi_c_impuesto integer
 );
 
 
 ALTER TABLE gral_ieps OWNER TO instance01;
+
+--
+-- Name: COLUMN gral_ieps.cfdi_c_impuesto; Type: COMMENT; Schema: public; Owner: instance01
+--
+
+COMMENT ON COLUMN gral_ieps.cfdi_c_impuesto IS 'Llave foranea para claves del SAT';
+
 
 --
 -- Name: gral_ieps_cta; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
@@ -63608,11 +66692,19 @@ CREATE TABLE gral_imptos (
     ieps_2 double precision,
     gral_usr_id_crea integer DEFAULT 0,
     gral_usr_id_actualiza integer DEFAULT 0,
-    gral_usr_id_cancela integer DEFAULT 0
+    gral_usr_id_cancela integer DEFAULT 0,
+    cfdi_c_impuesto integer
 );
 
 
 ALTER TABLE gral_imptos OWNER TO instance01;
+
+--
+-- Name: COLUMN gral_imptos.cfdi_c_impuesto; Type: COMMENT; Schema: public; Owner: instance01
+--
+
+COMMENT ON COLUMN gral_imptos.cfdi_c_impuesto IS 'Llave foranea para claves del SAT';
+
 
 --
 -- Name: gral_imptos_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
@@ -65492,7 +68584,7 @@ COMMENT ON COLUMN inv_odev.inv_alm_id IS 'Almacen Destino de la mercancia en dev
 -- Name: COLUMN inv_odev.folio_ncto; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN inv_odev.folio_ncto IS 'Serie y folio de la nota de credito de la nota de credito que gener√≥ la devolucion.';
+COMMENT ON COLUMN inv_odev.folio_ncto IS 'Serie y folio de la nota de credito de la nota de credito que generÛ la devolucion.';
 
 
 --
@@ -65516,7 +68608,7 @@ ALTER TABLE inv_odev_detalle OWNER TO instance01;
 -- Name: COLUMN inv_odev_detalle.cant_fac_lote; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN inv_odev_detalle.cant_fac_lote IS 'Esta cantidad que se factur√≥ del lote.';
+COMMENT ON COLUMN inv_odev_detalle.cant_fac_lote IS 'Esta cantidad que se facturÛ del lote.';
 
 
 --
@@ -67076,11 +70168,19 @@ COMMENT ON COLUMN inv_prod_presentaciones.cantidad IS 'Equivalencia de la presen
 CREATE TABLE inv_prod_tipos (
     id integer NOT NULL,
     titulo character varying NOT NULL,
-    borrado_logico boolean DEFAULT false
+    borrado_logico boolean DEFAULT false,
+    cfdi_prodserv_id integer
 );
 
 
 ALTER TABLE inv_prod_tipos OWNER TO instance01;
+
+--
+-- Name: COLUMN inv_prod_tipos.cfdi_prodserv_id; Type: COMMENT; Schema: public; Owner: instance01
+--
+
+COMMENT ON COLUMN inv_prod_tipos.cfdi_prodserv_id IS 'Llave foranea para claves del SAT';
+
 
 --
 -- Name: inv_prod_tipos_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
@@ -67112,11 +70212,19 @@ CREATE TABLE inv_prod_unidades (
     titulo character varying NOT NULL,
     borrado_logico boolean DEFAULT false NOT NULL,
     titulo_abr character varying DEFAULT ''::character varying,
-    decimales integer
+    decimales integer,
+    cfdi_unidad_id integer NOT NULL
 );
 
 
 ALTER TABLE inv_prod_unidades OWNER TO instance01;
+
+--
+-- Name: COLUMN inv_prod_unidades.cfdi_unidad_id; Type: COMMENT; Schema: public; Owner: instance01
+--
+
+COMMENT ON COLUMN inv_prod_unidades.cfdi_unidad_id IS 'Llave foranea para lidiar con claves del sat con respecto a unidades';
+
 
 --
 -- Name: inv_prod_unidades_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
@@ -68612,6 +71720,52 @@ ALTER SEQUENCE poc_cot_prospecto_id_seq OWNED BY poc_cot_prospecto.id;
 
 
 --
+-- Name: poc_cot_saludo_despedida; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
+--
+
+CREATE TABLE poc_cot_saludo_despedida (
+    id integer NOT NULL,
+    tipo character varying(9),
+    titulo text DEFAULT ''::text,
+    status boolean DEFAULT false,
+    gral_emp_id integer DEFAULT 0,
+    gral_suc_id integer DEFAULT 0,
+    momento_actualizacion timestamp with time zone,
+    gral_usr_id_actualizacion integer DEFAULT 0
+);
+
+
+ALTER TABLE poc_cot_saludo_despedida OWNER TO instance01;
+
+--
+-- Name: COLUMN poc_cot_saludo_despedida.status; Type: COMMENT; Schema: public; Owner: instance01
+--
+
+COMMENT ON COLUMN poc_cot_saludo_despedida.status IS 'TRUE=Activo, FALSE=Inactivo';
+
+
+--
+-- Name: poc_cot_saludo_despedida_id_seq; Type: SEQUENCE; Schema: public; Owner: instance01
+--
+
+CREATE SEQUENCE poc_cot_saludo_despedida_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE poc_cot_saludo_despedida_id_seq OWNER TO instance01;
+
+--
+-- Name: poc_cot_saludo_despedida_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: instance01
+--
+
+ALTER SEQUENCE poc_cot_saludo_despedida_id_seq OWNED BY poc_cot_saludo_despedida.id;
+
+
+--
 -- Name: poc_ped_bo; Type: TABLE; Schema: public; Owner: instance01; Tablespace: 
 --
 
@@ -68650,7 +71804,7 @@ ALTER TABLE poc_ped_bo OWNER TO instance01;
 -- Name: COLUMN poc_ped_bo.estatus; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN poc_ped_bo.estatus IS '0=No ha sido tocado por Modulo de Producci√≥n, 1=Ya ha sido tocado por Modulo de Producci√≥n';
+COMMENT ON COLUMN poc_ped_bo.estatus IS '0=No ha sido tocado por Modulo de ProducciÛn, 1=Ya ha sido tocado por Modulo de ProducciÛn';
 
 
 --
@@ -68825,14 +71979,14 @@ ALTER TABLE poc_pedidos_detalle OWNER TO instance01;
 -- Name: COLUMN poc_pedidos_detalle.reservado; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN poc_pedidos_detalle.reservado IS 'Almacena la cantidad que reserv√≥ en inv_exi';
+COMMENT ON COLUMN poc_pedidos_detalle.reservado IS 'Almacena la cantidad que reservÛ en inv_exi';
 
 
 --
 -- Name: COLUMN poc_pedidos_detalle.backorder; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN poc_pedidos_detalle.backorder IS 'TRUE=Gener√≥ BackOrder, FALSE=No gener√≥ BackOrder';
+COMMENT ON COLUMN poc_pedidos_detalle.backorder IS 'TRUE=GenerÛ BackOrder, FALSE=No generÛ BackOrder';
 
 
 --
@@ -69384,7 +72538,7 @@ COMMENT ON COLUMN tes_mov.tes_che_id IS 'Referencia al id de la tabla tes_che, t
 -- Name: COLUMN tes_mov.ano; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.ano IS 'Es el a√±o actual y contable';
+COMMENT ON COLUMN tes_mov.ano IS 'Es el aÒo actual y contable';
 
 
 --
@@ -69412,7 +72566,7 @@ COMMENT ON COLUMN tes_mov.tes_mov_tipo_id IS 'Referencia a la tabla tes_mov_tipo
 -- Name: COLUMN tes_mov.tes_con_id; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.tes_con_id IS 'Referencia a la tabla de tes_con(Conceptos Bancarios), es lo que va en la p√≥liza.';
+COMMENT ON COLUMN tes_mov.tes_con_id IS 'Referencia a la tabla de tes_con(Conceptos Bancarios), es lo que va en la pÛliza.';
 
 
 --
@@ -69468,7 +72622,7 @@ COMMENT ON COLUMN tes_mov.referencia IS 'Solo para Transferencia Bancaria, debe 
 -- Name: COLUMN tes_mov.fecha_emision; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.fecha_emision IS 'Fecha de emisi√≥n del cheque';
+COMMENT ON COLUMN tes_mov.fecha_emision IS 'Fecha de emisiÛn del cheque';
 
 
 --
@@ -69510,21 +72664,21 @@ COMMENT ON COLUMN tes_mov.cant_letra IS 'Monto del Cheque en Letras';
 -- Name: COLUMN tes_mov.fecha_conciliado; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.fecha_conciliado IS 'Default misma fecha  de emisi√≥n';
+COMMENT ON COLUMN tes_mov.fecha_conciliado IS 'Default misma fecha  de emisiÛn';
 
 
 --
 -- Name: COLUMN tes_mov.poliza; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.poliza IS 'Numero de p√≥liza de contabilidad , Default=0 ';
+COMMENT ON COLUMN tes_mov.poliza IS 'Numero de pÛliza de contabilidad , Default=0 ';
 
 
 --
 -- Name: COLUMN tes_mov.ref_num; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.ref_num IS 'Es el n√∫m. de cheque si es cheque';
+COMMENT ON COLUMN tes_mov.ref_num IS 'Es el n˙m. de cheque si es cheque';
 
 
 --
@@ -69552,7 +72706,7 @@ COMMENT ON COLUMN tes_mov.fecha_captura IS 'Fecha en que se guarda el registo de
 -- Name: COLUMN tes_mov.fecha_cancela; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.fecha_cancela IS 'Fecha de Cancelaci√≥n del Cheque';
+COMMENT ON COLUMN tes_mov.fecha_cancela IS 'Fecha de CancelaciÛn del Cheque';
 
 
 --
@@ -69573,21 +72727,21 @@ COMMENT ON COLUMN tes_mov.anticipo_cliente IS '(True/False)  Default  FALSE, si 
 -- Name: COLUMN tes_mov.obs_retenido; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.obs_retenido IS 'Observaciones del proceso retenci√≥n';
+COMMENT ON COLUMN tes_mov.obs_retenido IS 'Observaciones del proceso retenciÛn';
 
 
 --
 -- Name: COLUMN tes_mov.referencia_transfer; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.referencia_transfer IS 'Aqu√≠ va el n√∫mero de referencia si es Transferencia Bancaria';
+COMMENT ON COLUMN tes_mov.referencia_transfer IS 'AquÌ va el n˙mero de referencia si es Transferencia Bancaria';
 
 
 --
 -- Name: COLUMN tes_mov.obs_cancela; Type: COMMENT; Schema: public; Owner: instance01
 --
 
-COMMENT ON COLUMN tes_mov.obs_cancela IS 'Observaciones capturadas en el proceso de Cancelaci√≥n';
+COMMENT ON COLUMN tes_mov.obs_cancela IS 'Observaciones capturadas en el proceso de CancelaciÛn';
 
 
 --
@@ -69741,6 +72895,41 @@ CREATE VIEW users AS
 
 
 ALTER TABLE users OWNER TO instance01;
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
+ALTER TABLE ONLY cfdi_c_impuesto ALTER COLUMN id SET DEFAULT nextval('cfdi_c_impuesto_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
+ALTER TABLE ONLY cfdi_claveprodserv ALTER COLUMN id SET DEFAULT nextval('cfdi_claveprodserv_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
+ALTER TABLE ONLY cfdi_claveunidad ALTER COLUMN id SET DEFAULT nextval('cfdi_claveunidad_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
+ALTER TABLE ONLY cfdi_regimenes ALTER COLUMN id SET DEFAULT nextval('cfdi_regimenes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
+ALTER TABLE ONLY cfdi_usos ALTER COLUMN id SET DEFAULT nextval('cfdi_usos_id_seq'::regclass);
+
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
@@ -70054,6 +73243,13 @@ ALTER TABLE ONLY ctb_cta ALTER COLUMN id SET DEFAULT nextval('ctb_cta_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
 --
 
+ALTER TABLE ONLY ctb_cta_sat ALTER COLUMN id SET DEFAULT nextval('ctb_cta_sat_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
 ALTER TABLE ONLY ctb_may ALTER COLUMN id SET DEFAULT nextval('ctb_may_id_seq'::regclass);
 
 
@@ -70068,7 +73264,21 @@ ALTER TABLE ONLY ctb_par ALTER COLUMN id SET DEFAULT nextval('ctb_par_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
 --
 
+ALTER TABLE ONLY ctb_par_er ALTER COLUMN id SET DEFAULT nextval('ctb_par_er_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
 ALTER TABLE ONLY ctb_pol ALTER COLUMN id SET DEFAULT nextval('ctb_pol_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
+ALTER TABLE ONLY ctb_pol_anios ALTER COLUMN id SET DEFAULT nextval('ctb_pol_anios_id_seq'::regclass);
 
 
 --
@@ -70083,6 +73293,13 @@ ALTER TABLE ONLY ctb_pol_cons ALTER COLUMN id SET DEFAULT nextval('ctb_pol_cons_
 --
 
 ALTER TABLE ONLY ctb_pol_mov ALTER COLUMN id SET DEFAULT nextval('ctb_pol_mov_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
+ALTER TABLE ONLY ctb_sdo_cta ALTER COLUMN id SET DEFAULT nextval('"ctb-sdo_cta_id_seq"'::regclass);
 
 
 --
@@ -71741,6 +74958,13 @@ ALTER TABLE ONLY poc_cot_prospecto ALTER COLUMN id SET DEFAULT nextval('poc_cot_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
 --
 
+ALTER TABLE ONLY poc_cot_saludo_despedida ALTER COLUMN id SET DEFAULT nextval('poc_cot_saludo_despedida_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: instance01
+--
+
 ALTER TABLE ONLY poc_ped_bo ALTER COLUMN id SET DEFAULT nextval('poc_ped_bo_id_seq'::regclass);
 
 
@@ -71890,6 +75114,46 @@ ALTER TABLE ONLY erp_categorias_de_productos
 
 ALTER TABLE ONLY erp_categorias_de_productos
     ADD CONSTRAINT categorias_de_productos_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cfdi_c_impuesto_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY cfdi_c_impuesto
+    ADD CONSTRAINT cfdi_c_impuesto_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cfdi_claveprodserv_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY cfdi_claveprodserv
+    ADD CONSTRAINT cfdi_claveprodserv_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cfdi_claveunidad_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY cfdi_claveunidad
+    ADD CONSTRAINT cfdi_claveunidad_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cfdi_regimenes_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY cfdi_regimenes
+    ADD CONSTRAINT cfdi_regimenes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cfdi_usos_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY cfdi_usos
+    ADD CONSTRAINT cfdi_usos_pkey PRIMARY KEY (id);
 
 
 --
@@ -72373,11 +75637,27 @@ ALTER TABLE ONLY ctb_may
 
 
 --
+-- Name: ctb_par_er_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY ctb_par_er
+    ADD CONSTRAINT ctb_par_er_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ctb_par_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
 --
 
 ALTER TABLE ONLY ctb_par
     ADD CONSTRAINT ctb_par_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ctb_pol_anios_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY ctb_pol_anios
+    ADD CONSTRAINT ctb_pol_anios_pkey PRIMARY KEY (id);
 
 
 --
@@ -72402,6 +75682,14 @@ ALTER TABLE ONLY ctb_pol_mov
 
 ALTER TABLE ONLY ctb_pol
     ADD CONSTRAINT ctb_pol_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ctb_sdo_cta_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY ctb_sdo_cta
+    ADD CONSTRAINT ctb_sdo_cta_pkey PRIMARY KEY (id);
 
 
 --
@@ -74365,6 +77653,14 @@ ALTER TABLE ONLY crm_registro_proyecto_competidor
 
 
 --
+-- Name: pk_ctb_cta_sat; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY ctb_cta_sat
+    ADD CONSTRAINT pk_ctb_cta_sat PRIMARY KEY (id);
+
+
+--
 -- Name: poc_cot_clie_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
 --
 
@@ -74426,6 +77722,14 @@ ALTER TABLE ONLY poc_cot_politicas_pago
 
 ALTER TABLE ONLY poc_cot_prospecto
     ADD CONSTRAINT poc_cot_prospecto_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: poc_cot_saludo_despedida_pago_pkey; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY poc_cot_saludo_despedida
+    ADD CONSTRAINT poc_cot_saludo_despedida_pago_pkey PRIMARY KEY (id);
 
 
 --
@@ -74677,6 +77981,14 @@ ALTER TABLE ONLY erp_tipos_de_traspaso
 
 
 --
+-- Name: unik_ctb_pol_anios; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY ctb_pol_anios
+    ADD CONSTRAINT unik_ctb_pol_anios UNIQUE (gral_emp_id, anio);
+
+
+--
 -- Name: unik_ctb_pol_cons; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
 --
 
@@ -74690,6 +78002,14 @@ ALTER TABLE ONLY ctb_pol_cons
 
 ALTER TABLE ONLY fac_cfdis
     ADD CONSTRAINT unique_cfdis UNIQUE (tipo, ref_id, gral_emp_id, gral_suc_id);
+
+
+--
+-- Name: unique_ctb_cta_sat_codigo; Type: CONSTRAINT; Schema: public; Owner: instance01; Tablespace: 
+--
+
+ALTER TABLE ONLY ctb_cta_sat
+    ADD CONSTRAINT unique_ctb_cta_sat_codigo UNIQUE (codigo);
 
 
 --
@@ -75654,6 +78974,14 @@ ALTER TABLE ONLY inv_prod_lineas
 
 ALTER TABLE ONLY inv_prod
     ADD CONSTRAINT inv_prod_tipo_de_producto_id_fkey FOREIGN KEY (tipo_de_producto_id) REFERENCES inv_prod_tipos(id);
+
+
+--
+-- Name: inv_prod_unidades_cfdi_unidad_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: instance01
+--
+
+ALTER TABLE ONLY inv_prod_unidades
+    ADD CONSTRAINT inv_prod_unidades_cfdi_unidad_id_fkey FOREIGN KEY (cfdi_unidad_id) REFERENCES cfdi_claveunidad(id);
 
 
 --
