@@ -6,6 +6,7 @@ package com.agnux.kemikal.springdaos;
 
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.StringHelper;
+import com.agnux.kemikal.controllers.PotCatCusorder;
 import com.agnux.kemikal.interfacedaos.PocInterfaceDao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,6 +51,16 @@ public class PocSpringDao implements PocInterfaceDao{
             }
         );
         return hm;
+    }
+    
+    @Override
+    public String poc_cat_cusorder(PotCatCusorder pc) {
+        String valor_retorno="";
+        Map<String, Object> update = this.getJdbcTemplate().queryForMap(pc.conform_cat_store());
+
+        valor_retorno = update.get("poc_cat_cusorder").toString();
+
+        return valor_retorno;
     }
     
     @Override

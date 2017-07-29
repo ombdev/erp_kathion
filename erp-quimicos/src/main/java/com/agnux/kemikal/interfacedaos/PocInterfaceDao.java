@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package com.agnux.kemikal.interfacedaos;
+import com.agnux.kemikal.controllers.PotCatCusorder;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
@@ -130,4 +131,6 @@ public interface PocInterfaceDao{
     public HashMap<String, Object> getVerificarCotizacion(String folio_cotizacion, Integer id_suc);
 
     public HashMap<String, String> poc_val_cusorder(Integer usr_id, String curr_val, String date_lim, Integer pay_met, String account, String matrix);
+
+    public String poc_cat_cusorder(PotCatCusorder pc);
 }
