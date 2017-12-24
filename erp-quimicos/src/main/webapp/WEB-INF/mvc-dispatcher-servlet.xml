@@ -13,19 +13,7 @@
 	<context:component-scan base-package="com.agnux.kemikal.controllers" />
         
 	<mvc:annotation-driven />
-        
-        
-        <!--   Inicia  nuevo   -->
-        <!--<bean id="viewResolver" class=" org.springframework.web.servlet.view.InternalResourceViewResolver" >
-            <property name="prefix">
-                <value>/jsp/</value>
-            </property>
-            <property name="suffix">
-                <value>.jsp</value>
-            </property>
-        </bean> -->
-        
-        
+       
         <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
             <property name="resourceLoaderPath" value="/"/>
         </bean>
@@ -58,7 +46,8 @@
         <!--Conexion a bd instance01 LOCAL-->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	     <property name="driverClassName" value="org.postgresql.Driver" />
-             <property name="url" value="jdbc:postgresql://localhost:5432/instance01" />
+            <property name="url" value="jdbc:postgresql://kathion.cu6w6h5eh02w.us-east-2.rds.amazonaws.com:5432/instance01" />  
+            <!--  <property name="url" value="jdbc:postgresql://158.85.29.125:5555/instance01" />-->
 	     <property name="username" value="instance01" />
 	     <property name="password" value="instance01" />
 	</bean>
