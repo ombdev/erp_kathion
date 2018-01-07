@@ -132,8 +132,7 @@ class FacPdf(BuilderGen):
                 'RECEPTOR_COUNTRY': row['rpais'],
                 'RECEPTOR_STATE': row['restado'],
                 'RECEPTOR_TOWN': row['rcolonia'],
-                'RECEPTOR_CP': row['rcp'],
-                'METODO_PAGO': "PUE"
+                'RECEPTOR_CP': row['rcp']
             }
 
     def __load_extra_info(self, conn, serie_folio, cap):
@@ -679,7 +678,7 @@ class FacPdf(BuilderGen):
         def addons():
             c = []
             c.append([dat['CAP_LOADED']['TL_CUST_NUM'], dat['CAP_LOADED']['TL_PAY_MET']])
-            c.append([dat['EXTRA_INFO']['CUSTOMER_CONTROL_ID'], dat['XML_LACK']['METODO_PAGO']])
+            c.append([dat['EXTRA_INFO']['CUSTOMER_CONTROL_ID'], dat['XML_PARSED']['METODO_PAGO']])
             c.append([dat['CAP_LOADED']['TL_ORDER_NUM'], dat['CAP_LOADED']['TL_PAY_COND']])
             c.append([dat['EXTRA_INFO']['PURCHASE_NUMBER'], dat['EXTRA_INFO']['PAYMENT_CONSTRAINT']])
             c.append([dat['CAP_LOADED']['TL_BILL_CURR'], dat['CAP_LOADED']['TL_PAY_WAY']])
