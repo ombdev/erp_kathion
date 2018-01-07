@@ -41,6 +41,7 @@ class SaxReader(xml.sax.ContentHandler):
             'CFDI_SUBTOTAL': None,
             'CFDI_TOTAL': None,
             'FORMA_PAGO': None,
+            'METODO_PAGO': None,
             'ARTIFACTS': [],
             'TAXES': {
                 'RET': {
