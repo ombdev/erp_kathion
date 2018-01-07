@@ -409,7 +409,7 @@ class FacXml(BuilderGen):
         c.Folio = dat['CONTROL']['FOLIO']  # optional
         c.Fecha = dat['TIME_STAMP']
         c.Sello = '__DIGITAL_SIGN_HERE__'
-        c.FormaPago = "01"  # optional
+        c.FormaPago = dat["FORMA_PAGO"]['CLAVE']  # optional
         c.NoCertificado = dat['NUMERO_CERTIFICADO']
         c.Certificado = dat['CERT_B64']
         c.SubTotal = dat['TOTALES']['IMPORTE_SUM']
