@@ -231,33 +231,25 @@ public class PocPedidosController {
         HashMap<String,ArrayList<HashMap<String, String>>> jsonretorno = new HashMap<String,ArrayList<HashMap<String, String>>>();
         ArrayList<HashMap<String, String>> datosPedido = new ArrayList<HashMap<String, String>>();
         ArrayList<HashMap<String, String>> datosGrid = new ArrayList<HashMap<String, String>>();
-        ArrayList<HashMap<String, String>> valorIva = new ArrayList<HashMap<String, String>>();
         ArrayList<HashMap<String, String>> tipoCambioActual = new ArrayList<HashMap<String, String>>();
         ArrayList<HashMap<String, String>> arrayExtra = new ArrayList<HashMap<String, String>>();
-        ArrayList<HashMap<String, String>> datosTrans = new ArrayList<HashMap<String, String>>();
-        ArrayList<HashMap<String, String>> paises = new ArrayList<HashMap<String, String>>();
-        ArrayList<HashMap<String, String>> estadosOrigen = new ArrayList<HashMap<String, String>>();
-        ArrayList<HashMap<String, String>> municipiosOrigen = new ArrayList<HashMap<String, String>>();
-        ArrayList<HashMap<String, String>> estadosDestino = new ArrayList<HashMap<String, String>>();
-        ArrayList<HashMap<String, String>> municipiosDestino = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> extra = new HashMap<String, String>();
         HashMap<String, String> tc = new HashMap<String, String>();
-        HashMap<String, String> parametros = new HashMap<String, String>();
-        HashMap<String, String> userDat = new HashMap<String, String>();
-        
+
         boolean obtener_todos_los_agentes=false;
         
         //Decodificar id de usuario
         Integer id_usuario = Integer.parseInt(Base64Coder.decodeString(id_user));
-        userDat = this.getHomeDao().getUserById(id_usuario);
+        HashMap<String, String> userDat = this.getHomeDao().getUserById(id_usuario);
         
         Integer id_empresa = Integer.parseInt(userDat.get("empresa_id"));
         Integer id_sucursal = Integer.parseInt(userDat.get("sucursal_id"));
         //Esta variable indica si la empresa incluye modulo de produccion
         extra.put("mod_produccion", userDat.get("incluye_produccion"));
+
         //Esta variable indica si la empresa es transportista
         extra.put("transportista", userDat.get("transportista").toLowerCase());
-        
+
         if( !id_pedido.equals("0")  ){
             datosPedido = this.getPocDao().getPocPedido_Datos(Integer.parseInt(id_pedido));
             datosGrid = this.getPocDao().getPocPedido_DatosGrid(Integer.parseInt(id_pedido));
@@ -267,41 +259,19 @@ public class PocPedidosController {
                 //Esto es para permitir obtener los datos de los agentes eliminados, ya que se debe mostrar en los pedidos historicos
                 obtener_todos_los_agentes=true;
             }
-            
-            if(userDat.get("transportista").toLowerCase().equals("true")){
-                //Aqui solo entra cuando la emprsa es transportista
-                datosTrans = this.getPocDao().getPocPedido_DatosTrans(Integer.parseInt(id_pedido));
-                
-                if(datosPedido.get(0).get("flete").equals("true")){
-                    estadosOrigen = this.getPocDao().getEntidadesForThisPais(datosTrans.get(0).get("pais_id_orig").toString());
-                    municipiosOrigen = this.getPocDao().getLocalidadesForThisEntidad(datosTrans.get(0).get("pais_id_orig").toString(), datosTrans.get(0).get("edo_id_orig").toString());
-                    estadosDestino = this.getPocDao().getEntidadesForThisPais(datosTrans.get(0).get("pais_id_dest").toString());
-                    municipiosDestino = this.getPocDao().getLocalidadesForThisEntidad(datosTrans.get(0).get("pais_id_dest").toString(), datosTrans.get(0).get("edo_id_dest").toString());   
-                }
-            }
         }
         
         //Aqui se obtienen los parametros de la facturacion, nos intersa saber si se debe permitir cambiar_unidad_medida
-        parametros = this.getPocDao().getPocPedido_Parametros(id_empresa, id_sucursal);
+        HashMap<String, String> parametros = this.getPocDao().getPocPedido_Parametros(id_empresa, id_sucursal);
         extra.put("cambioUM", parametros.get("cambiar_unidad_medida"));
         extra.put("per_descto", parametros.get("permitir_descto"));
         
         //Esta variable indica si se debe generar requisicion de compra
         extra.put("per_req", parametros.get("permitir_req"));
         
-        valorIva= this.getPocDao().getValoriva(id_sucursal);
+        ArrayList<HashMap<String, String>> valorIva = this.getPocDao().getValoriva(id_sucursal);
         tc.put("tipo_cambio", StringHelper.roundDouble(this.getPocDao().getTipoCambioActual(), 4));
         tipoCambioActual.add(0,tc);
-        
-        if(userDat.get("transportista").toLowerCase().equals("true")){
-            //Aqui solo entra cuando la emprsa es transportista
-            if(id_pedido.equals("0")){
-                //Solo cuando sea nuevo pedido
-                extra.put("nombre_empleado", this.getGralDao().getNombreEmpleadoByIdUser(id_usuario));
-            }
-        }
-        
-        paises = this.getPocDao().getPaises();
         
         arrayExtra.add(0,extra);
         jsonretorno.put("datosPedido", datosPedido);
@@ -309,12 +279,6 @@ public class PocPedidosController {
         jsonretorno.put("iva", valorIva);
         jsonretorno.put("Tc", tipoCambioActual);
         jsonretorno.put("Extras", arrayExtra);
-        jsonretorno.put("datosTrans", datosTrans);
-        jsonretorno.put("Paises", paises);
-        jsonretorno.put("EdoOrig", estadosOrigen);
-        jsonretorno.put("MunOrig", municipiosOrigen);
-        jsonretorno.put("EdoDest", estadosDestino);
-        jsonretorno.put("MunDest", municipiosDestino);
         jsonretorno.put("Monedas", this.getPocDao().getMonedas());
         jsonretorno.put("Vendedores", this.getPocDao().getAgentes(id_empresa, id_sucursal, obtener_todos_los_agentes));
         jsonretorno.put("Condiciones", this.getPocDao().getCondicionesDePago());
