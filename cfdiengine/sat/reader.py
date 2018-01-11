@@ -27,12 +27,13 @@ class SaxReader(xml.sax.ContentHandler):
             'UUID': None,
             'SAT_SEAL': None,
             'CFD_SEAL': None,
-            'INCEPTOR_REG': None,            
+            'INCEPTOR_REG': None,
             'INCEPTOR_NAME': None,
             'INCEPTOR_RFC': None,
             'INCEPTOR_CP': None,
             'RECEPTOR_NAME': None,
             'RECEPTOR_RFC': None,
+            'RECEPTOR_USAGE': None,
             'CFDI_CERT_NUMBER': None,
             'CFDI_DATE': None,
             'CFDI_SERIE': None,
@@ -72,6 +73,8 @@ class SaxReader(xml.sax.ContentHandler):
                     self.__ds['RECEPTOR_NAME'] = v
                 if k == "Rfc":
                     self.__ds['RECEPTOR_RFC'] = v
+                if k == "UsoCFDI":
+                    self.__ds['RECEPTOR_USAGE'] = v
 
         if name == "cfdi:Comprobante":
             for (k, v) in attrs.items():
