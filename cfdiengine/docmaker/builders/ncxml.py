@@ -75,6 +75,25 @@ class FacXml(BuilderGen):
             # Just taking first row of query result
             return { 'SERIE': row['serie'], 'FOLIO': row['folio'] }
 
+    def __q_moneda(self, conn, nc_id):
+        """
+        Consulta la moneda de la nc en dbms
+        """
+        q = """SELECT
+            upper(gral_mon.iso_4217) AS moneda_iso_4217,
+            upper(gral_mon.simbolo) AS moneda_simbolo,
+            fac_nota_credito.tipo_cambio
+            FROM fac_nota_credito
+            JOIN gral_mon ON gral_mon.id = fac_nota_credito.moneda_id
+            WHERE fac_nota_credito.id = """
+        for row in self.pg_query(conn, "{0}{1}".format(q, nc_id)):
+            # Just taking first row of query result
+            return {
+                'ISO_4217': row['moneda_iso_4217'],
+                'SIMBOLO': row['moneda_simbolo'],
+                'TIPO_DE_CAMBIO': row['tipo_cambio']
+            }
+
     def __q_receptor(self, conn, nc_id):
         """
         Consulta el cliente de la nc en dbms
@@ -222,7 +241,7 @@ class FacXml(BuilderGen):
         c.Sello = '__DIGITAL_SIGN_HERE__'
         c.NoCertificado = dat['NUMERO_CERTIFICADO']
         c.Certificado = dat['CERT_B64']
-
+        c.TipoDeComprobante = 'E'
         c.Emisor = pyxb.BIND()
         c.Emisor.Nombre = dat['EMISOR']['RAZON_SOCIAL']  # optional
         c.Emisor.Rfc = dat['EMISOR']['RFC']
