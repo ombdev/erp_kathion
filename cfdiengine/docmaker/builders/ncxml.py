@@ -75,11 +75,21 @@ class FacXml(BuilderGen):
             # Just taking first row of query result
             return { 'SERIE': row['serie'], 'FOLIO': row['folio'] }
 
-    def __q_receptor(self, conn, r_id):
+    def __q_receptor(self, conn, nc_id):
         """
         Consulta el cliente de la nc en dbms
         """
-        pass
+        q = """select cxc_clie.rfc as rfc,
+            cxc_clie.razon_social as razon_social,
+            FROM fac_nota_credito
+            LEFT JOIN cxc_clie ON cxc_clie.id = fac_nota_credito.cxc_clie_id
+            WHERE fac_nota_credito.id = """
+        for row in self.pg_query(conn, "{0}{1}".format(q, nc_id)):
+            # Just taking first row of query result
+            return {
+                'RFC': row['rfc'],
+                'RAZON_SOCIAL': unidecode.nidecode(row['razon_social']),
+            }
 
     def __q_emisor(self, conn, usr_id):
         """
@@ -160,12 +170,18 @@ class FacXml(BuilderGen):
             content = f.read()
             certb64 = base64.b64encode(content).decode('ascii')
 
+        nc_id = kwargs.et('nc_id', None)
+
+        if nc_id is None:
+            raise DocBuilderStepError("nc id not fed")
+
         return {
             'TIME_STAMP': '{0:%Y-%m-%dT%H:%M:%S}'.format(datetime.datetime.now()),
             'CONTROL': self.__q_serie_folio(conn, usr_id),
             'CERT_B64': certb64,
             'KEY_PRIVATE': os.path.join(sslrfc_dir, sp['PKNAME']),
             'EMISOR': ed,
+            'RECEPTOR': self.__q_receptor(conn, nc_id),
             'NUMERO_CERTIFICADO': self.__q_no_certificado(conn, usr_id),
             'LUGAR_EXPEDICION': self.__q_lugar_expedicion(conn, usr_id)
         }
@@ -206,6 +222,15 @@ class FacXml(BuilderGen):
         c.Sello = '__DIGITAL_SIGN_HERE__'
         c.NoCertificado = dat['NUMERO_CERTIFICADO']
         c.Certificado = dat['CERT_B64']
+
+        c.Emisor = pyxb.BIND()
+        c.Emisor.Nombre = dat['EMISOR']['RAZON_SOCIAL']  # optional
+        c.Emisor.Rfc = dat['EMISOR']['RFC']
+        c.Emisor.RegimenFiscal = dat['EMISOR']['REGIMEN_FISCAL']
+
+        c.Receptor = pyxb.BIND()
+        c.Receptor.Nombre = dat['RECEPTOR']['RAZON_SOCIAL']  # optional
+        c.Receptor.Rfc = dat['RECEPTOR']['RFC']
 
 
         tmp_file = save(c)
