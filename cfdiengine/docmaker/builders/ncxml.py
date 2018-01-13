@@ -221,6 +221,10 @@ class NcXml(BuilderGen):
             The sundry work arounds to apply
             """
             HelperStr.edit_pattern('TipoCambio="1.0"', 'TipoCambio="1"', tf)
+            HelperStr.edit_pattern(
+                '(Importe=)"([0-9]*(\.[0-9]{0,1})?)"',
+                lambda x: 'Importe="%.2f"' % (float(x.group(2)),), tf
+            )
 
         def wrap_up(tf, of):
             with open(of, 'w', encoding="utf-8") as a:
