@@ -18,7 +18,7 @@ from sat.artifacts import CfdiType
 impt_class='NcXml'
 
 
-class FacXml(BuilderGen):
+class NcXml(BuilderGen):
 
     __NDECIMALS = 2
     __MAKEUP_PROPOS = CfdiType.NC
@@ -201,6 +201,7 @@ class FacXml(BuilderGen):
             'KEY_PRIVATE': os.path.join(sslrfc_dir, sp['PKNAME']),
             'EMISOR': ed,
             'RECEPTOR': self.__q_receptor(conn, nc_id),
+            'MONEDA': self.__q_moneda(conn, nc_id),
             'NUMERO_CERTIFICADO': self.__q_no_certificado(conn, usr_id),
             'LUGAR_EXPEDICION': self.__q_lugar_expedicion(conn, usr_id)
         }
@@ -242,6 +243,13 @@ class FacXml(BuilderGen):
         c.NoCertificado = dat['NUMERO_CERTIFICADO']
         c.Certificado = dat['CERT_B64']
         c.TipoDeComprobante = 'E'
+        if dat['MONEDA']['ISO_4217'] == 'MXN':
+            c.TipoCambio = 1
+        else:
+            # optional (requerido en ciertos casos)
+            c.TipoCambio = truncate(dat['MONEDA']['TIPO_DE_CAMBIO'], self.__NDECIMALS)
+        c.Moneda = dat['MONEDA']['ISO_4217']
+
         c.Emisor = pyxb.BIND()
         c.Emisor.Nombre = dat['EMISOR']['RAZON_SOCIAL']  # optional
         c.Emisor.Rfc = dat['EMISOR']['RFC']
