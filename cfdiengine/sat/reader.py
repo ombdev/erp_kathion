@@ -40,6 +40,7 @@ class SaxReader(xml.sax.ContentHandler):
             'CFDI_FOLIO': None,
             'MONEY_EXCHANGE': None,
             'CFDI_SUBTOTAL': None,
+            'CFDI_SAVE': None,
             'CFDI_TOTAL': None,
             'FORMA_PAGO': None,
             'METODO_PAGO': None,
