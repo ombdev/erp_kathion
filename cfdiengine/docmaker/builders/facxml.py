@@ -422,7 +422,7 @@ class FacXml(BuilderGen):
             c.TipoCambio = truncate(dat['MONEDA']['TIPO_DE_CAMBIO'], self.__NDECIMALS)
         c.Moneda = dat['MONEDA']['ISO_4217']
         c.TipoDeComprobante = 'I'
-        c.MetodoPago = "PUE"  # optional and hardcode until ui can suply such value
+        c.MetodoPago = "PPD"  # optional and hardcode until ui can suply such value
         c.LugarExpedicion = dat['LUGAR_EXPEDICION']
 
         c.Emisor = pyxb.BIND()
