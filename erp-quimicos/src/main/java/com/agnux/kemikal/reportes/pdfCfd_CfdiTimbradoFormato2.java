@@ -5,34 +5,29 @@
 package com.agnux.kemikal.reportes;
 import com.agnux.common.helpers.CodigoQRHelper;
 import com.agnux.common.helpers.FileHelper;
+import com.agnux.common.helpers.StringHelper;
+import com.agnux.common.helpers.n2t;
 import com.agnux.kemikal.interfacedaos.GralInterfaceDao;
 import com.google.zxing.WriterException;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import com.agnux.common.helpers.StringHelper;
-import com.agnux.common.helpers.n2t;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
-import java.io.FileOutputStream;
-import java.math.BigInteger;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 04/mayo/2013
- */
+
 public class pdfCfd_CfdiTimbradoFormato2 {
    //--variables para pdf--
     private  GralInterfaceDao gralDao;
-    public static enum Proposito {FACTURA, NOTA_CREDITO, NOTA_CARGO};
+    public static enum Proposito {NOTA_CARGO};
     private String fileout;
     private String refId;
     
@@ -160,18 +155,6 @@ public class pdfCfd_CfdiTimbradoFormato2 {
         this.setNoCertificadoSAT(extras.get("noCertificadoSAT"));
         
         switch (Proposito.valueOf(this.getProposito())) {
-            case FACTURA:
-                this.setNo_aprobacion(this.getGralDao().getNoAprobacionFactura(id_empresa, id_sucursal));
-                this.setAno_aprobacion(this.getGralDao().getAnoAprobacionFactura(id_empresa, id_sucursal));
-                this.setEtiqueta_tipo_doc("FACTURA");
-                break;
-                
-            case NOTA_CREDITO:
-                this.setNo_aprobacion(this.getGralDao().getNoAprobacionNotaCredito(id_empresa, id_sucursal));
-                this.setAno_aprobacion(this.getGralDao().getAnoAprobacionNotaCredito(id_empresa, id_sucursal));
-                this.setEtiqueta_tipo_doc("NOTA DE CREDITO");
-                break;
-                
             case NOTA_CARGO:
                 this.setNo_aprobacion(this.getGralDao().getNoAprobacionNotaCargo(id_empresa, id_sucursal));
                 this.setAno_aprobacion(this.getGralDao().getAnoAprobacionNotaCargo(id_empresa, id_sucursal));
@@ -418,7 +401,7 @@ public class pdfCfd_CfdiTimbradoFormato2 {
             //AQUI AGREGAMOS LA TABLA DE SELLOS---------------------------------
             document.add(tablaSellos.addContent());
             //------------------------------------------------------------------
-            
+            /*
             //Agregar Leyendas solo cuando es Factura
             if (this.getProposito().equals("FACTURA")){
                 int noElements=this.getLeyendas().size();
@@ -475,7 +458,7 @@ public class pdfCfd_CfdiTimbradoFormato2 {
                     //Agregar tabla Leyendas Especiales al DOCUMENTO
                     document.add(table_leyendas);
                 }
-            }
+            } */
 
             
             

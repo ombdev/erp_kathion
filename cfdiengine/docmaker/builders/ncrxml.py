@@ -430,6 +430,7 @@ class NcrXml(BuilderGen):
 
         c = Comprobante()
         c.Version = '3.3'
+        c.MetodoPago = "PPD"  # optional and hardcode until ui can suply such value
         c.LugarExpedicion = dat['LUGAR_EXPEDICION']
         c.Serie = dat['CONTROL']['SERIE']  # optional
         c.Folio = dat['CONTROL']['FOLIO']  # optional
