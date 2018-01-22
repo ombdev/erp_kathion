@@ -192,32 +192,6 @@ def undofacturar(logger, pt, req):
 
 def facturar(logger, pt, req):
 
-    def inception_pdf(f_outdoc, resdir, f_xmlin, inceptor_rfc):
-        dm_builder = 'facpdf'
-        kwargs = {'xml': f_xmlin, 'rfc': inceptor_rfc}
-        try:
-            dpl = DocPipeLine(logger, resdir,
-                rdirs_conf=pt.res.dirs,
-                pgsql_conf=pt.dbms.pgsql_conn)
-            dpl.run(dm_builder, f_outdoc, **kwargs)
-            return ErrorCode.SUCCESS
-        except:
-            logger.error(dump_exception())
-            return ErrorCode.DOCMAKER_ERROR
-
-    def inception_xml(f_outdoc, resdir, usr_id, prefact_id):
-        dm_builder = 'facxml'
-        kwargs = {'usr_id': usr_id, 'prefact_id': prefact_id}
-        try:
-            dpl = DocPipeLine(logger, resdir,
-                rdirs_conf=pt.res.dirs,
-                pgsql_conf=pt.dbms.pgsql_conn)
-            dpl.run(dm_builder, f_outdoc, **kwargs)
-            return ErrorCode.SUCCESS
-        except:
-            logger.error(dump_exception())
-            return ErrorCode.DOCMAKER_ERROR
-
     def fetch_empdat(usr_id):
         sql = """select upper(EMP.rfc) as rfc, EMP.no_id as no_id
             FROM gral_suc AS SUC
@@ -289,8 +263,6 @@ def facturar(logger, pt, req):
     logger.info("stepping in factura handler within {}".format(__name__))
 
     filename = req.get('filename', None)
-    usr_id = req.get('usr_id', None)
-    prefact_id = req.get('prefact_id', None)
 
     source = ProfileReader.get_content(pt.source, ProfileReader.PNODE_UNIQUE)
     resdir = os.path.abspath(os.path.join(os.path.dirname(source), os.pardir))
@@ -298,20 +270,26 @@ def facturar(logger, pt, req):
 
     tmp_dir = tempfile.gettempdir()
     tmp_file = os.path.join(tmp_dir, HelperStr.random_str())
-    rc = inception_xml(tmp_file, resdir, usr_id, prefact_id)
+
+    rc = __run_builder(logger, pt, tmp_file, resdir,
+            'facxml',
+            usr_id = req.get('usr_id', None),
+            prefact_id = req.get('prefact_id', None))
 
     if rc == ErrorCode.SUCCESS:
-        rc, inceptor_data = fetch_empdat(usr_id)
+        rc, inceptor_data = fetch_empdat(req.get('usr_id', None))
         if rc == ErrorCode.SUCCESS:
             out_dir = os.path.join(rdirs['cfdi_output'], inceptor_data['rfc'])
             rc, outfile = __pac_sign(logger, tmp_file, filename, out_dir, pt.tparty.pac)
             if rc == ErrorCode.SUCCESS:
-                rc = store(outfile, usr_id, prefact_id, inceptor_data['no_id'])
+                rc = store(outfile, req.get('usr_id', None),
+                        req.get('prefact_id', None),
+                        inceptor_data['no_id'])
             if rc == ErrorCode.SUCCESS:
-                rc = inception_pdf(
-                    outfile.replace('.xml', '.pdf'),    # We replace the xml extension
-                    resdir, outfile, inceptor_data['rfc']
-                )
+                rc = __run_builder(logger, pt,
+                        outfile.replace('.xml', '.pdf'),  # We replace the xml extension
+                        resdir, 'facpdf', xml = outfile,
+                        rfc = inceptor_data['rfc'])
 
     if os.path.isfile(tmp_file):
         os.remove(tmp_file)
