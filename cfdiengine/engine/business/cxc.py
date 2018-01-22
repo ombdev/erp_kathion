@@ -343,7 +343,7 @@ def donota(logger, pt, req):
         )
         logger.debug("Performing query: {}".format(q))
         try:
-            res = HelperPg.onfly_query(pt.dbms.pgsql_conn, q, True):
+            res = HelperPg.onfly_query(pt.dbms.pgsql_conn, q, True)
             if len(res) != 1:
                 raise Exception('unexpected result regarding execution of store')
 

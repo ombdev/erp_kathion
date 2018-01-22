@@ -384,30 +384,7 @@ public class NotasCreditoController {
             System.out.println("Guardar del Nota de Credito");
             HashMap<String, String> jsonretorno = new HashMap<String, String>();
             HashMap<String, String> succes = new HashMap<String, String>();
-            String tipo_facturacion="";
-            
             HashMap<String, String> userDat = new HashMap<String, String>();
-            HashMap<String,String> datos_emisor = new HashMap<String,String>();
-            HashMap<String, String> parametros = new HashMap<String, String>();
-            //variables para xml de Nota de Credito CFD y CFDI
-            HashMap<String,String> dataCliente = new HashMap<String,String>();
-            ArrayList<LinkedHashMap<String,String>> listaConceptos = new ArrayList<LinkedHashMap<String,String>>();
-            ArrayList<LinkedHashMap<String,String>> impTrasladados = new ArrayList<LinkedHashMap<String,String>>();
-            ArrayList<LinkedHashMap<String,String>> impRetenidos = new ArrayList<LinkedHashMap<String,String>>();
-            LinkedHashMap<String,String> datosExtras = new LinkedHashMap<String,String>();
-            ArrayList<String> leyendas = new ArrayList<String>();
-            LinkedHashMap<String,Object> dataAdenda = new LinkedHashMap<String,Object>();
-            
-            //variables para PDF de Nota de Credito CFD
-            ArrayList<HashMap<String, String>> listaConceptosPdf = new ArrayList<HashMap<String, String>>();
-            HashMap<String, String> datosExtrasPdf= new HashMap<String, String>();
-            
-            //::ESTAS VARIABLES SON SOLO PARA NOMINAS, AQUI SE DECLARA SOLO PARA RELLENAR PARAMETROS::::::::::::
-            ArrayList<LinkedHashMap<String,String>> percepciones = new ArrayList<LinkedHashMap<String,String>>();
-            ArrayList<LinkedHashMap<String,String>> deducciones = new ArrayList<LinkedHashMap<String,String>>();
-            ArrayList<LinkedHashMap<String,String>> incapacidades = new ArrayList<LinkedHashMap<String,String>>();
-            ArrayList<LinkedHashMap<String,String>> hrs_extras = new ArrayList<LinkedHashMap<String,String>>();
-            //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             
             Integer app_selected = 70;//aplicativo notas de credito
             String command_selected = "new";
@@ -417,13 +394,9 @@ public class NotasCreditoController {
             String valorRespuesta="";
             String msjRespuesta = "";
             String serieFolio="";
-            //String rfiId="";
-            //String rfcEmisor="";
             userDat = this.getHomeDao().getUserById(id_usuario);
             Integer id_empresa = Integer.parseInt(userDat.get("empresa_id"));
             Integer id_sucursal = Integer.parseInt(userDat.get("sucursal_id"));
-            //String select_tipo_documento = "0";
-            //String refacturar = "false";
             
             if( id_nota_credito==0 ){
                 command_selected = "new";
