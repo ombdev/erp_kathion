@@ -127,7 +127,7 @@ class NcrXml(BuilderGen):
         """
         Consulta la forma de pago y numero de cuenta
         """
-        return { 'CLAVE': '03', 'CUENTA': None }
+        return { 'CLAVE': '99', 'CUENTA': None }
 
     def __q_moneda(self, conn, nc_id):
         """
@@ -162,7 +162,7 @@ class NcrXml(BuilderGen):
             return {
                 'RFC': row['rfc'],
                 'RAZON_SOCIAL': unidecode.unidecode(row['razon_social']),
-                'USO_CFDI': 'G02'
+                'USO_CFDI': 'P01'
             }
 
     def __q_emisor(self, conn, usr_id):
