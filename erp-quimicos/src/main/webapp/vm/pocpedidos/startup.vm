@@ -223,12 +223,26 @@
                                                                 <td width="10"></td>
                                                                 <td width="80">Razon&nbsp;social</td>
                                                                 <td colspan="8" width="405"><input type="text" name="razoncliente" style="width:420px;" ></td>
+                                                            
+                                                                <td width="10"></td>
+                                                                <td width="80">USO</td> 
+                                                                <td width="90">
+                                                                    <select name="select_uso" style="width:90px;" title="Uso de la factura"></select>
+                                                                    </td>                                                           
+
                                                             </tr>
                                                             <tr><td colspan="9" height="5"></td></tr>
                                                             <tr>
                                                                 <td width="10"></td>
                                                                 <td width="80">Direcci&oacute;n</td>
                                                                 <td colspan="8" width="405"><input type="text" name="dircliente" style="width:420px;" readOnly="true"></td>
+                                                            
+                                                                <td width="10"></td>
+                                                                <td width="80">Metodo</td> 
+                                                                <td width="90">
+                                                                    <select name="select_metodo" style="width:90px;" title="Metodo de Pago"></select>
+                                                                    </td>     
+                                                
                                                             </tr>
                                                             
                                                         </table>
