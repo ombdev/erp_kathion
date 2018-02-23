@@ -6,6 +6,21 @@ $(function() {
 	    }
 	    return work.join(',');
 	};
+
+    var fullfill_select = function( $_s, _l, _c, _cap ) {
+        var _t;
+
+        $.each( _l, function( entryIndex, i ){
+            if( _c == i[ 'id' ] ) {
+                _t += '<option value="' + i[ 'id' ] + '" selected="yes" >' + i[ _cap ] + '</option>';
+            }
+            else {
+                _t += '<option value="' + i[ 'id' ] + '"  >' + i[ _cap ] + '</option>';
+            }
+        });
+
+        $_s.append( _t );
+    };
 	
 	//Arreglo que almacena las unidades de medida
 	var arrayUM;
@@ -2839,7 +2854,10 @@ $(function() {
 		var $lugar_entrega = $('#forma-pocpedidos-window').find('input[name=lugar_entrega]');
 		var $fecha_compromiso = $('#forma-pocpedidos-window').find('input[name=fecha_compromiso]');
 		var $select_almacen = $('#forma-pocpedidos-window').find('select[name=select_almacen]');
-		
+
+        var $select_sat_usos = $('#forma-pocpedidos-window').find('select[name=select_uso]');
+        var $select_sat_metodos = $('#forma-pocpedidos-window').find('select[name=select_metodo]');
+
 		var $no_cotizacion = $('#forma-pocpedidos-window').find('input[name=no_cotizacion]');
 		
 		var $sku_producto = $('#forma-pocpedidos-window').find('input[name=sku_producto]');
@@ -3172,7 +3190,7 @@ $(function() {
 				moneda_hmtl += '<option value="' + moneda['id'] + '"  >' + moneda['descripcion'] + '</option>';
 			});
 			$select_moneda.append(moneda_hmtl);
-			
+
 			//carga select de vendedores
 			$select_vendedor.children().remove();
 			var hmtl_vendedor;
@@ -3180,8 +3198,13 @@ $(function() {
 				hmtl_vendedor += '<option value="' + vendedor['id'] + '"  >' + vendedor['nombre_agente'] + '</option>';
 			});
 			$select_vendedor.append(hmtl_vendedor);
-			
-			
+
+            $select_sat_usos.children().remove();
+            fullfill_select( $select_sat_usos, entry['Usos'], 0, "numero_control" );
+
+            $select_sat_metodos.children().remove();
+            fullfill_select( $select_sat_metodos, entry['Metodos'], 0, "clave" );
+
 			//carga select de terminos
 			$select_condiciones.children().remove();
 			var hmtl_condiciones;

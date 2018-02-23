@@ -286,6 +286,8 @@ public class PocPedidosController {
         jsonretorno.put("Almacenes", this.getPocDao().getPocPedido_Almacenes(id_sucursal));
         jsonretorno.put("UM", this.getPocDao().getUnidadesMedida());
         jsonretorno.put("Ieps", this.getPocDao().getIeps(id_empresa, 0));
+        jsonretorno.put("Usos", this.getPocDao().getUsos());
+        jsonretorno.put("Metodos", this.getPocDao().getMetodos());
         return jsonretorno;
     }
     
