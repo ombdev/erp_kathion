@@ -815,7 +815,9 @@ public class PocPedidosController {
             @RequestParam(value="lugar_entrega", required=true) String lugar_entrega,
             @RequestParam(value="transporte", required=true) String transporte,
             @RequestParam(value="accion_proceso", required=true) String accion_proceso,
-            @RequestParam(value="select_metodo_pago", required=true) Integer select_metodo_pago,
+            @RequestParam(value="select_metodo_pago", required=true) Integer select_forma_pago,
+            @RequestParam(value="select_uso", required=true) String select_uso,
+            @RequestParam(value="select_metodo", required=true) String select_metodo,
             @RequestParam(value="no_cuenta", required=false) String no_cuenta,
             @RequestParam(value="check_ruta", required=false) String check_ruta,
             @RequestParam(value="select_almacen", required=false) String select_almacen,
@@ -938,7 +940,7 @@ public class PocPedidosController {
                     pc.cmd = "edit";
                 }
             }
-            
+
             if (no_cuenta==null) {
                 pc.account = "";
             }
@@ -946,12 +948,26 @@ public class PocPedidosController {
             {
                 pc.account = no_cuenta;
             }
-            
-            if (select_metodo_pago==null) {
+
+            if (select_forma_pago==null) {
+                pc.forma_pago_id = new Integer(0).toString();
+            }
+            else {
+                pc.forma_pago_id = select_forma_pago.toString();
+            }
+
+            if (select_uso==null) {
+                pc.uso_id = new Integer(0).toString();
+            }
+            else {
+                pc.uso_id = select_uso.toString();
+            }
+
+            if (select_metodo==null) {
                 pc.met_pago_id = new Integer(0).toString();
             }
             else {
-                pc.met_pago_id = select_metodo_pago.toString();
+                pc.met_pago_id = select_metodo.toString();
             }
             
             //Verificar valores
@@ -971,7 +987,7 @@ public class PocPedidosController {
                 new Integer(id_usuario),
                 tipo_cambio,
                 fecha_compromiso,
-                select_metodo_pago,
+                select_forma_pago,
                 no_cuenta,
                 extra_data_array);
             
