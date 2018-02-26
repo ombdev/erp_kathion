@@ -18,7 +18,9 @@ public class PotCatCusorder {
     public String warehouse_id;
     public String currency_id;
     public String sup_credays_id;
+    public String forma_pago_id;
     public String met_pago_id;
+    public String uso_id;
     public String pedido_id;
     public String tasaretimmex;
     public String currency_val;
@@ -48,6 +50,8 @@ public class PotCatCusorder {
                 + currency_id + ","
                 + sup_credays_id + ","
                 + met_pago_id + ","
+                + forma_pago_id + ","
+                + uso_id + ","
                 + pedido_id + ","
                 + tasaretimmex + ","
                 + currency_val + ","
