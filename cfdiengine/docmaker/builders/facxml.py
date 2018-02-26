@@ -57,7 +57,7 @@ class FacXml(BuilderGen):
                 'SERIE': row['serie'],
                 'FOLIO': row['folio']
             }
-
+-
     def __q_emisor(self, conn, usr_id):
         """
         Consulta el emisor en dbms
@@ -88,6 +88,18 @@ class FacXml(BuilderGen):
         for row in self.pg_query(conn, "{0}{1}".format(SQL, usr_id)):
             # Just taking first row of query result
             return row['cp']
+
+    def __q_metodo_pago(self, conn, prefact_id):
+        """
+        Consulta el metodo de pago
+        """
+        SQL = """SELECT MP.clave
+            FROM erp_prefacturas as EP
+            JOIN cfdi_metodos_pago as MP ON EP.cfdi_metodo_id = MP.id
+            WHERE EP.id = """
+        for row in self.pg_query(conn, "{0}{1}".format(SQL, prefact_id)):
+            # Just taking first row of query result
+            return row['clave']
 
     def __q_forma_pago(self, conn, prefact_id):
         """
@@ -129,16 +141,18 @@ class FacXml(BuilderGen):
         """
         SQL = """SELECT
             upper(cxc_clie.razon_social) as razon_social,
-            upper(cxc_clie.rfc) as rfc
+            upper(cxc_clie.rfc) as rfc,
+            cfdi_usos.numero_control as uso
             FROM erp_prefacturas
-            LEFT JOIN cxc_clie ON cxc_clie.id=erp_prefacturas.cliente_id
-            WHERE erp_prefacturas.id="""
+            LEFT JOIN cxc_clie ON cxc_clie.id = erp_prefacturas.cliente_id
+            LEFT JOIN cfdi_usos ON cfdi_usos.id = erp_prefacturas.cfdi_usos_id
+            WHERE erp_prefacturas.id = """
         for row in self.pg_query(conn, "{0}{1}".format(SQL, prefact_id)):
             # Just taking first row of query result
             return {
                 'RFC': row['rfc'],
                 'RAZON_SOCIAL': unidecode.unidecode(row['razon_social']),
-                'USO_CFDI': 'G01'
+                'USO_CFDI': row['uso']
             }
 
     def __q_conceptos(self, conn, prefact_id):
@@ -386,6 +400,7 @@ class FacXml(BuilderGen):
             'EMISOR': ed,
             'NUMERO_CERTIFICADO': self.__q_no_certificado(conn, usr_id),
             'RECEPTOR': self.__q_receptor(conn, prefact_id),
+            'METODO_PAGO': self.__q_metodo_pago(conn, prefact_id),
             'MONEDA': self.__q_moneda(conn, prefact_id),
             'FORMA_PAGO': self.__q_forma_pago(conn, prefact_id),
             'LUGAR_EXPEDICION': self.__q_lugar_expedicion(conn, usr_id),
@@ -422,7 +437,7 @@ class FacXml(BuilderGen):
             c.TipoCambio = truncate(dat['MONEDA']['TIPO_DE_CAMBIO'], self.__NDECIMALS)
         c.Moneda = dat['MONEDA']['ISO_4217']
         c.TipoDeComprobante = 'I'
-        c.MetodoPago = "PPD"  # optional and hardcode until ui can suply such value
+        c.MetodoPago = dat['METODO_PAGO']  # optional
         c.LugarExpedicion = dat['LUGAR_EXPEDICION']
 
         c.Emisor = pyxb.BIND()
