@@ -1198,37 +1198,6 @@ $(function() {
 			}
 			var moneda_hmtl = '';
 			
-			/*
-			//carga el select de monedas  con la moneda del cliente seleccionada por default
-			if(parseInt(num_lista_precio)>0){
-				//aquí se arma la cadena json para traer la moneda de la lista de precio
-				var input_json2 = document.location.protocol + '//' + document.location.host + '/'+controller+'/getMonedaListaCliente.json';
-				$arreglo2 = { 'lista_precio':num_lista_precio }
-				$.post(input_json2,$arreglo2,function(entry2){
-					id_moneda=entry2['listaprecio'][0]['moneda_id'];
-					$select_moneda.children().remove();
-					$.each(array_monedas ,function(entryIndex,moneda){
-						if( parseInt(moneda['id']) == parseInt(id_moneda) ){
-							moneda_hmtl += '<option value="' + moneda['id'] + '" selected="yes">' + moneda['descripcion'] + '</option>';
-						}else{
-							//moneda_hmtl += '<option value="' + moneda['id'] + '"  >' + moneda['descripcion'] + '</option>';
-						}
-					});
-					$select_moneda.append(moneda_hmtl);
-				});
-			}else{
-				$select_moneda.children().remove();
-				$.each(array_monedas ,function(entryIndex,moneda){
-					if( parseInt(moneda['id']) == parseInt(id_moneda) ){
-						moneda_hmtl += '<option value="' + moneda['id'] + '" selected="yes">' + moneda['descripcion'] + '</option>';
-					}else{
-						moneda_hmtl += '<option value="' + moneda['id'] + '"  >' + moneda['descripcion'] + '</option>';
-					}
-				});
-				$select_moneda.append(moneda_hmtl);
-			}
-			*/
-			
 			
 			$select_moneda.children().remove();
 			$.each(array_monedas ,function(entryIndex,moneda){
@@ -1596,12 +1565,7 @@ $(function() {
 			$select_tipo_producto.children().remove();
 			var prod_tipos_html = '<option value="0">[--Seleccionar Tipo--]</option>';
 			$.each(data['prodTipos'],function(entryIndex,pt){
-				/*
-				if(parseInt( pt['id']) == 1 ){
-					prod_tipos_html += '<option value="' + pt['id'] + '"  selected="yes">' + pt['titulo'] + '</option>';
-				}else{
-					prod_tipos_html += '<option value="' + pt['id'] + '"  >' + pt['titulo'] + '</option>';
-				}*/
+
 				prod_tipos_html += '<option value="' + pt['id'] + '"  >' + pt['titulo'] + '</option>';
 			});
 			$select_tipo_producto.append(prod_tipos_html);
@@ -1941,12 +1905,6 @@ $(function() {
 		//Suma del subtotal + totalImpuesto + sumaIeps - impuestoRetenido
 		var sumaTotal = 0;
 		
-		/*
-		//si valor del impuesto es null o vacio, se le asigna un 0
-		if( $valor_impuesto.val()== null || $valor_impuesto.val()== ''){
-			$valor_impuesto.val(0);
-		}
-		*/
 		
 		$grid_productos.find('tr').each(function (index){
 			if(( $(this).find('#cost').val().trim() != '') && ( $(this).find('#cant').val().trim() != '' )){
@@ -4199,7 +4157,10 @@ $(function() {
 			var $tasa_ret_immex = $('#forma-pocpedidos-window').find('input[name=tasa_ret_immex]');
 			var $cliente_listaprecio=  $('#forma-pocpedidos-window').find('input[name=num_lista_precio]');
 			var $pdescto = $('#forma-pocpedidos-window').find('input[name=pdescto]');
-			
+
+        var $select_sat_usos = $('#forma-pocpedidos-window').find('select[name=select_uso]');
+        var $select_sat_metodos = $('#forma-pocpedidos-window').find('select[name=select_metodo]');
+
 			var $select_moneda = $('#forma-pocpedidos-window').find('select[name=select_moneda]');
 			var $select_moneda_original = $('#forma-pocpedidos-window').find('input[name=select_moneda_original]');
 			var $tipo_cambio = $('#forma-pocpedidos-window').find('input[name=tipo_cambio]');
@@ -4700,7 +4661,11 @@ $(function() {
 					});
 					$select_metodo_pago.append(hmtl_metodo);
 					
-					
+					$select_sat_usos.children().remove();
+                                        fullfill_select( $select_sat_usos, entry['Usos'], entry['datosPedido'][0]['cfdi_usos_id'], "numero_control" );
+
+                                        $select_sat_metodos.children().remove();
+                                        fullfill_select( $select_sat_metodos, entry['Metodos'], entry['datosPedido'][0]['cfdi_metodo_id'], "clave" );
 					
 					if(parseInt(valor_metodo)==2 || parseInt(valor_metodo)==3){
 						//si esta desahabilitado, hay que habilitarlo para permitir la captura de los digitos de la tarjeta.
