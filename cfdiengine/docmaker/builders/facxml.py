@@ -57,7 +57,7 @@ class FacXml(BuilderGen):
                 'SERIE': row['serie'],
                 'FOLIO': row['folio']
             }
--
+
     def __q_emisor(self, conn, usr_id):
         """
         Consulta el emisor en dbms
