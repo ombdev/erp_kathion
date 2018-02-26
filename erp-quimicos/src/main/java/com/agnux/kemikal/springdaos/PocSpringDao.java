@@ -162,7 +162,9 @@ public class PocSpringDao implements PocInterfaceDao{
         + "SELECT poc_pedidos.id,"
                 + "poc_pedidos.folio,"
                 + "erp_proceso.proceso_flujo_id,"
-                + "poc_pedidos.moneda_id,"
+                + "poc_pedidos.moneda_id,"                
+                + "poc_pedidos.cfdi_usos_id,"
+                + "poc_pedidos.cfdi_metodo_id,"                
                 + "gral_mon.descripcion AS moneda,"
                 + "poc_pedidos.observaciones,"
                 + "cxc_clie.id AS cliente_id,"
@@ -225,6 +227,8 @@ public class PocSpringDao implements PocInterfaceDao{
                     row.put("folio",rs.getString("folio"));
                     row.put("proceso_flujo_id",String.valueOf(rs.getInt("proceso_flujo_id")));
                     row.put("moneda_id",rs.getString("moneda_id"));
+                    row.put("cfdi_usos_id",rs.getString("cfdi_usos_id"));
+                    row.put("cfdi_metodo_id",rs.getString("cfdi_metodo_id"));
                     row.put("moneda",rs.getString("moneda"));
                     row.put("observaciones",rs.getString("observaciones"));
                     row.put("cliente_id",rs.getString("cliente_id"));
