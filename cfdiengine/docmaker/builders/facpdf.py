@@ -570,7 +570,7 @@ class FacPdf(BuilderGen):
         cont_concepts = []
         for i in dat['XML_PARSED']['ARTIFACTS']:
             row = [
-                i['NOIDENTIFICACION'],
+                i['CLAVEPRODSERV'],
                 Paragraph(i['DESCRIPCION'], st),
                 i['CLAVEUNIDAD'].upper(),
                 strtricks.HelperStr.format_currency(i['CANTIDAD']),

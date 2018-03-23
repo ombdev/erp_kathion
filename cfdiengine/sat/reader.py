@@ -44,6 +44,7 @@ class SaxReader(xml.sax.ContentHandler):
             'CFDI_TOTAL': None,
             'FORMA_PAGO': None,
             'METODO_PAGO': None,
+            'PAYMENTS': [],
             'ARTIFACTS': [],
             'TAXES': {
                 'RET': {
@@ -83,6 +84,8 @@ class SaxReader(xml.sax.ContentHandler):
                     self.__ds['CFDI_TOTAL'] = v
                 if k == "SubTotal":
                     self.__ds['CFDI_SUBTOTAL'] = v
+                if k == "Descuento":
+                    self.__ds['CFDI_SAVE'] = v
                 if k == "TipoCambio":
                     self.__ds['MONEY_EXCHANGE'] = v
                 if k == "Serie":
@@ -108,6 +111,8 @@ class SaxReader(xml.sax.ContentHandler):
                 if k == "Descripcion":
                     c[k.upper()] = v
                 if k == "Importe":
+                    c[k.upper()] = v
+                if k == "ClaveProdServ":
                     c[k.upper()] = v
                 if k == "NoIdentificacion":
                     c[k.upper()] = v
@@ -137,6 +142,23 @@ class SaxReader(xml.sax.ContentHandler):
                     if k == "TasaOCuota":
                         c[k.upper()] = v
                 self.__ds['TAXES']['TRAS']['DETAILS'].append(c)
+
+        if name == "pago10:Pago":
+            c = {}
+            for (k, v) in attrs.items():
+                if k == "NumOperacion":
+                    c[k.upper()] = v
+                if k == "Monto":
+                    c[k.upper()] = v
+                if k == "MonedaP":
+                    c[k.upper()] = v
+                if k == "TipoCambioP":
+                    c[k.upper()] = v
+                if k == "FormaDePagoP":
+                    c[k.upper()] = v
+                if k == "FechaPago":
+                    c[k.upper()] = v
+            self.__ds['PAYMENTS'].append(c)
 
         if name == "tfd:TimbreFiscalDigital":
             for (k, v) in attrs.items():
