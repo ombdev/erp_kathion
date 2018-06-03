@@ -8,4 +8,4 @@ def init_routers(api, l):
         args, kwargs = r
         api.add_resource(*args, **kwargs)
 
-    retunr api
+    return api
