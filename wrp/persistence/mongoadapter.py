@@ -8,9 +8,6 @@ class MongoAdapter(Adapter):
     Mongo database adapter class
     """
 
-    __DEFAULT_DB = 'admin'
-    __DEFAULT_AUTHM = 'SCRAM-SHA-1'
-
     _client = None
 
     def __init__(self, logger, uri):
