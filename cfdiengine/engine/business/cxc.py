@@ -224,7 +224,6 @@ def facturar(logger, pt, req):
             '{}'::character varying, '{}'::character varying, '{}'::character varying,
             '{}'::character varying, '{}'::character varying, '{}'::character varying,
              '{}::double precision, {}::double precision, {}::double precision, {}::boolean,
-            '{}'::character varying
         )""".format(                             # Store procedure parameters
             os.path.basename(f_xmlin),           # file_xml
             prefact_id,                          # prefact_id
@@ -248,9 +247,8 @@ def facturar(logger, pt, req):
             xml_dat['TAXES']['TRAS']['TOTAL'],   # total_tras
             '0',                                 # subtotal_with_desc
             xml_dat['CFDI_TOTAL'],               # total
-            'false',                             # refact
-            xml_dat['UUID']                      # id de documento - It came from SAT timbrado throughout PAC
-        )
+            'false'                              # refact
+            )
         logger.debug("Performing query: {}".format(q))
         try:
             s_out = None
