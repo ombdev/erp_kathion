@@ -223,7 +223,7 @@ def facturar(logger, pt, req):
             '{}'::character varying, '{}'::character varying, '{}'::character varying,
             '{}'::character varying, '{}'::character varying, '{}'::character varying,
             '{}'::character varying, '{}'::character varying, '{}'::character varying,
-             '{}::double precision, {}::double precision, {}::double precision, {}::boolean,
+             '{}::double precision, {}::double precision, {}::double precision, {}::boolean
         )""".format(                             # Store procedure parameters
             os.path.basename(f_xmlin),           # file_xml
             prefact_id,                          # prefact_id
