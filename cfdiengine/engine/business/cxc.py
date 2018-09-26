@@ -102,7 +102,7 @@ def __pac_sign(logger, f_xmlin, xid, out_dir, pac_conf):
         logger.error(dump_exception())
         return ErrorCode.THIRD_PARTY_ISSUES, None
 
-
+    
 def __pac_cancel(logger, t, rfc, pac_conf):
     try:
         logger.debug('Getting a pac connector as per config profile')
@@ -118,7 +118,35 @@ def __pac_cancel(logger, t, rfc, pac_conf):
         logger.error(dump_exception())
         return ErrorCode.THIRD_PARTY_ISSUES
 
-
+def dopago(logger, pt, req):
+    logger.info("stepping in dopago handler within {}".format(__name__))
+    filename = req.get('filename', None)
+    source = ProfileReader.get_content(pt.source, ProfileReader.PNODE_UNIQUE)
+    resdir = os.path.abspath(os.path.join(os.path.dirname(source), os.pardir))
+    rdirs = fetch_rdirs(resdir, pt.res.dirs)
+    tmp_dir = tempfile.gettempdir()
+    tmp_file = os.path.join(tmp_dir, HelperStr.random_str())
+     rc = __run_builder(logger, pt, tmp_file, resdir,
+            'pagxml',
+            usr_id = req.get('usr_id', None),
+            pag_id = req.get('pag_id', None))
+     if rc != ErrorCode.SUCCESS:
+        pass
+    else:
+        _rfc = None
+         try:
+            _rfc = __get_emisor_rfc(logger, req.get('usr_id', None),
+                    pt.dbms.pgsql_conn)
+        except:
+            rc = ErrorCode.DBMS_SQL_ISSUES
+         if rc == ErrorCode.SUCCESS:
+            out_dir = os.path.join(rdirs['cfdi_output'], _rfc)
+            rc, signed_file = __pac_sign(logger, tmp_file, filename,
+                                         out_dir, pt.tparty.pac)
+     if os.path.isfile(tmp_file):
+        os.remove(tmp_file)
+     return rc.value
+    
 def undofacturar(logger, pt, req):
 
     fact_id = req.get('fact_id', None)
