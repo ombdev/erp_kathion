@@ -119,6 +119,74 @@ def __pac_cancel(logger, t, rfc, pac_conf):
         return ErrorCode.THIRD_PARTY_ISSUES
 
 
+def dopago(logger, pt, req):
+
+    logger.info("stepping in dopago handler within {}".format(__name__))
+
+    filename = req.get('filename', None)
+    usr_id = req.get('usr_id', None)
+    pag_id = req.get('pag_id', None)
+
+    if (pag_id is None) or (usr_id is None) or (filename is None):
+        return ErrorCode.REQUEST_INCOMPLETE.value
+
+
+    source = ProfileReader.get_content(pt.source, ProfileReader.PNODE_UNIQUE)
+    resdir = os.path.abspath(os.path.join(os.path.dirname(source), os.pardir))
+    rdirs = fetch_rdirs(resdir, pt.res.dirs)
+
+    tmp_dir = tempfile.gettempdir()
+    tmp_file = os.path.join(tmp_dir, HelperStr.random_str())
+
+    def update_consecutive_alpha(f_xmlin):
+        parser = SaxReader()
+        xml_dat, _ = parser(f_xmlin)
+
+        q = """update fac_cfds_conf_folios  set folio_actual = (folio_actual + 1)
+            FROM gral_suc AS SUC
+            LEFT JOIN fac_cfds_conf ON fac_cfds_conf.ral_suc_id = SUC.id
+            LEFT JOIN gral_usr_suc AS USR_SUC ON USR_SUC.ral_suc_id = SUC.id
+            WHERE fac_cfds_conf_folios.proposito = 'PAG'
+            AND fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id
+            AND USR_SUC.ral_usr_id = {}""".format(usr_id)
+        try:
+            HelperPg.onfly_update(pt.dbms.pgsql_conn, q)
+        except:
+            logger.error(dump_exception())
+            return ErrorCode.DBMS_SQL_ISSUES
+        return ErrorCode.SUCCESS
+
+    rc = __run_builder(logger, pt, tmp_file, resdir,
+            'pagxml', usr_id = usr_id, pag_id = pag_id)
+
+    if rc != ErrorCode.SUCCESS:
+        pass
+    else:
+        _rfc = None
+
+        try:
+            _rfc = __get_emisor_rfc(logger, req.get('usr_id', None),
+                    pt.dbms.pgsql_conn)
+        except:
+            rc = ErrorCode.DBMS_SQL_ISSUES
+
+        if rc == ErrorCode.SUCCESS:
+            out_dir = os.path.join(rdirs['cfdi_output'], _rfc)
+            rc, signed_file = __pac_sign(logger, tmp_file, filename,
+                                         out_dir, pt.tparty.pac)
+        if rc == ErrorCode.SUCCESS:
+            rc = update_consecutive_alpha(signed_file)
+            if rc == ErrorCode.SUCCESS:
+                rc = __run_builder(logger, pt,
+                    signed_file.replace('.xml', '.pdf'),
+                    resdir, 'pagpdf', xml = signed_file, rfc = _rfc)
+
+    if os.path.isfile(tmp_file):
+        os.remove(tmp_file)
+
+    return rc.value
+
+
 def undofacturar(logger, pt, req):
 
     fact_id = req.get('fact_id', None)
@@ -223,7 +291,8 @@ def facturar(logger, pt, req):
             '{}'::character varying, '{}'::character varying, '{}'::character varying,
             '{}'::character varying, '{}'::character varying, '{}'::character varying,
             '{}'::character varying, '{}'::character varying, '{}'::character varying,
-             {}::double precision, {}::double precision, {}::double precision, {}::boolean
+             {}::double precision, {}::double precision, {}::double precision, {}::boolean,
+            '{}'::character varying
         )""".format(                             # Store procedure parameters
             os.path.basename(f_xmlin),           # file_xml
             prefact_id,                          # prefact_id
@@ -247,7 +316,8 @@ def facturar(logger, pt, req):
             xml_dat['TAXES']['TRAS']['TOTAL'],   # total_tras
             '0',                                 # subtotal_with_desc
             xml_dat['CFDI_TOTAL'],               # total
-            'false'                              # refact
+            'false',                             # refact
+            xml_dat['UUID']                      # id de documento - It came from SAT timbrado throughout PAC
         )
         logger.debug("Performing query: {}".format(q))
         try:
