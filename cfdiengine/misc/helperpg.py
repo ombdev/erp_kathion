@@ -23,6 +23,25 @@ class HelperPg(object):
             raise Exception('It is not possible to connect with database')
 
     @staticmethod
+    def onfly_update(conf, sql):
+        """updates database"""
+        conn = None
+        updated_rows = 0
+        try:
+            conn = HelperPg.connect(conf)
+            cur = conn.cursor()
+            cur.execute(sql)
+            updated_rows = cur.rowcount
+            conn.commit()
+            cur.close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            raise Exception('Error updating database')
+        finally:
+            if conn is not None:
+                conn.close()
+        return updated_rows
+
+    @staticmethod
     def query(conn, sql, commit=False):
         """carries an sql query out to database"""
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
