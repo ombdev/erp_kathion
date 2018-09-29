@@ -144,11 +144,11 @@ def dopago(logger, pt, req):
 
         q = """update fac_cfds_conf_folios  set folio_actual = (folio_actual + 1)
             FROM gral_suc AS SUC
-            LEFT JOIN fac_cfds_conf ON fac_cfds_conf.ral_suc_id = SUC.id
-            LEFT JOIN gral_usr_suc AS USR_SUC ON USR_SUC.ral_suc_id = SUC.id
+            LEFT JOIN fac_cfds_conf ON fac_cfds_conf.gral_suc_id = SUC.id
+            LEFT JOIN gral_usr_suc AS USR_SUC ON USR_SUC.gral_suc_id = SUC.id
             WHERE fac_cfds_conf_folios.proposito = 'PAG'
             AND fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id
-            AND USR_SUC.ral_usr_id = {}""".format(usr_id)
+            AND USR_SUC.gral_usr_id = {}""".format(usr_id)
         try:
             HelperPg.onfly_update(pt.dbms.pgsql_conn, q)
         except:
