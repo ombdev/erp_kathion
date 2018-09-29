@@ -159,6 +159,25 @@ class SaxReader(xml.sax.ContentHandler):
                 if k == "FechaPago":
                     c[k.upper()] = v
             self.__ds['PAYMENTS'].append(c)
+            
+            if name == "pago10:DoctoRelacionado":
+            c = {}
+            for (k, v) in attrs.items():
+                if k == "IdDocumento":
+                    c[k.upper()] = v
+                if k == "ImpPagado":
+                    c[k.upper()] = v
+                if k == "ImpSaldoAnt":
+                    c[k.upper()] = v
+                if k == "ImpSaldoInsoluto":
+                    c[k.upper()] = v
+                if k == "MetodoDePagoDR":
+                    c[k.upper()] = v
+                if k == "MonedaDR":
+                    c[k.upper()] = v
+                if k == "NumParcialidad":
+                    c[k.upper()] = v
+            self.__ds['DOCTOS'].append(c)
 
         if name == "tfd:TimbreFiscalDigital":
             for (k, v) in attrs.items():
