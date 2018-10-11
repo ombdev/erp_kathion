@@ -306,9 +306,15 @@ class PagXml(BuilderGen):
                 payment.setAttribute('NumOperacion', d['NUMERO_OPERACION'])
                 payment.setAttribute('Monto', d['MONTO'])
                 payment.setAttribute('MonedaP', d['ISO_4217'])
+                
+                if ['ISO_4217'] == 'MXN':
+                  payment.setAttribute('TipoCambioP','1')
+                else:
+                   # optional (requerido en ciertos casos)
+                  payment.setAttribute('TipoCambioP', d['TIPO_DE_CAMBIO'])
+                
                 payment.setAttribute('FormaDePagoP', d['CLAVE'])
                 payment.setAttribute('FechaPago', d['TIME_STAMP'])
-
                 dr = doc.createElement('pago10:DoctoRelacionado')
                 dr.setAttribute('IdDocumento', d['UUID_DOC'])
                 dr.setAttribute('ImpSaldoInsoluto', d['IMP_SALDO_INSOLUTO'])
