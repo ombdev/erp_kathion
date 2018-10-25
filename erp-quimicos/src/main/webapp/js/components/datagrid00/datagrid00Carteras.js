@@ -63,7 +63,6 @@ $.fn.tablaOrdenableCarteras = function(data,grid,loadForm){
 		//$tr_clickeado = $tbodygrid.find('a[href="editar_'+item+'"],a[href="cancelar_'+item+'"]');
 		$tr_clickeado = $tbodygrid.find('input#pdf_'+item);
 		
-		
 		var cont = 0;
 		$tr_clickeado.click(function(event){
 			event.preventDefault();
@@ -86,7 +85,27 @@ $.fn.tablaOrdenableCarteras = function(data,grid,loadForm){
 		});
 	}
 	
-	$pinta_grid = function(items, $tbodygrid){
+        $clicktr2 = function(item, $tbodygrid){
+            $tr_clickeado2 = $tbodygrid.find('input#pdfFactura_'+item);
+            $tr_clickeado2.click(function(event){
+                event.preventDefault();
+                //alert("btn_event2");
+                var llave = $(this).attr('id').split('_')[1];
+		loadForm(llave,'genera_pdfFactura');	                
+            });
+        }
+
+         $clicktr3 = function(item, $tbodygrid){
+            $tr_clickeado3 = $tbodygrid.find('input#xmlFactura_'+item);
+            $tr_clickeado3.click(function(event){
+                event.preventDefault();
+                //alert("btn_event3");
+                var llave = $(this).attr('id').split('_')[1];
+		loadForm(llave,'genera_xmlFactura');	                
+            });
+        }
+        
+	$pinta_grid = function(items, $tbodygrid){                
 		$tbodygrid.children().remove();
 		
 		for ( iterador = 0; iterador < items.length; iterador++ ){
@@ -99,7 +118,15 @@ $.fn.tablaOrdenableCarteras = function(data,grid,loadForm){
 					//$tr += '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="editar_' + items[iterador][$item_header] + '" class="editar_item" title="Editar" ><span id="img_editar" class="onmouseOutEdit" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="cancelar_' + items[iterador][$item_header] + '" class="cancelar_item" title="Eliminar"><span id="img_eliminar" class="onmouseOutDelete" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a></td>';
 					//$id_item = items[iterador][$item_header];
 					
-					$tr += '<td><INPUT TYPE="button" classs="genera_pdf" id="pdf_'+ items[iterador][$item_header]+'" value="PDF" style="width:50px; font-weight: bold;"></td>';
+                                        //NLE cambio
+					//$tr += '<td><INPUT TYPE="button" classs="genera_pdf" id="pdf_'+ items[iterador][$item_header]+'" value="PDF" style="width:50px; font-weight: bold;"></td>';
+                                        $tr += '<td style="width:240px;">';
+                                        $tr += '<INPUT TYPE="button" classs="genera_pdf" id="pdf_'+ items[iterador][$item_header]+'" value="PDF Cobranza" style="width:80px; font-weight: bold;">&nbsp;&nbsp;';
+                                        $tr += '<INPUT TYPE="button" classs="genera_pdf" id="pdfFactura_'+ items[iterador][$item_header]+'" value="PDF Factura" data-selector="'+items[iterador][$item_header]+'" style="width:70px; font-weight: bold;">&nbsp;&nbsp;';
+                                        $tr += '<INPUT TYPE="button" classs="genera_pdf" id="xmlFactura_'+ items[iterador][$item_header]+'" value="XML Factura" data-selector="'+items[iterador][$item_header]+'" style="width:70px; font-weight: bold;">&nbsp;&nbsp;';
+                                        $tr += '</td>';
+                                        
+                                        
 					$id_item = items[iterador][$item_header];
 				}else{
 					//	$tr += '<td>'+items[iterador][$item_header]+'</td>';
@@ -115,6 +142,9 @@ $.fn.tablaOrdenableCarteras = function(data,grid,loadForm){
 			$tbodygrid.append($tr);
 			$mouseOverEditGrid($id_item,$tbodygrid);
 			$clicktr($id_item,$tbodygrid);
+                        $clicktr2($id_item,$tbodygrid);
+                        $clicktr3($id_item,$tbodygrid);
+                        //$clicktr3($id_item,$tbodygrid);
 		};
 		
 		alternarColoresFilas(grid);

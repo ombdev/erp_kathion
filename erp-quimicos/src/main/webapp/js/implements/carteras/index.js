@@ -428,6 +428,7 @@ $(function() {
 		//click generar reporte de depositos
 		$genera_rep_depositos.click(function(event){
 			event.preventDefault();
+                        alert("$genera_rep_depositos");
 			var fechainicial = $fecha_inicial.val();
 			var fechafinal = $fecha_final.val();
 			var iu = $('#lienzo_recalculable').find('input[name=iu]').val();
@@ -435,6 +436,22 @@ $(function() {
 			window.location.href=input_json;
 		});//termina llamada json
 		
+                //NLE: Obtener PDF de Factura
+                
+                //$("#pdf_factura").click(function(event){
+                /*    try {
+                        var selector = $(this).data('selector');
+                        alert("selector:"+selector);
+                            event.preventDefault();
+                            var iu = $('#lienzo_recalculable').find('input[name=iu]').val();
+                            var input_json = document.location.protocol + '//' + document.location.host + '/' + controller + '/get_genera_pdf_depositos/'+iu+'/outFactura.json';
+                            window.location.href=input_json;
+                    }catch(err){
+                        alert("Error:"+err);
+                    }
+                */
+                //}
+                
 		//cancela busqueda
 		$cencela_depositos.click(function(event){
 			event.preventDefault();
@@ -3278,11 +3295,22 @@ $(function() {
 	
 	var carga_formaPagos00_for_datagrid00 = function(id_to_show, accion_mode){
 		//aqui entra para generar pdf del pago
+                //alert("accion_mode:"+accion_mode);
 		if(accion_mode == 'genera_pdf'){
+                    //alert("aquí");
 			var iu = $('#lienzo_recalculable').find('input[name=iu]').val();
 			var input_json = document.location.protocol + '//' + document.location.host + '/' + controller + '/getPdfReporteAplicacionPago/'+id_to_show+'/'+iu+'/out.json';
 			window.location.href=input_json;
-		}
+		}else if(accion_mode == 'genera_pdfFactura'){
+                    //alert("aquí");
+			var iu = $('#lienzo_recalculable').find('input[name=iu]').val();
+			var input_json = document.location.protocol + '//' + document.location.host + '/' + controller + '/getPdfFactura/'+id_to_show+'/'+iu+'/outPdfFactura.json';
+			window.location.href=input_json;                   
+                }else if(accion_mode == 'genera_xmlFactura'){
+			var iu = $('#lienzo_recalculable').find('input[name=iu]').val();
+			var input_json = document.location.protocol + '//' + document.location.host + '/' + controller + '/getXmlFactura/'+id_to_show+'/'+iu+'/outXmlFactura.json';
+			window.location.href=input_json;                    
+                }
 	}
     
     
@@ -3310,5 +3338,6 @@ $(function() {
     
 });
 
-
-
+function getPDF(item) {
+    alert("Ok");
+}

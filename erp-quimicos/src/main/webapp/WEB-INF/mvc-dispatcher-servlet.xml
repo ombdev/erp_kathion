@@ -46,8 +46,8 @@
         <!--Conexion a bd instance01 LOCAL-->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	     <property name="driverClassName" value="org.postgresql.Driver" />
-             <property name="url" value="jdbc:postgresql://kemikal.cu6w6h5eh02w.us-east-2.rds.amazonaws.com:5432/instance01" /> 
-             <!--<property name="url" value="jdbc:postgresql://localhost:5432/instance01" /> -->
+             <!--property name="url" value="jdbc:postgresql://kemikal.cu6w6h5eh02w.us-east-2.rds.amazonaws.com:5432/instance01" />  -->
+             <property name="url" value="jdbc:postgresql://kathion.agnux.com:5555/instance01" /> 
 	     <property name="username" value="instance01" />
 	     <property name="password" value="instance01" />
 	</bean>

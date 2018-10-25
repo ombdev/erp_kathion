@@ -824,13 +824,7 @@ public class CarterasController {
         return null;
         
     }
-
-   
-    
-    
-    
-    
-    
+  
     //Genera pdf del reporte de aplicacion de pagos a clientes, al momento de registrar un pago
     @RequestMapping(value = "/getPdfReporteAplicacionPago/{id_pago}/{iu}/out.json", method = RequestMethod.GET ) 
     public ModelAndView getGeneraPdfFacturacionJson(
@@ -934,7 +928,10 @@ public class CarterasController {
         String file_name = aux_no_fac+".pdf";
         
         //ruta de archivo de salida
-        String fileout = file_dir_tmp +"/"+  file_name;
+        //String fileout = file_dir_tmp +"/"+ rfcEmpresa + "/" + file_name;
+        String fileout = this.getGralDao().getCfdiTimbreEmitidosDir() + "/"+ rfcEmpresa + "/" + file_name;
+        System.out.println("Intentanto obtener PDF Factura de la ruta:" +fileout);
+        Logger.getLogger(CarterasController.class.getName()).log(Level.INFO, "Intentanto obtener PDF Factura de la ruta:" +fileout);
         //String fileout = file_dir_tmp + "\\" + file_name;
         
         ArrayList<HashMap<String, String>> datos_header = new ArrayList<HashMap<String, String>>();
@@ -995,7 +992,10 @@ public class CarterasController {
         String file_name = aux_no_fac+".xml";
         
         //ruta de archivo de salida
-        String fileout = file_dir_tmp +"/"+  file_name;
+       // String fileout = file_dir_tmp + "/" + rfcEmpresa + "/" +  file_name;
+       String fileout = this.getGralDao().getCfdiTimbreEmitidosDir() + "/"+ rfcEmpresa + "/" + file_name;
+       System.out.println("Intentanto obtener XML Factura de la ruta:" +fileout);
+        Logger.getLogger(CarterasController.class.getName()).log(Level.INFO, "Intentanto obtener XML Factura de la ruta:" +fileout);
         //String fileout = file_dir_tmp + "\\" + file_name;
         
         ArrayList<HashMap<String, String>> datos_header = new ArrayList<HashMap<String, String>>();
@@ -1013,7 +1013,7 @@ public class CarterasController {
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
         response.setBufferSize(size);
         response.setContentLength(size);
-        response.setContentType("application/pdf");
+        response.setContentType("application/xml");
         response.setHeader("Content-Disposition","attachment; filename=\"" + file.getName() +"\"");
         FileCopyUtils.copy(bis, response.getOutputStream());  	
         response.flushBuffer();
