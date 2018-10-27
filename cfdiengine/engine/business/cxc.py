@@ -138,6 +138,18 @@ def dopago(logger, pt, req):
     tmp_dir = tempfile.gettempdir()
     tmp_file = os.path.join(tmp_dir, HelperStr.random_str())
 
+    def update_ref_id(f_xmlin, usr_id, pago_id, no_id):
+        parser = SaxReader()
+        xml_dat, _ = parser(f_xmlin)
+        ref_id = '{}_{}{}'.format(no_id, xml_dat['CFDI_SERIE'], xml_dat['CFDI_FOLIO'])
+        q = """ = {}""".format(usr_id)
+        try:
+            HelperPg.onfly_update(pt.dbms.pgsql_conn, q)
+        except:
+            logger.error(dump_exception())
+            return ErrorCode.DBMS_SQL_ISSUES
+        return ErrorCode.SUCCESS
+
     def update_consecutive_alpha(f_xmlin):
         parser = SaxReader()
         xml_dat, _ = parser(f_xmlin)
