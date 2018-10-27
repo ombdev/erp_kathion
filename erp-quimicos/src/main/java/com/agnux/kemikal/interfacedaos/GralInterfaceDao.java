@@ -21,6 +21,7 @@ public interface GralInterfaceDao {
     public String getProdPdfDir();
     
     public String getImagesDir();
+    public String getNombreFactura(Integer id_pago);
     public String getSslDir();
     public String getCfdEmitidosDir();
     public String getCfdiTimbreEmitidosDir();

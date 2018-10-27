@@ -86,6 +86,18 @@ public class GralSpringDao implements GralInterfaceDao{
     }
     
     @Override
+    public String getNombreFactura(Integer id_pago) {
+        String sql_to_query = "select aux_no_fac from erp_pagos where id="+id_pago;
+        System.out.println("sql_to_query:"+sql_to_query);
+        Map<String, Object> mapConta = this.getJdbcTemplate().queryForMap(sql_to_query);
+        String fileName = String.valueOf(mapConta.get("aux_no_fac"));
+
+        System.out.println("Nombre del archivo PDF y XML: "+fileName);
+
+        return fileName;
+    }
+    
+    @Override
     public String getSslDir() {
         String ssldir = System.getenv("HOME") + "/" + "resources" + "/"+"ssl" + "/";
         //System.out.println(ssldir);
