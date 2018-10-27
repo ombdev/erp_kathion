@@ -138,11 +138,8 @@ def dopago(logger, pt, req):
     tmp_dir = tempfile.gettempdir()
     tmp_file = os.path.join(tmp_dir, HelperStr.random_str())
 
-    def update_ref_id(f_xmlin, usr_id, pago_id, no_id):
-        parser = SaxReader()
-        xml_dat, _ = parser(f_xmlin)
-        ref_id = '{}_{}{}'.format(no_id, xml_dat['CFDI_SERIE'], xml_dat['CFDI_FOLIO'])
-        q = """ = {}""".format(usr_id)
+    def update_filename():
+        q = """{} {} = {}""".format(filename.replace('.xml', ''), pag_id, usr_id)
         try:
             HelperPg.onfly_update(pt.dbms.pgsql_conn, q)
         except:
@@ -186,6 +183,9 @@ def dopago(logger, pt, req):
             out_dir = os.path.join(rdirs['cfdi_output'], _rfc)
             rc, signed_file = __pac_sign(logger, tmp_file, filename,
                                          out_dir, pt.tparty.pac)
+        if rc == ErrorCode.SUCCESS:
+            rc = update_filename()
+
         if rc == ErrorCode.SUCCESS:
             rc = update_consecutive_alpha(signed_file)
             if rc == ErrorCode.SUCCESS:
