@@ -139,7 +139,8 @@ def dopago(logger, pt, req):
     tmp_file = os.path.join(tmp_dir, HelperStr.random_str())
 
     def update_filename():
-        q = """{} {} = {}""".format(filename.replace('.xml', ''), pag_id, usr_id)
+        q = """UPDATE erp_pagos set aux_no_fac = {}
+            WHERE erp_pagos.numero_transaccion = {}""".format(filename.replace('.xml', ''), pag_id)
         try:
             HelperPg.onfly_update(pt.dbms.pgsql_conn, q)
         except:
