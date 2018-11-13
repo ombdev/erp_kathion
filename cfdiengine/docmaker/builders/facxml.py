@@ -196,7 +196,7 @@ class FacXml(BuilderGen):
             LEFT JOIN inv_prod_unidades on inv_prod_unidades.id = erp_prefacturas_detalles.inv_prod_unidad_id
             LEFT JOIN inv_prod_tipos on inv_prod_tipos.id = inv_prod.tipo_de_producto_id
             LEFT JOIN cfdi_claveunidad on inv_prod_unidades.cfdi_unidad_id = cfdi_claveunidad.id
-            LEFT JOIN cfdi_claveprodserv on inv_prod_tipos.cfdi_prodserv_id = cfdi_claveprodserv.id
+            LEFT JOIN cfdi_claveprodserv on inv_prod.cfdi_prodserv_id = cfdi_claveprodserv.id
             WHERE erp_prefacturas_detalles.prefacturas_id="""
         rowset = []
         for row in self.pg_query(conn, "{0}{1}".format(SQL, prefact_id)):

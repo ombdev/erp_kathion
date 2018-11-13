@@ -544,7 +544,7 @@ class FacPdf(BuilderGen):
                12.4 * cm,
                8 * cm
             ],
-            [1.685 * cm] * len(cont)  # rowHeights
+            [2.335 * cm] * len(cont)  # rowHeights 1.685 gas
         )
         table.setStyle(TableStyle([
             ('ALIGN', (0, 0), (0, 0), 'LEFT'),

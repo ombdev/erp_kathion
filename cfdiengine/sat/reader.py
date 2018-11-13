@@ -44,6 +44,7 @@ class SaxReader(xml.sax.ContentHandler):
             'CFDI_TOTAL': None,
             'FORMA_PAGO': None,
             'METODO_PAGO': None,
+            'DOCTOS': [],
             'PAYMENTS': [],
             'ARTIFACTS': [],
             'TAXES': {
@@ -159,8 +160,8 @@ class SaxReader(xml.sax.ContentHandler):
                 if k == "FechaPago":
                     c[k.upper()] = v
             self.__ds['PAYMENTS'].append(c)
-            
-            if name == "pago10:DoctoRelacionado":
+
+        if name == "pago10:DoctoRelacionado":
             c = {}
             for (k, v) in attrs.items():
                 if k == "IdDocumento":
