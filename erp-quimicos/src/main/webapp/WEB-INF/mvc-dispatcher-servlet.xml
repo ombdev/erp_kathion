@@ -13,6 +13,12 @@
 	<context:component-scan base-package="com.agnux.kemikal.controllers" />
         
 	<mvc:annotation-driven />
+
+    <bean id="propertyPlaceholderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="searchSystemEnvironment" value="true" />
+   </bean>
        
         <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
             <property name="resourceLoaderPath" value="/"/>
@@ -41,17 +47,12 @@
 	</bean>
 	
         
-        
-        
-        <!--Conexion a bd instance01 LOCAL-->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-	     <property name="driverClassName" value="org.postgresql.Driver" />
-             <!--property name="url" value="jdbc:postgresql://kemikal.cu6w6h5eh02w.us-east-2.rds.amazonaws.com:5432/instance01" />  -->
-             <property name="url" value="jdbc:postgresql://kathion.agnux.com:5555/instance01" /> 
-	     <property name="username" value="instance01" />
-	     <property name="password" value="instance01" />
-	</bean>
-        
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="org.postgresql.Driver" />
+            <property name="url" value="#{systemEnvironment['MS_DBMS_URL']}" />
+            <property name="username" value="#{systemEnvironment['MS_DBMS_USER']}" />
+            <property name="password" value="#{systemEnvironment['MS_DBMS_PASS']}" />
+        </bean>
         
         
         <!--<bean name="beanOutCfdi" class="com.agnux.cfdi.BeanSolicitidesOut"></bean>-->
