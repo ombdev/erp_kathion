@@ -574,9 +574,12 @@ public class ProductosController {
             @RequestParam(value="edito_imagen", required=true) String edito_imagen,
             @RequestParam(value="check_flete", required=false) String check_flete,
             @RequestParam(value="no_clie", required=true) String no_clie,
+            @RequestParam(value="clave_cfdi_claveprodserv", required=true) String clave_cfdi_claveprodserv,            
             Model model,@ModelAttribute("user") UserSessionData user
         ) {
             
+            System.out.println("*** Entrando a Productos editJson ****");
+            System.out.println("clave_cfdi_claveprodserv="+clave_cfdi_claveprodserv);
             HashMap<String, String> jsonretorno = new HashMap<String, String>();
             HashMap<String, String> succes = new HashMap<String, String>();
             HashMap<String, String> userDat = new HashMap<String, String>();
@@ -662,34 +665,34 @@ public class ProductosController {
             }
             
             String data_string = 
-                    app_selected+"___"+
-                    command_selected+"___"+
-                    id_usuario+"___"+ 
-                    id_producto+"___"+
-                    descripcion.toUpperCase()+"___"+
-                    codigo_barras+"___"+
-                    tentrega+"___"+
-                    select_clase+"___"+
-                    select_clasifstock+"___"+
-                    select_estatus+"___"+
-                    select_familia+"___"+
-                    select_subfamilia+"___"+
-                    select_grupo+"___"+
-                    select_ieps+"___"+
-                    select_iva+"___"+
-                    select_linea+"___"+
-                    select_marca+"___"+
-                    select_prodtipo+"___"+
-                    select_seccion+"___"+
-                    select_unidad+"___"+
-                    check_nolote+"___"+
-                    check_nom+"___"+
-                    check_noserie+"___"+
-                    check_pedimento+"___"+
-                    check_stock+"___"+
-                    check_ventaext+"___"+
-                    check_compraext+"___"+
-                    pres_on+"___"+
+                    app_selected+"___"+//1
+                    command_selected+"___"+//2
+                    id_usuario+"___"+//3
+                    id_producto+"___"+//4
+                    descripcion.toUpperCase()+"___"+//5
+                    codigo_barras+"___"+//6
+                    tentrega+"___"+//7
+                    select_clase+"___"+//8
+                    select_clasifstock+"___"+//9
+                    select_estatus+"___"+//10
+                    select_familia+"___"+//11
+                    select_subfamilia+"___"+//12
+                    select_grupo+"___"+//13
+                    select_ieps+"___"+//14
+                    select_iva+"___"+//15
+                    select_linea+"___"+//16
+                    select_marca+"___"+//17
+                    select_prodtipo+"___"+//18
+                    select_seccion+"___"+//19
+                    select_unidad+"___"+//20
+                    check_nolote+"___"+//21
+                    check_nom+"___"+//22
+                    check_noserie+"___"+//23
+                    check_pedimento+"___"+//24
+                    check_stock+"___"+//25
+                    check_ventaext+"___"+//26
+                    check_compraext+"___"+//27
+                    pres_on+"___"+//28
                     id_proveedor+"___"+//29
                     densidad+"___"+//30
                     codigo+"___"+//31
@@ -707,8 +710,8 @@ public class ProductosController {
                     check_flete+"___"+//43
                     no_clie+"___"+//44
                     select_moneda+"___"+//45
-                    select_retencion;//46
-            
+                    select_retencion+"___"+//46
+                    clave_cfdi_claveprodserv;//47
             succes = this.getInvDao().selectFunctionValidateAaplicativo(data_string,app_selected,extra_data_array);
             
             String actualizo = "0";

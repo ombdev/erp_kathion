@@ -813,6 +813,7 @@ $(function() {
 				$valor_maximo.attr('disabled','-1');
 				$valor_minimo.attr('disabled','-1');
 				$punto_reorden.attr('disabled','-1');
+                                $clave_cfdi_claveprodserv.attr('disabled','-1');
 			}
 		}
 		
@@ -848,6 +849,7 @@ $(function() {
 				$valor_maximo.removeAttr('disabled');
 				$valor_minimo.removeAttr('disabled');
 				$punto_reorden.removeAttr('disabled');
+                                $clave_cfdi_claveprodserv.removeAttr('disabled');
 			}
 		}
 	}//termina  habilitar y deshabilitar campos
@@ -1022,7 +1024,9 @@ $(function() {
 		var $valor_maximo = $('#forma-product-window').find('input[name=valor_maximo]');
 		var $valor_minimo = $('#forma-product-window').find('input[name=valor_minimo]');
 		var $punto_reorden = $('#forma-product-window').find('input[name=punto_reorden]');
-		
+                
+                //var $busca_cfdi_claveprodserv = $('#forma-product-window').find('a[href=busca_cfdi_claveprodserv]');
+                var $clave_cfdi_claveprodserv = $('#forma-product-window').find('input[name=clave_cfdi_claveprodserv]');
 		
 		var $td_etiqueta_prov_clie = $('#forma-product-window').find('#td_etiqueta_prov_clie');
 		var $busca_clie_prov = $('#forma-product-window').find('#busca_clie_prov');
@@ -1670,9 +1674,12 @@ $(function() {
 			$busca_clientes($no_clie, $('#lienzo_recalculable').find('input[name=iu]').val() );
 		});
 		
-		
-				
-				
+		/*.click(function(event){
+			event.preventDefault();
+			//$busca_clientes($no_clie, $('#lienzo_recalculable').find('input[name=iu]').val() );
+                    alert("Ok");
+		});*/
+                
 		//agregar presentacion
 		$agregar_pres.click(function(event){
 			event.preventDefault();
@@ -1823,7 +1830,18 @@ $(function() {
 		
 		$valor_maximo.keypress(function(e){
 			// Permitir  numeros, borrar, suprimir, TAB, puntos, comas
+                        alert("Ok");
 			if (e.which == 8 || e.which == 46 || e.which==13 || e.which == 0 || (e.which >= 48 && e.which <= 57 )) {
+				return true;
+			}else {
+				return false;
+			}
+		});
+                
+                    $clave_cfdi_claveprodserv.keypress(function(e){
+			// Permitir  numeros, borrar, suprimir, TAB, puntos, comas
+                        //alert("Ok");
+			if ( (e.which == 8 || e.which == 46 || e.which==13 || e.which == 0 || (e.which >= 48 && e.which <= 57 )) && e.which != 46 ) {
 				return true;
 			}else {
 				return false;
@@ -2023,7 +2041,8 @@ $(function() {
 				var $valor_maximo = $('#forma-product-window').find('input[name=valor_maximo]');
 				var $valor_minimo = $('#forma-product-window').find('input[name=valor_minimo]');
 				var $punto_reorden = $('#forma-product-window').find('input[name=punto_reorden]');
-				
+                                var $clave_cfdi_claveprodserv = $('#forma-product-window').find('input[name=clave_cfdi_claveprodserv]');
+			
 				var $td_etiqueta_prov_clie = $('#forma-product-window').find('#td_etiqueta_prov_clie');
 				var $busca_clie_prov = $('#forma-product-window').find('#busca_clie_prov');
 				var $proveedor = $('#forma-product-window').find('input[name=proveedor]');
@@ -2374,6 +2393,7 @@ $(function() {
 					$valor_minimo.attr({'value' : entry['Producto'][0]['valor_minimo']});
 					$punto_reorden.attr({'value' : entry['Producto'][0]['punto_reorden']});
 					$no_clie.attr({'value' : entry['Producto'][0]['no_clie']});
+                                        $clave_cfdi_claveprodserv.attr({'value' : entry['Producto'][0]['clave_cfdi_claveprodserv']});
 					
 					$check_noserie.attr('checked', (entry['Producto'][0]['requiere_numero_serie'] == 'true')? true:false );
 					$check_nom.attr('checked', (entry['Producto'][0]['requiere_nom'] == 'true')? true:false );
@@ -2537,7 +2557,7 @@ $(function() {
 							
 							//tipo=3 es KIT, tipo=4 es SERVICIOS
 							if(parseInt(entry['Producto'][0]['tipo_de_producto_id'])==3 || parseInt(entry['Producto'][0]['tipo_de_producto_id'])==4 ){
-								$deshabilitar_campos("desahabilitar",$proveedor,$tiempos_de_entrega,$select_prod_tipo,$select_estatus,$select_seccion,$select_grupo,$select_linea,$select_marca,$select_clase,$select_familia,$select_subfamilia,$select_unidad,$select_clasifstock,$select_iva,$select_ieps,$check_noserie,$check_nom,$check_nolote,$check_pedimento,$check_stock,$check_ventaext,$check_compraext,$select_disponibles,$select_seleccionados,$agregar_pres,$remover_pres,$densidad, $valor_maximo, $valor_minimo, $punto_reorden);
+								$deshabilitar_campos("desahabilitar",$proveedor,$tiempos_de_entrega,$select_prod_tipo,$select_estatus,$select_seccion,$select_grupo,$select_linea,$select_marca,$select_clase,$select_familia,$select_subfamilia,$select_unidad,$select_clasifstock,$select_iva,$select_ieps,$check_noserie,$check_nom,$check_nolote,$check_pedimento,$check_stock,$check_ventaext,$check_compraext,$select_disponibles,$select_seleccionados,$agregar_pres,$remover_pres,$densidad, $valor_maximo, $valor_minimo, $punto_reorden, $clave_cfdi_claveprodserv);
 							}else{
 									//$deshabilitar_campos("habilitar",$proveedor,$tiempos_de_entrega,$select_prod_tipo,$select_estatus,$select_seccion,$select_grupo,$select_linea,$select_marca,$select_clase,$select_familia,$select_subfamilia,$select_unidad,$select_clasifstock,$select_iva,$select_ieps,$check_noserie,$check_nom,$check_nolote,$check_pedimento,$check_stock,$check_ventaext,$check_compraext,$select_disponibles,$select_seleccionados,$agregar_pres,$remover_pres);
 							}
@@ -3043,7 +3063,23 @@ $(function() {
 					$densidad.val(parseFloat($densidad.val()).toFixed(4));
 				});
 				
-				$valor_maximo.keypress(function(e){
+				$clave_cfdi_claveprodserv.keypress(function(e){
+					// Permitir  numeros, borrar, suprimir, TAB, puntos, comas
+					if (e.which == 8 || e.which == 46 || e.which==13 || e.which == 0 || (e.which >= 48 && e.which <= 57 )) {
+						return true;
+					}else {
+						return false;
+					}
+				});
+
+				$clave_cfdi_claveprodserv.focus(function(e){
+					if(parseInt($clave_cfdi_claveprodserv.val())<=1){
+						$clave_cfdi_claveprodserv.val('');
+					}
+				});
+                            
+                            
+                                $valor_maximo.keypress(function(e){
 					// Permitir  numeros, borrar, suprimir, TAB, puntos, comas
 					if (e.which == 8 || e.which == 46 || e.which==13 || e.which == 0 || (e.which >= 48 && e.which <= 57 )) {
 						return true;

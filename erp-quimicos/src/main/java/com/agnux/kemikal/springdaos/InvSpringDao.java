@@ -33,8 +33,8 @@ public class InvSpringDao implements InvInterfaceDao{
     @Override
     public HashMap<String, String> selectFunctionValidateAaplicativo(String data, Integer idApp, String extra_data_array) {
         String sql_to_query = "select erp_fn_validaciones_por_aplicativo from erp_fn_validaciones_por_aplicativo('"+data+"',"+idApp+",array["+extra_data_array+"]);";
-        //System.out.println("Validacion:"+sql_to_query);
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
+        System.out.println("Validacion Productos:"+sql_to_query);
+        log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
 
         HashMap<String, String> hm = (HashMap<String, String>) this.jdbcTemplate.queryForObject(
             sql_to_query,
@@ -55,8 +55,8 @@ public class InvSpringDao implements InvInterfaceDao{
     @Override
     public String selectFunctionForThisApp(String campos_data, String extra_data_array) {
         String sql_to_query = "select * from gral_adm_catalogos('"+campos_data+"',array["+extra_data_array+"]);";
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
-        //System.out.println("Ejacutando Guardar:"+sql_to_query);
+        log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
+        System.out.println("Ejacutando Guardar Producto:"+sql_to_query);
         //int update = this.getJdbcTemplate().queryForInt(sql_to_query);
         String valor_retorno="";
         Map<String, Object> update = this.getJdbcTemplate().queryForMap(sql_to_query);
@@ -630,12 +630,13 @@ public class InvSpringDao implements InvInterfaceDao{
                 + "inv_prod.flete,"
                 + "inv_prod.no_clie, "
                 + "inv_prod.gral_mon_id as mon_id,"
-                + "inv_prod.gral_imptos_ret_id as impto_ret_id "
+                + "inv_prod.gral_imptos_ret_id as impto_ret_id, "
+                + "get_clave_cfdi_claveprodserv(inv_prod.cfdi_prodserv_id) as clave_cfdi_claveprodserv "
         + "FROM inv_prod  "
         + "LEFT JOIN cxp_prov ON cxp_prov.id=inv_prod.cxp_prov_id "
         + "WHERE inv_prod.id=?;";
 
-	//System.out.println("getProducto_Datos: "+sql_query);
+	System.out.println("getProducto_Datos: "+sql_query);
         ArrayList<HashMap<String, String>> hm_producto = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
             sql_query,
             new Object[]{new Integer(id_producto)}, new RowMapper() {
@@ -683,7 +684,8 @@ public class InvSpringDao implements InvInterfaceDao{
                     row.put("no_clie",rs.getString("no_clie"));
                     row.put("mon_id",String.valueOf(rs.getInt("mon_id")));
                     row.put("impto_ret_id",String.valueOf(rs.getInt("impto_ret_id")));
-                    
+                    row.put("clave_cfdi_claveprodserv",String.valueOf(rs.getInt("clave_cfdi_claveprodserv")));
+                                        
                     return row;
                 }
             }
