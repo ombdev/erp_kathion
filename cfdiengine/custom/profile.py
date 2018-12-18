@@ -1,4 +1,23 @@
 import json
+import os
+from engine.error import FatalError
+
+
+def env_property(prop, caster=None):
+    '''Read env variables for microservice's sake'''
+
+    val = os.environ.get(prop)
+    if val is None:
+        raise FatalError("Enviroment variable {} has not been set !!".format(prop))
+
+    if caster is None:
+       return val
+
+    try:
+        return caster(val)
+    except:
+        raise FatalError("Enviroment variable {} could not be casted !!".format(prop))
+
 
 class ProfileTree:
     """object to chain other config nodes"""
@@ -62,7 +81,7 @@ class ProfileReader(object):
             try:
                 json_lines = open(p_file_path).read()
                 parsed_json = json.loads(json_lines)
-                return parsed_json['engine_profile']
+                return parsed_json['profile']
             except (KeyError, OSError, IOError) as e:
                 self.__logger.error(e)
                 self.__logger.fatal(

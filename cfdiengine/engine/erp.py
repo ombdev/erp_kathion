@@ -41,6 +41,13 @@ def do_request(logger, pt, req, adapter=None):
 
 
 class ControllerFactory(Factory):
+
+    _CONTROLLERS = [
+        {"archetype": "0x30", "event_mod": "srhello"},
+        {"archetype": "0x24", "event_mod": "srpostbuff"},
+        {"archetype": "0x28", "event_mod": "rwrbufftrans"},
+    ]
+
     def __init__(self, logger, profile_path):
         super().__init__()
         self.logger = logger
@@ -50,7 +57,7 @@ class ControllerFactory(Factory):
                 os.path.abspath(os.path.join(
                     os.path.dirname(__file__), name)))
         self.bm = BuffMediator(self.logger, pt)
-        self.__makeup_factory(pt.bbgum.controllers)
+        self.__makeup_factory()
 
     def __read_settings(self, s_file):
         self.logger.debug("looking for config profile file in:\n{0}".format(
@@ -60,11 +67,8 @@ class ControllerFactory(Factory):
             return reader(s_file)
         raise Exception("unable to locate the config profile file")
 
-    def __makeup_factory(self, variants):
-        devents = dict_params(
-            ProfileReader.get_content(
-                variants, ProfileReader.PNODE_MANY),
-            'archetype', 'event_mod')
+    def __makeup_factory(self):
+        devents = dict_params(self._CONTROLLERS, 'archetype', 'event_mod')
         for archetype, event_mod in devents.items():
             try:
                 m = __import__(event_mod)

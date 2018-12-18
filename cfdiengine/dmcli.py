@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 import os
 import sys
 import traceback
@@ -89,8 +90,7 @@ def dmcli(args, logger):
 
         try:
             dpl = DocPipeLine(logger, resdir,
-                rdirs_conf = pt.res.dirs,
-                pgsql_conf = pt.dbms.pgsql_conn)
+                rdirs_conf = pt.res.dirs)
             dpl.run(args.dm_builder, args.dm_output, **kwargs)
         except:
             raise Exception("problems in document pipeline")

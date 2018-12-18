@@ -1,6 +1,6 @@
-from custom.profile import ProfileReader
 import psycopg2
 import psycopg2.extras
+from custom.profile import env_property
 
 
 class HelperPg(object):
@@ -8,27 +8,26 @@ class HelperPg(object):
     """
 
     @staticmethod
-    def connect(conf):
+    def connect():
         """opens a connection to database"""
+
+        # order here matters
+        env_vars = ['MS_DBMS_DB', 'MS_DBMS_USER', 'MS_DBMS_HOST', 'MS_DBMS_PASS', 'MS_DBMS_PORT']
+        t = tuple(map(env_property, env_vars))
+
         try:
-            conn_str = "dbname={0} user={1} host={2} password={3} port={4}".format(
-                ProfileReader.get_content(conf.db, ProfileReader.PNODE_UNIQUE),
-                ProfileReader.get_content(conf.user, ProfileReader.PNODE_UNIQUE),
-                ProfileReader.get_content(conf.host, ProfileReader.PNODE_UNIQUE),
-                ProfileReader.get_content(conf.passwd, ProfileReader.PNODE_UNIQUE),
-                ProfileReader.get_content(conf.port, ProfileReader.PNODE_UNIQUE)
-            )
+            conn_str = "dbname={0} user={1} host={2} password={3} port={4}".format(*t)
             return psycopg2.connect(conn_str)
         except:
             raise Exception('It is not possible to connect with database')
 
     @staticmethod
-    def onfly_update(conf, sql):
+    def onfly_update(sql):
         """updates database"""
         conn = None
         updated_rows = 0
         try:
-            conn = HelperPg.connect(conf)
+            conn = HelperPg.connect()
             cur = conn.cursor()
             cur.execute(sql)
             updated_rows = cur.rowcount
@@ -57,9 +56,9 @@ class HelperPg(object):
         raise Exception('There is not data retrieved')
 
     @staticmethod
-    def onfly_query(conf, sql, commit=False):
+    def onfly_query(sql, commit=False):
         """exec a query with a temporary connection"""
-        conn = HelperPg.connect(conf)
+        conn = HelperPg.connect()
 
         try:
             return HelperPg.query(conn, sql, commit)

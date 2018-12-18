@@ -21,16 +21,12 @@ class DocPipeLine(object):
     creator instance of documents.
     """
 
-    def __init__(self, logger, resdir = None, rdirs_conf = None, pgsql_conf = None):
+    def __init__(self, logger, resdir = None, rdirs_conf = None):
         self.logger = logger
 
         if resdir == None:
             raise DocBuilderError('resources directory not fed!!')
         self.resdir = resdir
-
-        if pgsql_conf == None:
-            raise DocBuilderError("pgsql config info not fed!!")
-        self.pgsql_conf = pgsql_conf
 
         if rdirs_conf == None:
             raise DocBuilderError("rdirs config info not fed!!")
@@ -109,7 +105,7 @@ class DocPipeLine(object):
     def __open_dbms_conn(self):
         """opens a connection to postgresql"""
         try:
-            return HelperPg.connect(self.pgsql_conf)
+            return HelperPg.connect()
         except psycopg2.Error as e:
             self.logger.error(e)
             raise DocBuilderError("dbms was not connected")
