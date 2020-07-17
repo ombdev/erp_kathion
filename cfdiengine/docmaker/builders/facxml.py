@@ -242,7 +242,7 @@ class FacXml(BuilderGen):
                 )
             )
 
-        totales['MONTO_TOTAL'] = self.__narf(totales['IMPORTE_SUM']) - self.__narf(totales['DESCTO_SUM']) + self.__narf(totales['IMPORTE_SUM_IEPS']) + self.__narf(totales['IMPORTE_SUM_IMPUESTO'])
+        totales['MONTO_TOTAL'] = self.__narf(totales['IMPORTE_SUM']) - self.__narf(totales['DESCTO_SUM']) + self.__narf(totales['IMPORTE_SUM_IEPS']) + self.__narf(totales['IMPORTE_SUM_IMPUESTO']) - self.__narf(totales['IMPORTE_SUM_RET'])
         return {k: truncate(float(v), self.__NDECIMALS) for k, v in totales.items()}
 
     def __calc_traslados(self, l_items, l_ieps, l_iva):
