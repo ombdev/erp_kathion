@@ -311,6 +311,12 @@ class FacXml(BuilderGen):
             })
         return rowset
 
+    def __q_rivas(self, conn):
+        SQL="""SELECT id, descripcion AS titulo, tasa
+            FROM public.gral_imptos_ret
+            WHERE borrado_logico=false"""
+        return [{'ID' : row['id'], 'DESC': row['titulo'], 'TASA': row['tasa']} for row in self.pg_query(conn, SQL)]
+
     def __q_ieps(self, conn, usr_id):
         """
         Consulta el total de lo IEPS activos en dbms
