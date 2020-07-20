@@ -245,6 +245,34 @@ class FacXml(BuilderGen):
         totales['MONTO_TOTAL'] = self.__narf(totales['IMPORTE_SUM']) - self.__narf(totales['DESCTO_SUM']) + self.__narf(totales['IMPORTE_SUM_IEPS']) + self.__narf(totales['IMPORTE_SUM_IMPUESTO']) - self.__narf(totales['IMPORTE_SUM_RET'])
         return {k: truncate(float(v), self.__NDECIMALS) for k, v in totales.items()}
 
+    def __calc_retenciones(self, l_items, l_riva):
+        """
+        Calcula los impuestos retenidos
+        """
+        retenciones = []
+
+        for tax in l_riva:
+            # next two variables shall get lastest value of loop
+            # It's not me. It is the Noe approach :|
+            impto_id = 0
+            tasa = 0
+            importe_sum = Decimal(0)
+            for item in l_items:
+                if tax['ID'] == item['RET_ID']:
+                    impto_id = item['RET_ID']
+                    tasa = item['TASA_RET']
+                    importe_sum += self.__narf(self.__calc_imp_tax(
+                        self.__abs_importe(item), self.__place_tasa(item['TASA_RET'])
+                    ))
+            if impto_id > 0:
+                retenciones.append({
+                    'impuesto': 'ISR',
+                    'clave': '001',
+                    'importe': truncate(float(importe_sum), self.__NDECIMALS),
+                    'tasa': tasa
+                })
+        return retenciones
+
     def __calc_traslados(self, l_items, l_ieps, l_iva):
         """
         Calcula los impuestos trasladados
