@@ -422,6 +422,8 @@ class FacXml(BuilderGen):
         conceptos = self.__q_conceptos(conn, prefact_id)
         traslados = self.__calc_traslados(conceptos,
             self.__q_ieps(conn, usr_id), self.__q_ivas(conn))
+        retenciones = self.__calc_retenciones(conceptos,
+            self.__q_rivas(conn))
 
         return {
             'TIME_STAMP': '{0:%Y-%m-%dT%H:%M:%S}'.format(datetime.datetime.now()),
@@ -437,6 +439,7 @@ class FacXml(BuilderGen):
             'LUGAR_EXPEDICION': self.__q_lugar_expedicion(conn, usr_id),
             'CONCEPTOS': conceptos,
             'TRASLADOS': traslados,
+            'RETENCIONES' : retenciones,
             'TOTALES': self.__calc_totales(conceptos)
         }
 
