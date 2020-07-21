@@ -584,6 +584,24 @@ class FacXml(BuilderGen):
             )
         return pyxb.BIND(*tuple(taxes))
 
+    def __tag_retenciones(self, i):
+
+        def retencion(b, c, tc, imp):
+            return pyxb.BIND(
+                Base=b, TipoFactor='Tasa',
+                Impuesto=c, TasaOCuota=tc, Importe=imp)
+
+        taxes = []
+        if i['IMPORTE_RET'] > 0:
+            taxes.append(
+                traslado(
+                    i['IMPORTE'], "001", self.__place_tasa(i['TASA_RET']), self.__calc_imp_tax(
+                        i['IMPORTE'], self.__place_tasa(i['TASA_RET'])
+                    )
+                )
+            )
+        return pyxb.BIND(*tuple(taxes))
+
     def __tag_impuestos(self, i):
         notaxes = True
         kwargs = {}
