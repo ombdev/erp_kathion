@@ -173,6 +173,10 @@ class FacXml(BuilderGen):
                 )
               ) * erp_prefacturas_detalles.valor_imp
             ) AS importe_impuesto,
+            (
+                (erp_prefacturas_detalles.cant_facturar * erp_prefacturas_detalles.precio_unitario) *
+                erp_prefacturas_detalles.tasa_ret
+            ) AS importe_ret,
             (erp_prefacturas_detalles.valor_ieps * 100::double precision) AS tasa_ieps,
             (erp_prefacturas_detalles.valor_imp * 100::double precision) AS tasa_impuesto,
             (erp_prefacturas_detalles.tasa_ret * 100::double precision) AS ret_tasa,
@@ -201,6 +205,7 @@ class FacXml(BuilderGen):
                 # From this point onwards tax related elements
                 'IMPORTE_IEPS': row['importe_ieps'],
                 'IMPORTE_IMPUESTO' : row['importe_impuesto'],
+                'IMPORTE_RET' : row['importe_ret'],
                 'TASA_IEPS': row['tasa_ieps'],
                 'TASA_IMPUESTO': row['tasa_impuesto'],
                 'TASA_RET': row['ret_tasa'],
@@ -594,7 +599,7 @@ class FacXml(BuilderGen):
         taxes = []
         if i['IMPORTE_RET'] > 0:
             taxes.append(
-                traslado(
+                retencion(
                     i['IMPORTE'], "001", self.__place_tasa(i['TASA_RET']), self.__calc_imp_tax(
                         i['IMPORTE'], self.__place_tasa(i['TASA_RET'])
                     )
