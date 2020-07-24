@@ -507,6 +507,9 @@ class FacXml(BuilderGen):
             return pyxb.BIND(TipoFactor='Tasa',
                 Impuesto=c, TasaOCuota=tc, Importe=imp)
 
+        def retencion(c, imp):
+            return pyxb.BIND(Impuesto=c, Importe=imp)
+
         def zigma(v):
             z = Decimal(0)
             for w in v:
@@ -514,11 +517,14 @@ class FacXml(BuilderGen):
             return float(z)
 
         c.Impuestos = pyxb.BIND(
-            TotalImpuestosRetenidos=None,
+            TotalImpuestosRetenidos=zigma(dat['RETENCIONES']) if zigma(dat['RETENCIONES']) > 0 else None,
             TotalImpuestosTrasladados=zigma(dat['TRASLADOS']),
             Traslados=pyxb.BIND(
                 *tuple([traslado(t['clave'], self.__place_tasa(t['tasa']), t['importe']) for t in dat['TRASLADOS']])
-            )
+            ),
+            Retenciones=pyxb.BIND(
+                *tuple([retencion(t['clave'], t['importe']) for t in dat['RETENCIONES']])
+            ) if dat['RETENCIONES'] else None
         )
 
         tmp_file = save(c)
@@ -605,12 +611,18 @@ class FacXml(BuilderGen):
                     )
                 )
             )
+        else:
+            return taxes
+
         return pyxb.BIND(*tuple(taxes))
 
     def __tag_impuestos(self, i):
         notaxes = True
         kwargs = {}
-        if i['IMPORTE_IMPUESTO'] > 0 or i['IMPORTE_IEPS'] > 0:
+        if i['IMPORTE_IMPUESTO'] > 0 or i['IMPORTE_IEPS'] > 0 or i['IMPORTE_RET'] > 0:
             notaxes = False
-            kwargs['Traslados'] = self.__tag_traslados(i)
+            if self.__tag_traslados(i):
+                kwargs['Traslados'] = self.__tag_traslados(i)
+            if self.__tag_retenciones(i):
+                kwargs['Retenciones'] = self.__tag_retenciones(i)
         return pyxb.BIND() if notaxes else pyxb.BIND(**kwargs)
