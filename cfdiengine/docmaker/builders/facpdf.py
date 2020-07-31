@@ -11,10 +11,12 @@ from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
 from reportlab.lib.enums import TA_CENTER
 
+from decimal import Decimal
+
 import misc.helperstr as strtricks
 import sat.reader as xmlreader
 import os
-
+import math
 
 impt_class='FacPdf'
 
@@ -496,7 +498,21 @@ class FacPdf(BuilderGen):
                 ]
             ]
 
-            TAXES = {'002':'IVA', '003':'IEPS'} # hardcode taxes as per SAT cat
+            TAXES = {'001': 'ISR', '002':'IVA', '003':'IEPS'} # hardcode taxes as per SAT cat
+
+            for imp in dat['XML_PARSED']['TAXES']['RET']['DETAILS']:
+                tasa  = '6' # XXX tasa retencion hardcoded
+
+                row = [
+                    "{0} {1}%".format(
+                        'TAX' if dat['CAP_LOADED']['TL_DOC_LANG'] == 'ENGLISH' else TAXES[imp['IMPUESTO']],
+                        tasa
+                    ),
+                    dat['EXTRA_INFO']['CURRENCY_ABR'],
+                    strtricks.HelperStr.format_currency(imp['IMPORTE'])
+                ]
+                cont.append(row)
+
 
             for imptras in dat['XML_PARSED']['TAXES']['TRAS']['DETAILS']:
                 _, tasa  = imptras['TASAOCUOTA'].split('.')
