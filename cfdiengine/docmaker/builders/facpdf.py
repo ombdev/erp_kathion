@@ -11,12 +11,10 @@ from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
 from reportlab.lib.enums import TA_CENTER
 
-from decimal import Decimal
-
 import misc.helperstr as strtricks
 import sat.reader as xmlreader
 import os
-import math
+
 
 impt_class='FacPdf'
 
@@ -42,7 +40,7 @@ class FacPdf(BuilderGen):
             'TL_PAY_DATE': 'FECHA DE PAGO',
             'TL_CFDI_USE': 'USO CFDI',
             'TL_PAY_COND': 'CONDICIONES DE PAGO',
-            'TL_ACC_NUM': 'NO. DE CUENTA',
+            'TL_ACC_NUM': 'TIPO DE COMPROBANTE',
             'TL_PAY_MET': 'METODO DE PAGO',
             'TL_PAY_WAY': 'FORMA DE PAGO',
             'TL_ART_SKU': 'CLAVE',
@@ -52,6 +50,7 @@ class FacPdf(BuilderGen):
             'TL_ART_UP': 'P. UNITARIO',
             'TL_ART_AMNT': 'IMPORTE',
             'TL_ART_SUBT': 'SUB-TOTAL',
+            'TL_ART_SAVE': 'DESCUENTO',
             'TL_ART_TOTAL': 'TOTAL'
         },
         'ENG': {
@@ -80,6 +79,7 @@ class FacPdf(BuilderGen):
             'TL_ART_UP': 'UNIT PRICE',
             'TL_ART_AMNT': 'AMOUNT',
             'TL_ART_SUBT': 'SUBT',
+            'TL_ART_SAVE': 'SAVE',
             'TL_ART_TOTAL': 'TOTAL'
         }
     }
@@ -255,6 +255,7 @@ class FacPdf(BuilderGen):
         story.append(self.__customer_table(dat))
         story.append(Spacer(1, 0.4 * cm))
         story.append(self.__items_section(dat))
+        story.append(Spacer(1, 0.4 * cm))
         story.append(self.__amount_section(dat))
         story.append(Spacer(1, 0.45 * cm))
 
@@ -464,7 +465,7 @@ class FacPdf(BuilderGen):
             cont = [ [''], ["IMPORTE CON LETRA"] ]
             (c,d) = dat['XML_PARSED']['CFDI_TOTAL'].split('.')
             n = numspatrans(c)
-            result = "{0} {1} {2}/100 {3}".format(
+            result = "{0} {1} {2}0/100 {3}".format(
                 n.upper(),
                 dat['EXTRA_INFO']['CURRENCY_NAME'],
                 d,
@@ -498,6 +499,13 @@ class FacPdf(BuilderGen):
                 ]
             ]
 
+            if dat['XML_PARSED']['CFDI_SAVE'] is not None:
+                cont.append([
+                    dat['CAP_LOADED']['TL_ART_SAVE'],
+                    dat['EXTRA_INFO']['CURRENCY_ABR'],
+                    strtricks.HelperStr.format_currency(dat['XML_PARSED']['CFDI_SAVE'])
+                ])
+
             TAXES = {'001': 'ISR', '002':'IVA', '003':'IEPS'} # hardcode taxes as per SAT cat
 
             for imp in dat['XML_PARSED']['TAXES']['RET']['DETAILS']:
@@ -512,7 +520,6 @@ class FacPdf(BuilderGen):
                     strtricks.HelperStr.format_currency(imp['IMPORTE'])
                 ]
                 cont.append(row)
-
 
             for imptras in dat['XML_PARSED']['TAXES']['TRAS']['DETAILS']:
                 _, tasa  = imptras['TASAOCUOTA'].split('.')
@@ -560,7 +567,7 @@ class FacPdf(BuilderGen):
                12.4 * cm,
                8 * cm
             ],
-            [2.335 * cm] * len(cont)  # rowHeights 1.685 gas
+            [1.685 * cm] * len(cont)  # rowHeights
         )
         table.setStyle(TableStyle([
             ('ALIGN', (0, 0), (0, 0), 'LEFT'),
@@ -651,9 +658,16 @@ class FacPdf(BuilderGen):
     def __customer_table(self, dat):
 
         def customer_sec():
+            st = ParagraphStyle(
+                name='info',
+                fontName='Helvetica',
+                fontSize=7,
+                leading=8
+            )
+
             c = []
             c.append([ dat['CAP_LOADED']['TL_CUST_NAME'] ])
-            c.append([ dat['XML_PARSED']['RECEPTOR_NAME'].upper() ])
+            c.append([ Paragraph(dat['XML_PARSED']['RECEPTOR_NAME'].upper(), st) ])
             c.append([ dat['CAP_LOADED']['TL_CUST_REG'] ] )
             c.append([ dat['XML_PARSED']['RECEPTOR_RFC'].upper() ])
             c.append([ dat['CAP_LOADED']['TL_CUST_ADDR'] ])
@@ -694,13 +708,13 @@ class FacPdf(BuilderGen):
         def addons():
             c = []
             c.append([dat['CAP_LOADED']['TL_CUST_NUM'], dat['CAP_LOADED']['TL_PAY_MET']])
-            c.append([dat['EXTRA_INFO']['CUSTOMER_CONTROL_ID'], dat['XML_PARSED']['METODO_PAGO']])
+            c.append([dat['EXTRA_INFO']['CUSTOMER_CONTROL_ID'], dat['XML_PARSED']['METODO_PAGO']]) # 'PAGO EN UNA SOLA EXHIBICION']) #dat['XML_PARSED']['METODO_PAGO']])
             c.append([dat['CAP_LOADED']['TL_ORDER_NUM'], dat['CAP_LOADED']['TL_PAY_COND']])
             c.append([dat['EXTRA_INFO']['PURCHASE_NUMBER'], dat['EXTRA_INFO']['PAYMENT_CONSTRAINT']])
             c.append([dat['CAP_LOADED']['TL_BILL_CURR'], dat['CAP_LOADED']['TL_PAY_WAY']])
-            c.append([dat['EXTRA_INFO']['CURRENCY_ABR'], dat['XML_PARSED']['FORMA_PAGO']])
+            c.append([dat['EXTRA_INFO']['CURRENCY_ABR'], dat['XML_PARSED']['FORMA_PAGO']]) # 'TRANSFERENCIA']) #dat['XML_PARSED']['FORMA_PAGO']])
             c.append([dat['CAP_LOADED']['TL_BILL_EXC_RATE'], dat['CAP_LOADED']['TL_ACC_NUM']])
-            c.append([dat['XML_PARSED']['MONEY_EXCHANGE'], dat['EXTRA_INFO']['NO_CUENTA']])
+            c.append([dat['XML_PARSED']['MONEY_EXCHANGE'], '(I)Ingreso'])
             c.append([dat['CAP_LOADED']['TL_PAY_DATE'], dat['CAP_LOADED']['TL_CFDI_USE']])
             c.append([dat['EXTRA_INFO']['PAYMENT_DATE'], dat['XML_PARSED']['RECEPTOR_USAGE']])
             t = Table(c,
