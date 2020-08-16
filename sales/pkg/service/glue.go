@@ -1,6 +1,7 @@
 package service
 
 import (
+	co "immortalcrab.com/sales/internal/controllers"
 	"immortalcrab.com/sales/internal/rsapi"
 
 	"github.com/gorilla/mux"
@@ -30,6 +31,7 @@ func Engage(logger *logrus.Logger) (merr error) {
 
 			mgmt := v1.PathPrefix("/sales").Subrouter()
 
+			mgmt.HandleFunc("/ebid", co.EditBid()).Methods("POST")
 			return router
 		}
 
