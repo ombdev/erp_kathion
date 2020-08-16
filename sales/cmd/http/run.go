@@ -39,7 +39,7 @@ func writePidFile() error {
 
 func main() {
 
-	defaultPidFile := fmt.Sprintf("/run/user/%d/sso.pid", syscall.Getuid())
+	defaultPidFile := fmt.Sprintf("/run/user/%d/sales.pid", syscall.Getuid())
 
 	flag.StringVar(&pidFile, "pid-file", defaultPidFile, "The pathname of the process ID file.")
 

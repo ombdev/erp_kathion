@@ -13,7 +13,7 @@ import (
 
 type (
 	MgDBSettings struct {
-		Uri     string `default:"uri"`
+		Uri string `default:"uri"`
 	}
 )
 

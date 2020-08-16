@@ -2,6 +2,10 @@ package service
 
 import (
 	"immortalcrab.com/sales/internal/rsapi"
+
+	"github.com/gorilla/mux"
+	"github.com/kelseyhightower/envconfig"
+	"github.com/sirupsen/logrus"
 )
 
 var apiSettings rsapi.RestAPISettings
@@ -13,8 +17,6 @@ func init() {
 
 // Engages the RESTful API
 func Engage(logger *logrus.Logger) (merr error) {
-
-
 
 	{
 
