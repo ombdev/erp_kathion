@@ -105,7 +105,8 @@ func (lts *LongTermStorage) Disconnect() {
 	}
 
 	lts.logger.Printf(
-		"Bot id %s on Long Term Storage applied insertions: %d, updates: %d, deletions: %d",
-		lts.botID, lts.metrics.insertions, lts.metrics.modifications,
+		"Connection upon Long Term Storage applied insertions: %d, updates: %d, deletions: %d",
+		lts.metrics.insertions,
+		lts.metrics.modifications,
 		lts.metrics.deletions)
 }
