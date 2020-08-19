@@ -1,19 +1,24 @@
 package persistence
 
 import (
+	"context"
+
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type SaleProcess struct {
-	string folio
-	string tipo
-	string observaciones
+	string Folio
+	string Tipo
+	string Observaciones
 }
 
-type UpdateLTS func(ltsPtr *LongTermStorage) error
+type ActOnEphemeral func(cliPtr *mongo.Client) error
 
-func updateSteady(logger *logrus.Logger, hUpd UpdateLTS) error {
+// Enable an Ephemeral connection to carry out collection methods
+func actOnEphemeralConn(logger *logrus.Logger, actOn ActOnEphemeral) error {
 
 	var err error
 	var ltsPtr *LongTermStorage
@@ -25,7 +30,7 @@ func updateSteady(logger *logrus.Logger, hUpd UpdateLTS) error {
 
 	defer ltsPtr.Disconnect()
 
-	err = hUpd
+	err = actOn(ltsPtr.cli)
 
 culminate:
 
