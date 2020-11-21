@@ -89,18 +89,6 @@ class FacXml(BuilderGen):
             # Just taking first row of query result
             return row['cp']
 
-    def __q_metodo_pago(self, conn, prefact_id):
-        """
-        Consulta el metodo de pago
-        """
-        SQL = """SELECT MP.clave
-            FROM erp_prefacturas as EP
-            JOIN cfdi_metodos_pago as MP ON EP.cfdi_metodo_id = MP.id
-            WHERE EP.id = """
-        for row in self.pg_query(conn, "{0}{1}".format(SQL, prefact_id)):
-            # Just taking first row of query result
-            return row['clave']
-
     def __q_forma_pago(self, conn, prefact_id):
         """
         Consulta la forma de pago y numero de cuenta
@@ -115,6 +103,7 @@ class FacXml(BuilderGen):
                 'CLAVE': row['clave_sat'],
                 'CUENTA': row['no_cuenta']
             }
+
 
     def __q_moneda(self, conn, prefact_id):
         """
@@ -141,18 +130,16 @@ class FacXml(BuilderGen):
         """
         SQL = """SELECT
             upper(cxc_clie.razon_social) as razon_social,
-            upper(cxc_clie.rfc) as rfc,
-            cfdi_usos.numero_control as uso
+            upper(cxc_clie.rfc) as rfc
             FROM erp_prefacturas
-            LEFT JOIN cxc_clie ON cxc_clie.id = erp_prefacturas.cliente_id
-            LEFT JOIN cfdi_usos ON cfdi_usos.id = erp_prefacturas.cfdi_usos_id
-            WHERE erp_prefacturas.id = """
+            LEFT JOIN cxc_clie ON cxc_clie.id=erp_prefacturas.cliente_id
+            WHERE erp_prefacturas.id="""
         for row in self.pg_query(conn, "{0}{1}".format(SQL, prefact_id)):
             # Just taking first row of query result
             return {
                 'RFC': row['rfc'],
                 'RAZON_SOCIAL': unidecode.unidecode(row['razon_social']),
-                'USO_CFDI': row['uso']
+                'USO_CFDI':'P01'
             }
 
     def __q_conceptos(self, conn, prefact_id):
@@ -186,10 +173,16 @@ class FacXml(BuilderGen):
                 )
               ) * erp_prefacturas_detalles.valor_imp
             ) AS importe_impuesto,
+            (
+                (erp_prefacturas_detalles.cant_facturar * erp_prefacturas_detalles.precio_unitario) *
+                erp_prefacturas_detalles.tasa_ret
+            ) AS importe_ret,
             (erp_prefacturas_detalles.valor_ieps * 100::double precision) AS tasa_ieps,
             (erp_prefacturas_detalles.valor_imp * 100::double precision) AS tasa_impuesto,
+            (erp_prefacturas_detalles.tasa_ret * 100::double precision) AS ret_tasa,
             erp_prefacturas_detalles.gral_ieps_id as ieps_id,
-            erp_prefacturas_detalles.tipo_impuesto_id as impto_id
+            erp_prefacturas_detalles.tipo_impuesto_id as impto_id,
+            erp_prefacturas_detalles.gral_imptos_ret_id as ret_id
             FROM erp_prefacturas
             JOIN erp_prefacturas_detalles on erp_prefacturas_detalles.prefacturas_id=erp_prefacturas.id
             LEFT JOIN inv_prod on inv_prod.id = erp_prefacturas_detalles.producto_id
@@ -202,7 +195,7 @@ class FacXml(BuilderGen):
         for row in self.pg_query(conn, "{0}{1}".format(SQL, prefact_id)):
             rowset.append({
                 'SKU': row['sku'],
-                'DESCRIPCION': row['descripcion'],
+                'DESCRIPCION': unidecode.unidecode(row['descripcion']),
                 'UNIDAD': row['unidad'],
                 'PRODSERV': row['prodserv'],
                 'CANTIDAD': row['cantidad'],
@@ -212,10 +205,13 @@ class FacXml(BuilderGen):
                 # From this point onwards tax related elements
                 'IMPORTE_IEPS': row['importe_ieps'],
                 'IMPORTE_IMPUESTO' : row['importe_impuesto'],
+                'IMPORTE_RET' : row['importe_ret'],
                 'TASA_IEPS': row['tasa_ieps'],
                 'TASA_IMPUESTO': row['tasa_impuesto'],
+                'TASA_RET': row['ret_tasa'],
                 'IEPS_ID': row['ieps_id'],
-                'IMPUESTO_ID': row['impto_id']
+                'IMPUESTO_ID': row['impto_id'],
+                'RET_ID': row['ret_id']
             })
         return rowset
 
@@ -225,6 +221,7 @@ class FacXml(BuilderGen):
             'IMPORTE_SUM': Decimal(0),
             'IMPORTE_SUM_IMPUESTO': Decimal(0),
             'IMPORTE_SUM_IEPS': Decimal(0),
+            'IMPORTE_SUM_RET': Decimal(0),
             'DESCTO_SUM': Decimal(0),
         }
 
@@ -243,9 +240,43 @@ class FacXml(BuilderGen):
                     self.__place_tasa(item['TASA_IMPUESTO'])
                  )
             )
+            totales['IMPORTE_SUM_RET'] += self.__narf(
+                self.__calc_imp_tax(
+                    self.__abs_importe(item),
+                    self.__place_tasa(item['TASA_RET'])
+                )
+            )
 
-        totales['MONTO_TOTAL'] = self.__narf(totales['IMPORTE_SUM']) - self.__narf(totales['DESCTO_SUM']) + self.__narf(totales['IMPORTE_SUM_IEPS']) + self.__narf(totales['IMPORTE_SUM_IMPUESTO'])
+        totales['MONTO_TOTAL'] = self.__narf(totales['IMPORTE_SUM']) - self.__narf(totales['DESCTO_SUM']) + self.__narf(totales['IMPORTE_SUM_IEPS']) + self.__narf(totales['IMPORTE_SUM_IMPUESTO']) - self.__narf(totales['IMPORTE_SUM_RET'])
         return {k: truncate(float(v), self.__NDECIMALS) for k, v in totales.items()}
+
+    def __calc_retenciones(self, l_items, l_riva):
+        """
+        Calcula los impuestos retenidos
+        """
+        retenciones = []
+
+        for tax in l_riva:
+            # next two variables shall get lastest value of loop
+            # It's not me. It is the Noe approach :|
+            impto_id = 0
+            tasa = 0
+            importe_sum = Decimal(0)
+            for item in l_items:
+                if tax['ID'] == item['RET_ID']:
+                    impto_id = item['RET_ID']
+                    tasa = item['TASA_RET']
+                    importe_sum += self.__narf(self.__calc_imp_tax(
+                        self.__abs_importe(item), self.__place_tasa(item['TASA_RET'])
+                    ))
+            if impto_id > 0:
+                retenciones.append({
+                    'impuesto': 'ISR',
+                    'clave': '001',
+                    'importe': truncate(float(importe_sum), self.__NDECIMALS),
+                    'tasa': tasa
+                })
+        return retenciones
 
     def __calc_traslados(self, l_items, l_ieps, l_iva):
         """
@@ -262,7 +293,7 @@ class FacXml(BuilderGen):
             for item in l_items:
                 if tax['ID'] == item['IMPUESTO_ID']:
                     impto_id = item['IMPUESTO_ID']
-                    tasa = item['TASA_IMPUESTO']
+                    tasa = item['TASA_IMPUESTO']  
                     importe_sum += self.__narf(self.__calc_imp_tax(
                         self.__calc_base(self.__abs_importe(item), self.__place_tasa(item['TASA_IEPS'])),
                         self.__place_tasa(item['TASA_IMPUESTO'])
@@ -312,6 +343,12 @@ class FacXml(BuilderGen):
                 'TASA': row['tasa']
             })
         return rowset
+
+    def __q_rivas(self, conn):
+        SQL="""SELECT id, descripcion AS titulo, tasa
+            FROM public.gral_imptos_ret
+            WHERE borrado_logico=false"""
+        return [{'ID' : row['id'], 'DESC': row['titulo'], 'TASA': row['tasa']} for row in self.pg_query(conn, SQL)]
 
     def __q_ieps(self, conn, usr_id):
         """
@@ -390,6 +427,8 @@ class FacXml(BuilderGen):
         conceptos = self.__q_conceptos(conn, prefact_id)
         traslados = self.__calc_traslados(conceptos,
             self.__q_ieps(conn, usr_id), self.__q_ivas(conn))
+        retenciones = self.__calc_retenciones(conceptos,
+            self.__q_rivas(conn))
 
         return {
             'TIME_STAMP': '{0:%Y-%m-%dT%H:%M:%S}'.format(datetime.datetime.now()),
@@ -400,12 +439,12 @@ class FacXml(BuilderGen):
             'EMISOR': ed,
             'NUMERO_CERTIFICADO': self.__q_no_certificado(conn, usr_id),
             'RECEPTOR': self.__q_receptor(conn, prefact_id),
-            'METODO_PAGO': self.__q_metodo_pago(conn, prefact_id),
             'MONEDA': self.__q_moneda(conn, prefact_id),
             'FORMA_PAGO': self.__q_forma_pago(conn, prefact_id),
             'LUGAR_EXPEDICION': self.__q_lugar_expedicion(conn, usr_id),
             'CONCEPTOS': conceptos,
             'TRASLADOS': traslados,
+            'RETENCIONES' : retenciones,
             'TOTALES': self.__calc_totales(conceptos)
         }
 
@@ -437,7 +476,7 @@ class FacXml(BuilderGen):
             c.TipoCambio = truncate(dat['MONEDA']['TIPO_DE_CAMBIO'], self.__NDECIMALS)
         c.Moneda = dat['MONEDA']['ISO_4217']
         c.TipoDeComprobante = 'I'
-        c.MetodoPago = dat['METODO_PAGO']  # optional
+        c.MetodoPago = "PPD"  # optional and hardcode until ui can suply such value PPD
         c.LugarExpedicion = dat['LUGAR_EXPEDICION']
 
         c.Emisor = pyxb.BIND()
@@ -468,6 +507,9 @@ class FacXml(BuilderGen):
             return pyxb.BIND(TipoFactor='Tasa',
                 Impuesto=c, TasaOCuota=tc, Importe=imp)
 
+        def retencion(c, imp):
+            return pyxb.BIND(Impuesto=c, Importe=imp)
+
         def zigma(v):
             z = Decimal(0)
             for w in v:
@@ -475,11 +517,14 @@ class FacXml(BuilderGen):
             return float(z)
 
         c.Impuestos = pyxb.BIND(
-            TotalImpuestosRetenidos=None,
+            TotalImpuestosRetenidos=zigma(dat['RETENCIONES']) if zigma(dat['RETENCIONES']) > 0 else None,
             TotalImpuestosTrasladados=zigma(dat['TRASLADOS']),
             Traslados=pyxb.BIND(
                 *tuple([traslado(t['clave'], self.__place_tasa(t['tasa']), t['importe']) for t in dat['TRASLADOS']])
-            )
+            ),
+            Retenciones=pyxb.BIND(
+                *tuple([retencion(t['clave'], t['importe']) for t in dat['RETENCIONES']])
+            ) if dat['RETENCIONES'] else None
         )
 
         tmp_file = save(c)
@@ -550,10 +595,34 @@ class FacXml(BuilderGen):
             )
         return pyxb.BIND(*tuple(taxes))
 
+    def __tag_retenciones(self, i):
+
+        def retencion(b, c, tc, imp):
+            return pyxb.BIND(
+                Base=b, TipoFactor='Tasa',
+                Impuesto=c, TasaOCuota=tc, Importe=imp)
+
+        taxes = []
+        if i['IMPORTE_RET'] > 0:
+            taxes.append(
+                retencion(
+                    i['IMPORTE'], "001", self.__place_tasa(i['TASA_RET']), self.__calc_imp_tax(
+                        i['IMPORTE'], self.__place_tasa(i['TASA_RET'])
+                    )
+                )
+            )
+        else:
+            return taxes
+
+        return pyxb.BIND(*tuple(taxes))
+
     def __tag_impuestos(self, i):
         notaxes = True
         kwargs = {}
-        if i['IMPORTE_IMPUESTO'] > 0 or i['IMPORTE_IEPS'] > 0:
+        if i['IMPORTE_IMPUESTO'] > 0 or i['IMPORTE_IEPS'] > 0 or i['IMPORTE_RET'] > 0:
             notaxes = False
-            kwargs['Traslados'] = self.__tag_traslados(i)
+            if self.__tag_traslados(i):
+                kwargs['Traslados'] = self.__tag_traslados(i)
+            if self.__tag_retenciones(i):
+                kwargs['Retenciones'] = self.__tag_retenciones(i)
         return pyxb.BIND() if notaxes else pyxb.BIND(**kwargs)
