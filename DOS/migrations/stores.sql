@@ -1323,3 +1323,154 @@ BEGIN
 END;
 $$;
 
+
+
+--
+-- Name: ncr_save_xml(integer, character varying, character varying, character varying, boolean, integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.ncr_save_xml(_ncr_id integer, _file_xml character varying, _serie character varying, _folio character varying, _saldado boolean, _usr_id integer) RETURNS record
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+
+    rv record;
+
+    -- dump of errors
+    rmsg character varying;
+
+    refid character varying;
+    serie_folio_fac character varying;
+    serie_folio_nota_credito  character varying;
+    concepto_nota_credito character varying;
+
+    total_factura double precision := 0;
+    suma_pagos double precision := 0;
+    suma_notas_credito double precision := 0;
+    nuevo_saldo_factura double precision := 0;
+    nuevacantidad_monto_pago double precision := 0;
+
+    id_moneda_factura integer;
+    emp_id integer;
+    suc_id integer;
+    ncr_conf_folios_id integer;
+
+    fecha_nota_credito timestamp with time zone;
+    espacio_tiempo_ejecucion timestamp with time zone = now();
+
+BEGIN
+
+    -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    -- >> Save xml data in DBMS     >>
+    -- >> Version: CDGB             >>
+    -- >> Date: 20/Dic/2018         >>
+    -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    --obtener id de empresa, sucursal
+    SELECT gral_suc.empresa_id, gral_usr_suc.gral_suc_id
+    FROM gral_usr_suc 
+    JOIN gral_suc ON gral_suc.id = gral_usr_suc.gral_suc_id
+    WHERE gral_usr_suc.gral_usr_id = _usr_id
+    INTO emp_id, suc_id;
+
+    serie_folio_fac := _serie || _folio;
+    refid = regexp_replace( _file_xml, '.[xX][mM][lL]', '' );
+
+    UPDATE fac_nota_credito
+    SET serie_folio = serie_folio_fac,
+        momento_expedicion = espacio_tiempo_ejecucion,
+        gral_usr_id_expedicion = _usr_id, ref_id = refid 
+    WHERE id = _ncr_id
+    RETURNING serie_folio_factura, momento_expedicion,
+        concepto, serie_folio
+    INTO serie_folio_fac, fecha_nota_credito, concepto_nota_credito,
+    serie_folio_nota_credito;
+
+    -- Guarda la cadena del xml timbrado
+    INSERT INTO fac_cfdis(
+       tipo,
+       ref_id,
+       doc,
+       gral_emp_id,
+       gral_suc_id,
+       fecha_crea,
+       gral_usr_id_crea
+    ) VALUES (
+       2,
+       refid,
+       'THIS FIELD IS DEPRECATED'::text,
+       emp_id,
+       suc_id,
+       espacio_tiempo_ejecucion,
+       _usr_id
+    );
+
+    -- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    -- INICIA ACTUALIZACION erp_h_facturas
+    -- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    SELECT monto_total, moneda_id
+    from erp_h_facturas
+    where serie_folio = serie_folio_fac
+    INTO total_factura, id_moneda_factura;
+
+    -- sacar suma total de pagos para esta factura
+    SELECT CASE WHEN sum IS NULL THEN 0 ELSE sum END from( SELECT sum(cantidad) FROM erp_pagos_detalles WHERE serie_folio=serie_folio_fac AND cancelacion=FALSE ) AS sbt INTO suma_pagos;
+			
+    -- sacar suma total de notas de credito para esta factura
+    -- cuando la moneda de la factura es USD hay que convertir todas las Notas de Credito a Dolar
+    IF id_moneda_factura = 2 THEN
+        SELECT CASE WHEN sum IS NULL THEN 0 ELSE sum END FROM (
+            SELECT sum(total_nota) FROM (
+                SELECT round(( (CASE WHEN moneda_id=1 THEN total/tipo_cambio ELSE total END))::numeric,2)::double precision AS total_nota FROM fac_nota_credito WHERE serie_folio!='' AND serie_folio_factura=serie_folio_fac
+            ) AS sbt
+        ) AS subtabla INTO suma_notas_credito;
+    ELSE
+        -- cuando la Factura es en pesos NO HAY necesidad de convertir, porque a las facturas en USD no se le aplica notas de credito de Otra MONEDA, solo pesos
+        SELECT CASE WHEN sum IS NULL THEN 0 ELSE sum END FROM (
+            SELECT sum(total) FROM fac_nota_credito WHERE serie_folio_factura=serie_folio_fac AND cancelado = FALSE
+        ) AS subtabla INTO suma_notas_credito;
+    END IF;
+			
+    nuevacantidad_monto_pago := round((suma_pagos)::numeric,4)::double precision;
+			
+    -- SI saldado=true, entonces se asigna un cero al saldo de la factura
+    IF _saldado THEN 
+        nuevo_saldo_factura := 0;
+    ELSE
+        nuevo_saldo_factura := round((total_factura-suma_pagos-suma_notas_credito)::numeric,2)::double precision;
+    END IF;
+			
+    -- actualiza cantidades cada vez que se realice un pago
+    UPDATE erp_h_facturas
+    SET total_pagos = nuevacantidad_monto_pago,
+        total_notas_creditos = suma_notas_credito,
+        saldo_factura = nuevo_saldo_factura,
+        pagado = _saldado,
+        momento_actualizacion = espacio_tiempo_ejecucion 
+    WHERE serie_folio = serie_folio_fac;
+
+    -- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    -- TERMINA ACTUALIZACION erp_h_facturas
+    -- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    select fac_cfds_conf_folios.id
+    from fac_cfds_conf
+    JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id
+    where fac_cfds_conf_folios.proposito = 'NCR'
+    AND fac_cfds_conf.empresa_id = emp_id
+    AND fac_cfds_conf.gral_suc_id = suc_id
+    INTO ncr_conf_folios_id;
+    
+    UPDATE fac_cfds_conf_folios SET folio_actual = (folio_actual + 1) where id = ncr_conf_folios_id;
+
+    IF rmsg != '' THEN
+        rv := ( -1::integer, rmsg::text );
+    ELSE
+        rv := ( 0::integer, ''::text );
+    END IF;
+
+    RETURN rv;
+
+END;$$;
