@@ -1,5 +1,6 @@
 #!/bin/sh
 
-CONTAINER="rdbms_dos"
+CONTAINER="rdbms_staging"
+export MYSQL_PWD=$MYSQL_ROOT_PASSWORD
 
-mysql -p $MYSQL_DATABASE -u root
+mysql $MYSQL_DATABASE -u root
