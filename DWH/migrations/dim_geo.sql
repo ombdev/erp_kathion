@@ -1,4 +1,3 @@
-USE data_mars_sales;
 
 DROP TABLE IF EXISTS dim_geo;
 CREATE TABLE dim_geo(

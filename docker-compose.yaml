@@ -28,6 +28,8 @@ services:
         environment: *commonEnv
         volumes:
           - rdbms_staging_data:/var/lib/mysql
+          - ./DWH/scripts:/scripts
+          - ./DWH/migrations:/migrations
         networks:
           - operational_network
 

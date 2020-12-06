@@ -1,4 +1,3 @@
-USE data_mars_sales;
 
 DROP TABLE IF EXISTS dim_time;
 CREATE TABLE dim_time (
@@ -16,7 +15,7 @@ CREATE TABLE dim_time (
         UNIQUE td_ymd_idx (year,month,day),
         UNIQUE td_dbdate_idx (db_date)
 
-) Engine=InnoDB;
+) Engine=MyISAM;
 
 
 DROP PROCEDURE IF EXISTS fill_date_dimension;

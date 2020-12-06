@@ -1,7 +1,4 @@
 #!/bin/sh -e
 
 RDBMS_CONTAINER="rdbms_staging"
-
-docker-compose run \
---rm -v $(pwd)/DWH/scripts:/scripts -v $(pwd)/DWH/migrations:/migrations \
-$RDBMS_CONTAINER /scripts/manage_rdbms.sh
+docker exec -it $RDBMS_CONTAINER /scripts/manage_rdbms.sh
