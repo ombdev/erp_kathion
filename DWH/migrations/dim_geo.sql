@@ -2,12 +2,11 @@
 DROP TABLE IF EXISTS dim_geo;
 CREATE TABLE dim_geo(
     id INTEGER PRIMARY KEY,
-    country_name VARCHAR(50),
-    country_id INTEGER,
-    state_name VARCHAR(50),
+    location_name VARCHAR(100),
     state_id INTEGER,
-    municipality_name VARCHAR(50),
-    municipality_id INTEGER,
+    state_name VARCHAR(100),
+    country_id INTEGER,
+    country_name VARCHAR(50),
     created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
