@@ -1474,3 +1474,499 @@ BEGIN
     RETURN rv;
 
 END;$$;
+
+
+
+CREATE TYPE item_data AS (
+    eliminado integer,
+    iddetalle integer,
+    idproducto integer,
+    id_presentacion integer,
+    cantidad double precision,
+    precio double precision,
+    monedagrid integer,
+    notr character varying,
+    id_imp_prod integer,
+    valor_imp double precision,
+    unidad_id integer,
+    status_autorizacion boolean,
+    precio_autorizado double precision,
+    id_user_aut integer,
+    requiere_autorizacion boolean,
+    salvar_registro character varying
+);
+
+CREATE OR REPLACE FUNCTION public.poc_adm_procesos_cot(
+    _command_selected character varying,
+    _usuario_id integer,
+    _identificador integer,
+    _select_tipo_cotizacion integer,
+    _id_cliente_o_prospecto integer,
+    _check_descripcion_larga boolean,
+    _observaciones text,
+    _tipo_cambio double precision,
+    _moneda_id integer,
+    _fecha date,
+    _agente_id integer,
+    _vigencia smallint,
+    _incluye_iva boolean,
+    _incoterms character varying,
+    _tc_usd double precision,
+    _extra_data item_data[])
+  RETURNS character varying AS
+$BODY$
+DECLARE
+
+    --estas  variables se utilizan en la mayoria de los catalogos
+	requiere_autorizacion boolean;
+    valor_retorno character varying;
+    emp_id integer:=0;
+    suc_id integer:=0;
+    suc_id_consecutivo integer=0; --sucursal de donde se tomara el consecutivo
+    id_tipo_consecutivo integer=0;
+    ultimo_id integer:=0;
+	espacio_tiempo_ejecucion timestamp with time zone = now();
+    
+    total_filas integer;--total de elementos de arreglo
+    cont_fila integer;--contador de filas o posiciones del arreglo
+    str_incoterms char[];
+    
+    --variable para pedidos
+    facpar record;--parametros de Facturacion
+    ultimo_id_proceso integer = 0;
+    prefijo_consecutivo character varying = '';
+    nuevo_consecutivo bigint=0;
+    nuevo_folio character varying = '';
+    incluye_modulo_produccion boolean;
+    empresa_transportista boolean;
+    
+    importe_partida double precision = 0;
+    impuesto_partida double precision = 0;
+    monto_subtotal double precision = 0;
+    monto_total double precision = 0;
+    monto_impuesto double precision = 0;
+    controlExisPres boolean; --Variable que indica  si se debe controlar Existencias por Presentacion
+
+BEGIN
+    controlExisPres:=false;
+    
+    
+    --obtiene empresa_id y sucursal_id
+    --SELECT gral_suc.empresa_id, gral_usr_suc.gral_suc_id FROM gral_usr_suc     JOIN gral_suc ON gral_suc.id = gral_usr_suc.gral_suc_id
+    --WHERE gral_usr_suc.gral_usr_id = _usuario_id
+    --INTO emp_id, suc_id;
+    
+    
+    --obtener id de empresa, sucursal y almacen de la sucursal
+    /*
+      SELECT gral_suc.empresa_id, gral_usr_suc.gral_suc_id,inv_suc_alm.almacen_id 
+      FROM gral_usr_suc 
+    JOIN gral_suc ON gral_suc.id = gral_usr_suc.gral_suc_id
+    JOIN inv_suc_alm ON inv_suc_alm.sucursal_id = gral_suc.id
+    WHERE gral_usr_suc.gral_usr_id = _usuario_id
+    INTO emp_id, suc_id, id_almacen;
+    */
+    
+    SELECT gral_suc.empresa_id, gral_usr_suc.gral_suc_id
+        FROM gral_usr_suc 
+        JOIN gral_suc ON gral_suc.id = gral_usr_suc.gral_suc_id
+        WHERE gral_usr_suc.gral_usr_id = _usuario_id
+        INTO emp_id, suc_id;
+    
+    valor_retorno:='0';
+    
+    --Obtener parametros para la facturacion
+    SELECT *
+        FROM fac_par
+        WHERE gral_suc_id = suc_id
+        INTO facpar;
+
+            
+    --query para verificar si la Empresa actual incluye Modulo de Produccion y control de Existencias por Presentacion
+    SELECT incluye_produccion, control_exis_pres, transportista  FROM gral_emp WHERE id=emp_id INTO incluye_modulo_produccion, controlExisPres, empresa_transportista;
+
+    
+    --tomar el id del almacen para ventas
+    --id_almacen := facpar.inv_alm_id;
+
+    --éste consecutivo es para el folio del Pedido y folio para BackOrder(poc_ped_bo)
+    suc_id_consecutivo := facpar.gral_suc_id_consecutivo;
+    
+    
+    --aplicativo Cotizaciones a Clientes
+
+        IF _command_selected = 'new' THEN
+            --str_data[1]    app_selected
+            --str_data[2]    command_selected
+            --str_data[3]    id_usuario
+            --str_data[4]    identificador
+            --str_data[5]     select_tipo_cotizacion
+            --str_data[6]    id_cliente ó id_prospecto
+            --str_data[7]    check_descripcion_larga
+            --str_data[8]    observaciones
+            --str_data[9]    tipo_cambio
+            --str_data[10]    moneda_id
+            --str_data[11]    fecha
+            --str_data[12]  agente_id
+            --str_data[13]  vigencia
+            --str_data[14]  incluye_iva
+            --str_data[15]  incoterms
+            --str_data[16]  tc_usd
+            
+            --crea registro en tabla erp_proceso y retorna el id del registro creado. El flujo del proceso es 1=Cotizacion
+            INSERT INTO erp_proceso (
+                proceso_flujo_id,
+                empresa_id,
+                sucursal_id
+            ) VALUES (
+                4,
+                emp_id,
+                suc_id
+            ) RETURNING id into ultimo_id_proceso;
+            
+            id_tipo_consecutivo:=5;--consecutivo de Cotizaciones a clientes
+            
+            --aqui entra para tomar el consecutivo del pedido de la sucursal actual
+            UPDATE gral_cons SET
+                consecutivo = (
+                    SELECT sbt.consecutivo + 1
+                    FROM gral_cons AS sbt
+                    WHERE sbt.id=gral_cons.id
+                )
+                WHERE gral_emp_id = emp_id
+                    AND gral_suc_id = suc_id
+                    AND gral_cons_tipo_id = id_tipo_consecutivo
+                RETURNING prefijo, consecutivo INTO prefijo_consecutivo, nuevo_consecutivo;
+            --suc_id_consecutivo
+            
+            --concatenamos el prefijo y el nuevo consecutivo para obtener el nuevo folio
+            nuevo_folio := prefijo_consecutivo || nuevo_consecutivo::character varying;
+            
+            --crear registro en la tabla poc_cot y retorna el id del registro creado
+             INSERT INTO poc_cot (
+                folio, --nuevo_folio,
+                tipo, --str_data[5]::integer,
+                observaciones, --str_data[8]::text,
+                incluye_img_desc,--str_data[7]::boolean,
+                tipo_cambio,--str_data[9]::double precision,
+                gral_mon_id,--str_data[10]::integer,
+                fecha,--str_data[11]::date,
+                cxc_agen_id,--str_data[12]::integer,
+                dias_vigencia,--str_data[13]::smallint,
+                incluye_iva,--str_data[14]::boolean,
+                tc_usd, --str_data[16]::double precision,
+                proceso_id,--ultimo_id_proceso,
+                gral_usr_id_creacion,--usuario_id,
+                momento_creacion,--espacio_tiempo_ejecucion,
+                borrado_logico--false
+            ) VALUES (
+                nuevo_folio,
+                _select_tipo_cotizacion,
+                _observaciones,
+                _check_descripcion_larga,
+                _tipo_cambio,
+                _moneda_id,
+                _fecha,
+                _agente_id,
+                _vigencia,
+                _incluye_iva,
+                _tc_usd,
+                ultimo_id_proceso,
+                _usuario_id,
+                espacio_tiempo_ejecucion,
+                false
+            ) RETURNING id INTO ultimo_id;
+            
+            
+            --tipo 1=Cliente, 2=Prospecto
+            IF _select_tipo_cotizacion=1 THEN 
+                --crear registro para relacionar la Cotizacion con el Cliente
+                INSERT INTO poc_cot_clie (
+                    poc_cot_id,
+                    cxc_clie_id
+                ) VALUES (
+                    ultimo_id,
+                    _cliente_o_prospecto
+                );
+            ELSE
+                --crear registro para relacionar la Cotizacion con el Prospecto
+                INSERT INTO poc_cot_prospecto (
+                    poc_cot_id,
+                    crm_prospecto_id
+                ) VALUES (
+                    ultimo_id,
+                    _cliente_o_prospecto
+                );
+            END IF;
+            
+            
+            IF _incoterms is not null AND _incoterms!='' THEN
+                --Convertir en arreglo los id de inconterms
+                SELECT INTO str_incoterms string_to_array(_incoterms,',');
+                
+                FOR iter_y IN array_lower(str_incoterms,1) .. array_upper(str_incoterms,1) LOOP
+                    INSERT INTO poc_cot_incoterm_x_cot (
+                        poc_cot_id,
+                        poc_cot_incoterms_id
+                    ) VALUES (
+                        ultimo_id,
+                        str_incoterms[iter_y]::integer
+                    );
+                END LOOP;
+            END IF;
+            
+            total_filas:= array_length(_extra_data,1);--obtiene total de elementos del arreglo
+            cont_fila:=1;
+            FOR cont_fila IN 1 .. total_filas LOOP
+                
+                --str_filas[1] eliminado
+                IF _extra_data[cont_fila].eliminado != 0 THEN --1: no esta eliminado, 0:eliminado
+                    --str_filas[2]    iddetalle
+                    --str_filas[3]    idproducto
+                    --str_filas[4]    id_presentacion
+                    --str_filas[5]    cantidad
+                    --str_filas[6]    precio
+                    --str_filas[7]    monedagrid
+                    --str_filas[8]    notr
+                    --str_filas[9]    id_imp_prod
+                    --str_filas[10]    valor_imp
+                    --str_filas[11]    unidad_id
+                    --str_filas[12]    status_autorizacion
+                    --str_filas[13]    precio_autorizado
+                    --str_filas[14]    id_user_aut
+                    --str_filas[15]    requiere_autorizacion
+                    --str_filas[16]    salvar_registro
+
+                    if _extra_data[cont_fila].status_autorizacion then 
+                        --Si esta autorizado por default le asignamos true al campo requiere_autorizacion
+                        requiere_autorizacion := true;
+					else
+						requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
+                    end if;
+                    
+                    --crea registros para tabla poc_pedidos_detalle
+                    INSERT INTO poc_cot_detalle(
+                        poc_cot_id, --ultimo_id,
+                        inv_prod_id, --str_filas[3]:.integer,
+                        inv_presentacion_id,--str_filas[4]::integer,
+                        cantidad, --str_filas[5]::double precision,
+                        precio_unitario, --str_filas[6]::double precision,
+                        gral_mon_id,--str_filas[7]::integer,
+                        gral_impto_id,--str_filas[9]::integer,
+                        valor_imp,--str_filas[10]::double precision
+                        inv_prod_unidad_id,--str_filas[11]::integer,
+                        requiere_aut, --str_filas[15]::boolean,
+                        autorizado, --str_filas[12]::boolean, 
+                        precio_aut, --str_filas[13]::double precision,
+                        gral_usr_id_aut --str_filas[14]::integer 
+                    ) VALUES (
+                        ultimo_id,
+                        _extra_data[cont_fila].idproducto,
+                        _extra_data[cont_fila].id_presentacion,
+                        _extra_data[cont_fila].cantidad,
+                        _extra_data[cont_fila].precio,
+                        _extra_data[cont_fila].monedagrid,
+                        _extra_data[cont_fila].id_imp_prod,
+                        _extra_data[cont_fila].valor_imp,
+                        _extra_data[cont_fila].unidad_id,
+                        requiere_autorizacion,
+                        _extra_data[cont_fila].status_autorizacion,
+                        _extra_data[cont_fila].precio_autorizado,
+                        _extra_data[cont_fila].id_user_aut
+                    );
+                    
+                    importe_partida := _extra_data[cont_fila].cantidad * _extra_data[cont_fila].precio;
+                    
+                    IF _moneda_id <> _extra_data[cont_fila].monedagrid THEN 
+                        IF _moneda_id=1 AND _extra_data[cont_fila].monedagrid<>1 THEN
+                            importe_partida := importe_partida::double precision * _tipo_cambio;
+                        ELSE
+                            IF _moneda_id<>1 AND _extra_data[cont_fila].monedagrid=1 THEN
+                                importe_partida :=  importe_partida::double precision / _tipo_cambio;
+                            END IF;
+                        END IF;
+                    END IF;
+                    
+                    --Redondear el importe de la partida a 4 digitos
+                    importe_partida := round(importe_partida::double precision::numeric,4)::double precision;
+                    
+                    impuesto_partida := round((importe_partida::double precision * _extra_data[cont_fila].valor_imp)::numeric,4)::double precision;
+                    
+                    monto_subtotal := round((monto_subtotal + importe_partida)::numeric,4)::double precision;
+                    monto_impuesto := round((monto_impuesto + impuesto_partida)::numeric,4)::double precision;
+                    
+                END IF;
+            END LOOP;
+            
+            --calcula el monto del pedido
+            --monto_total:= monto_subtotal + monto_impuesto - total_retencion;
+            monto_total:= monto_subtotal + monto_impuesto;
+            
+            --actualiza campos subtotal, impuesto, retencion, total de tabla poc_cot
+            UPDATE poc_cot SET
+                subtotal = monto_subtotal,
+                impuesto = monto_impuesto,
+                total = monto_total
+                WHERE id = ultimo_id;
+            
+            valor_retorno := '1';
+        END IF;--termina nueva Cotizacion
+        
+        
+        
+        
+        IF _command_selected = 'edit' THEN
+            UPDATE  poc_cot SET
+                observaciones = _observaciones,
+                incluye_img_desc = _check_descripcion_larga,
+                tipo_cambio = _tipo_cambio,
+                gral_mon_id = _moneda_id,
+                fecha = _fecha,
+                cxc_agen_id = _agente_id,
+                dias_vigencia = _vigencia,
+                incluye_iva = _incluye_iva,
+                tc_usd = _tc_usd,
+                gral_usr_id_actualizacion = _usuario_id,
+                momento_actualizacion = espacio_tiempo_ejecucion 
+                WHERE id = _identificador;
+            
+            --elimina los registros de las presentaciones del producto
+            DELETE FROM poc_cot_incoterm_x_cot
+                WHERE poc_cot_id = _identificador;
+            
+            IF _incoterms is not null  AND _incoterms != '' THEN
+                --RAISE EXCEPTION '%' ,'_incoterms: '||_incoterms;
+                
+                --convertir en arreglo los id de inconterms
+                SELECT INTO str_incoterms string_to_array(_incoterms,',');
+                
+                FOR iter_y IN array_lower(str_incoterms,1) .. array_upper(str_incoterms,1) LOOP
+                    INSERT INTO poc_cot_incoterm_x_cot (
+                        poc_cot_id,
+                        poc_cot_incoterms_id
+                    ) VALUES (
+                        _identificador,
+                        str_incoterms[iter_y]::integer
+                    );
+                END LOOP;
+            END IF;
+            
+            
+            total_filas:= array_length(_extra_data,1);--obtiene total de elementos del arreglo
+            cont_fila:=1;
+            FOR cont_fila IN 1 .. total_filas LOOP 
+                
+                IF _extra_data[cont_fila].eliminado != 0 THEN--1: no esta eliminado, 0:eliminado
+
+                    if _extra_data[cont_fila].status_autorizacion then 
+                        --Si esta autorizado por default le asignamos true al campo requiere_autorizacion
+                        requiere_autorizacion := true;
+					else
+						requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
+                    end if;
+                    
+                    IF _extra_data[cont_fila].iddetalle=0 THEN 
+                        --crea registros para tabla poc_pedidos_detalle porque es nueva partida
+                        INSERT INTO poc_cot_detalle (
+                            poc_cot_id,
+                            inv_prod_id,
+                            inv_presentacion_id,
+                            cantidad,
+                            precio_unitario,
+                            gral_mon_id,
+                            gral_impto_id,
+                            valor_imp,
+                            inv_prod_unidad_id,
+                            requiere_aut,
+                            autorizado,
+                            precio_aut,
+                            gral_usr_id_aut
+                        ) VALUES (
+                            _identificador,
+                            _extra_data[cont_fila].idproducto,
+                            _extra_data[cont_fila].id_presentacion,
+                            _extra_data[cont_fila].cantidad,
+                            _extra_data[cont_fila].precio,
+                            _extra_data[cont_fila].monedagrid,
+                            _extra_data[cont_fila].id_imp_prod,
+                            _extra_data[cont_fila].valor_imp,
+                            _extra_data[cont_fila].unidad_id,
+                            requiere_autorizacion,
+                            _extra_data[cont_fila].status_autorizacion,
+                            _extra_data[cont_fila].precio_autorizado,
+                            _extra_data[cont_fila].id_user_aut
+                        );
+                    ELSE
+                        --actualizar registro ya existente
+                        UPDATE poc_cot_detalle SET
+                            cantidad = _extra_data[cont_fila].cantidad,
+                            precio_unitario = _extra_data[cont_fila].precio,
+                            gral_mon_id = _extra_data[cont_fila].monedagrid,
+                            gral_impto_id = _extra_data[cont_fila].id_imp_prod,
+                            valor_imp = _extra_data[cont_fila].valor_imp,
+                            inv_prod_unidad_id = _extra_data[cont_fila].unidad_id,
+                            requiere_aut = requiere_autorizacion,
+                            autorizado = _extra_data[cont_fila].status_autorizacion,
+                            precio_aut = _extra_data[cont_fila].precio_autorizado,
+                            gral_usr_id_aut = _extra_data[cont_fila].id_user_aut
+                            WHERE id = _extra_data[cont_fila].iddetalle;
+                    END IF;
+                    
+                    importe_partida := _extra_data[cont_fila].cantidad * _extra_data[cont_fila].precio;
+                    
+                    IF _moneda_id <> _extra_data[cont_fila].monedagrid THEN 
+                        IF _moneda_id=1 AND _extra_data[cont_fila].monedagrid<>1 THEN
+                            importe_partida := importe_partida::double precision * _tipo_cambio;
+                        ELSE
+                            IF _moneda_id<>1 AND _extra_data[cont_fila].monedagrid=1 THEN
+                                importe_partida :=  importe_partida::double precision / _tipo_cambio;
+                            END IF;
+                        END IF;
+                    END IF;
+                    
+                    --Redondear el importe de la partida a 4 digitos
+                    importe_partida := round(importe_partida::double precision::numeric,4)::double precision;
+                    
+                    impuesto_partida := round((importe_partida * _extra_data[cont_fila].valor_imp)::numeric,4)::double precision;
+                    
+                    monto_subtotal := round((monto_subtotal + importe_partida)::numeric,4)::double precision;
+                    monto_impuesto := round((monto_impuesto + impuesto_partida)::numeric,4)::double precision;
+                    
+                ELSE
+                    --RAISE EXCEPTION '%' ,'str_filas[2]: '||str_filas[2];
+                    IF _extra_data[cont_fila].eliminado = 0 THEN 
+                        --eliminar registro
+                        DELETE FROM poc_cot_detalle
+                            WHERE id = _extra_data[cont_fila].iddetalle;
+                    END IF;
+                END IF;
+            END LOOP;
+
+            monto_total:= monto_subtotal + monto_impuesto;
+            
+            --actualiza campos subtotal, impuesto, retencion, total de tabla poc_cot
+            UPDATE poc_cot SET
+                subtotal = monto_subtotal,
+                impuesto = monto_impuesto,
+                total = monto_total
+                WHERE id = _identificador;
+            
+            valor_retorno := '1';
+        END IF;--termina edit Cotizacion
+
+
+        IF _command_selected = 'delete' THEN
+            UPDATE poc_cot SET
+                borrado_logico = true,
+                gral_usr_id_baja = _usuario_id,
+                momento_baja = espacio_tiempo_ejecucion
+                WHERE id = _identificador;
+            valor_retorno := '1';
+        END IF;
+    
+
+    RETURN valor_retorno;
+    
+END;$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
