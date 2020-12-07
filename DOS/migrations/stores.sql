@@ -1518,14 +1518,14 @@ $BODY$
 DECLARE
 
     --estas  variables se utilizan en la mayoria de los catalogos
-	requiere_autorizacion boolean;
+    requiere_autorizacion boolean;
     valor_retorno character varying;
     emp_id integer:=0;
     suc_id integer:=0;
     suc_id_consecutivo integer=0; --sucursal de donde se tomara el consecutivo
     id_tipo_consecutivo integer=0;
     ultimo_id integer:=0;
-	espacio_tiempo_ejecucion timestamp with time zone = now();
+    espacio_tiempo_ejecucion timestamp with time zone = now();
     
     total_filas integer;--total de elementos de arreglo
     cont_fila integer;--contador de filas o posiciones del arreglo
@@ -1740,8 +1740,8 @@ BEGIN
                     if _extra_data[cont_fila].status_autorizacion then 
                         --Si esta autorizado por default le asignamos true al campo requiere_autorizacion
                         requiere_autorizacion := true;
-					else
-						requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
+                    else
+                        requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
                     end if;
                     
                     --crea registros para tabla poc_pedidos_detalle
@@ -1861,8 +1861,8 @@ BEGIN
                     if _extra_data[cont_fila].status_autorizacion then 
                         --Si esta autorizado por default le asignamos true al campo requiere_autorizacion
                         requiere_autorizacion := true;
-					else
-						requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
+                    else
+                        requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
                     end if;
                     
                     IF _extra_data[cont_fila].iddetalle=0 THEN 
