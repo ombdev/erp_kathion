@@ -1,7 +1,7 @@
 
 DROP TABLE IF EXISTS dim_time;
 CREATE TABLE dim_time (
-        id                      INTEGER PRIMARY KEY,  -- Surrogate key
+        id                      INTEGER NOT NULL PRIMARY KEY,  -- Surrogate key
         db_date                 DATE NOT NULL,
         year                    INTEGER NOT NULL,
         month                   INTEGER NOT NULL, -- 1 to 12
