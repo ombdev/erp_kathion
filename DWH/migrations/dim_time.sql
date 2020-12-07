@@ -1,7 +1,7 @@
 
 DROP TABLE IF EXISTS dim_time;
 CREATE TABLE dim_time (
-        id                      INTEGER PRIMARY KEY,  -- year*10000+month*100+day
+        id                      INTEGER PRIMARY KEY,  -- Surrogate key
         db_date                 DATE NOT NULL,
         year                    INTEGER NOT NULL,
         month                   INTEGER NOT NULL, -- 1 to 12
@@ -45,5 +45,5 @@ END
 DELIMITER ;
 
 TRUNCATE TABLE dim_time;
-CALL fill_date_dimension('2017-01-01','2027-01-01');
+CALL fill_date_dimension('2017-01-01','2030-01-01');
 OPTIMIZE TABLE dim_time;

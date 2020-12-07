@@ -1,7 +1,7 @@
 
 DROP TABLE IF EXISTS dim_geo;
 CREATE TABLE dim_geo(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY,        -- Surrogate/Business key
     location_name VARCHAR(100),
     state_id INTEGER,
     state_name VARCHAR(100),
