@@ -20,6 +20,10 @@ echo "Creating geographic dimension"
 # Creates the dimension along with its data
 mysql $MYSQL_DATABASE -u root < dim_geo.sql
 
+echo "Creating customer dimension"
+# Creates the dimension
+mysql $MYSQL_DATABASE -u root < dim_customer.sql
+
 echo "Creating product dimension"
 # Creates the dimension
 mysql $MYSQL_DATABASE -u root < dim_product.sql
