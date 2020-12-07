@@ -12,10 +12,14 @@ cd /migrations
 echo "Creating fact table for sales"
 mysql $MYSQL_DATABASE -u root < fact_sales.sql
 
-echo "Creating dimension time"
-# Creates the time dimension along with its data
+echo "Creating time dimension"
+# Creates the dimension along with its data
 mysql $MYSQL_DATABASE -u root < dim_time.sql
 
-echo "Creating geographic time"
-# Creates the geopraphic along with its data
+echo "Creating geographic dimension"
+# Creates the dimension along with its data
 mysql $MYSQL_DATABASE -u root < dim_geo.sql
+
+echo "Creating product dimension"
+# Creates the dimension
+mysql $MYSQL_DATABASE -u root < dim_product.sql
