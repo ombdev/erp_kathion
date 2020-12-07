@@ -15,7 +15,7 @@ CREATE TABLE dim_time (
         UNIQUE td_ymd_idx (year,month,day),
         UNIQUE td_dbdate_idx (db_date)
 
-) Engine=MyISAM;
+) Engine=InnoDB;
 
 
 DROP PROCEDURE IF EXISTS fill_date_dimension;
@@ -46,4 +46,3 @@ DELIMITER ;
 
 TRUNCATE TABLE dim_time;
 CALL fill_date_dimension('2017-01-01','2030-01-01');
-OPTIMIZE TABLE dim_time;
