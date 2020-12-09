@@ -1477,14 +1477,14 @@ END;$$;
 
 
 
-CREATE TYPE item_data AS (
-    eliminado integer,
-    iddetalle integer,
-    idproducto integer,
+CREATE TYPE grid_renglon_cot AS (
+    removido integer,
+    id_detalle integer,
+    id_producto integer,
     id_presentacion integer,
     cantidad double precision,
     precio double precision,
-    monedagrid integer,
+    moneda_grid integer,
     notr character varying,
     id_imp_prod integer,
     valor_imp double precision,
@@ -1497,7 +1497,6 @@ CREATE TYPE item_data AS (
 );
 
 CREATE OR REPLACE FUNCTION public.poc_adm_procesos_cot(
-    _command_selected character varying,
     _usuario_id integer,
     _identificador integer,
     _select_tipo_cotizacion integer,
@@ -1510,9 +1509,8 @@ CREATE OR REPLACE FUNCTION public.poc_adm_procesos_cot(
     _agente_id integer,
     _vigencia smallint,
     _incluye_iva boolean,
-    _incoterms character varying,
     _tc_usd double precision,
-    _extra_data item_data[])
+    _extra_data grid_renglon_cot[])
   RETURNS character varying AS
 $BODY$
 DECLARE
@@ -1529,7 +1527,6 @@ DECLARE
     
     total_filas integer;--total de elementos de arreglo
     cont_fila integer;--contador de filas o posiciones del arreglo
-    str_incoterms char[];
     
     --variable para pedidos
     facpar record;--parametros de Facturacion
@@ -1538,17 +1535,16 @@ DECLARE
     nuevo_consecutivo bigint=0;
     nuevo_folio character varying = '';
     incluye_modulo_produccion boolean;
-    empresa_transportista boolean;
     
     importe_partida double precision = 0;
     impuesto_partida double precision = 0;
     monto_subtotal double precision = 0;
     monto_total double precision = 0;
     monto_impuesto double precision = 0;
-    controlExisPres boolean; --Variable que indica  si se debe controlar Existencias por Presentacion
+    control_exis_pres boolean; --Variable que indica  si se debe controlar Existencias por Presentacion
 
 BEGIN
-    controlExisPres:=false;
+    control_exis_pres:=false;
     
     
     --obtiene empresa_id y sucursal_id
@@ -1583,7 +1579,7 @@ BEGIN
 
             
     --query para verificar si la Empresa actual incluye Modulo de Produccion y control de Existencias por Presentacion
-    SELECT incluye_produccion, control_exis_pres, transportista  FROM gral_emp WHERE id=emp_id INTO incluye_modulo_produccion, controlExisPres, empresa_transportista;
+    SELECT incluye_produccion, control_exis_pres  FROM gral_emp WHERE id=emp_id INTO incluye_modulo_produccion, control_exis_pres;
 
     
     --tomar el id del almacen para ventas
@@ -1594,8 +1590,8 @@ BEGIN
     
     
     --aplicativo Cotizaciones a Clientes
-
-        IF _command_selected = 'new' THEN
+        -- Create Cotizacion
+        IF _identificador = 0 THEN
             --str_data[1]    app_selected
             --str_data[2]    command_selected
             --str_data[3]    id_usuario
@@ -1700,33 +1696,18 @@ BEGIN
             END IF;
             
             
-            IF _incoterms is not null AND _incoterms!='' THEN
-                --Convertir en arreglo los id de inconterms
-                SELECT INTO str_incoterms string_to_array(_incoterms,',');
-                
-                FOR iter_y IN array_lower(str_incoterms,1) .. array_upper(str_incoterms,1) LOOP
-                    INSERT INTO poc_cot_incoterm_x_cot (
-                        poc_cot_id,
-                        poc_cot_incoterms_id
-                    ) VALUES (
-                        ultimo_id,
-                        str_incoterms[iter_y]::integer
-                    );
-                END LOOP;
-            END IF;
-            
             total_filas:= array_length(_extra_data,1);--obtiene total de elementos del arreglo
             cont_fila:=1;
             FOR cont_fila IN 1 .. total_filas LOOP
                 
-                --str_filas[1] eliminado
-                IF _extra_data[cont_fila].eliminado != 0 THEN --1: no esta eliminado, 0:eliminado
-                    --str_filas[2]    iddetalle
-                    --str_filas[3]    idproducto
+                --str_filas[1] removido
+                IF _extra_data[cont_fila].removido != 0 THEN --1: no esta eliminado, 0:eliminado
+                    --str_filas[2]    id_detalle
+                    --str_filas[3]    id_producto
                     --str_filas[4]    id_presentacion
                     --str_filas[5]    cantidad
                     --str_filas[6]    precio
-                    --str_filas[7]    monedagrid
+                    --str_filas[7]    moneda_grid
                     --str_filas[8]    notr
                     --str_filas[9]    id_imp_prod
                     --str_filas[10]    valor_imp
@@ -1761,11 +1742,11 @@ BEGIN
                         gral_usr_id_aut --str_filas[14]::integer 
                     ) VALUES (
                         ultimo_id,
-                        _extra_data[cont_fila].idproducto,
+                        _extra_data[cont_fila].id_producto,
                         _extra_data[cont_fila].id_presentacion,
                         _extra_data[cont_fila].cantidad,
                         _extra_data[cont_fila].precio,
-                        _extra_data[cont_fila].monedagrid,
+                        _extra_data[cont_fila].moneda_grid,
                         _extra_data[cont_fila].id_imp_prod,
                         _extra_data[cont_fila].valor_imp,
                         _extra_data[cont_fila].unidad_id,
@@ -1777,11 +1758,11 @@ BEGIN
                     
                     importe_partida := _extra_data[cont_fila].cantidad * _extra_data[cont_fila].precio;
                     
-                    IF _moneda_id <> _extra_data[cont_fila].monedagrid THEN 
-                        IF _moneda_id=1 AND _extra_data[cont_fila].monedagrid<>1 THEN
+                    IF _moneda_id <> _extra_data[cont_fila].moneda_grid THEN 
+                        IF _moneda_id=1 AND _extra_data[cont_fila].moneda_grid<>1 THEN
                             importe_partida := importe_partida::double precision * _tipo_cambio;
                         ELSE
-                            IF _moneda_id<>1 AND _extra_data[cont_fila].monedagrid=1 THEN
+                            IF _moneda_id<>1 AND _extra_data[cont_fila].moneda_grid=1 THEN
                                 importe_partida :=  importe_partida::double precision / _tipo_cambio;
                             END IF;
                         END IF;
@@ -1813,9 +1794,8 @@ BEGIN
         END IF;--termina nueva Cotizacion
         
         
-        
-        
-        IF _command_selected = 'edit' THEN
+        -- Update Cotizacion
+        IF _identificador > 0 THEN
             UPDATE  poc_cot SET
                 observaciones = _observaciones,
                 incluye_img_desc = _check_descripcion_larga,
@@ -1833,30 +1813,13 @@ BEGIN
             --elimina los registros de las presentaciones del producto
             DELETE FROM poc_cot_incoterm_x_cot
                 WHERE poc_cot_id = _identificador;
-            
-            IF _incoterms is not null  AND _incoterms != '' THEN
-                --RAISE EXCEPTION '%' ,'_incoterms: '||_incoterms;
-                
-                --convertir en arreglo los id de inconterms
-                SELECT INTO str_incoterms string_to_array(_incoterms,',');
-                
-                FOR iter_y IN array_lower(str_incoterms,1) .. array_upper(str_incoterms,1) LOOP
-                    INSERT INTO poc_cot_incoterm_x_cot (
-                        poc_cot_id,
-                        poc_cot_incoterms_id
-                    ) VALUES (
-                        _identificador,
-                        str_incoterms[iter_y]::integer
-                    );
-                END LOOP;
-            END IF;
-            
+                        
             
             total_filas:= array_length(_extra_data,1);--obtiene total de elementos del arreglo
             cont_fila:=1;
             FOR cont_fila IN 1 .. total_filas LOOP 
                 
-                IF _extra_data[cont_fila].eliminado != 0 THEN--1: no esta eliminado, 0:eliminado
+                IF _extra_data[cont_fila].removido != 0 THEN--1: no esta eliminado, 0:eliminado
 
                     if _extra_data[cont_fila].status_autorizacion then 
                         --Si esta autorizado por default le asignamos true al campo requiere_autorizacion
@@ -1865,7 +1828,7 @@ BEGIN
                         requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
                     end if;
                     
-                    IF _extra_data[cont_fila].iddetalle=0 THEN 
+                    IF _extra_data[cont_fila].id_detalle=0 THEN 
                         --crea registros para tabla poc_pedidos_detalle porque es nueva partida
                         INSERT INTO poc_cot_detalle (
                             poc_cot_id,
@@ -1883,11 +1846,11 @@ BEGIN
                             gral_usr_id_aut
                         ) VALUES (
                             _identificador,
-                            _extra_data[cont_fila].idproducto,
+                            _extra_data[cont_fila].id_producto,
                             _extra_data[cont_fila].id_presentacion,
                             _extra_data[cont_fila].cantidad,
                             _extra_data[cont_fila].precio,
-                            _extra_data[cont_fila].monedagrid,
+                            _extra_data[cont_fila].moneda_grid,
                             _extra_data[cont_fila].id_imp_prod,
                             _extra_data[cont_fila].valor_imp,
                             _extra_data[cont_fila].unidad_id,
@@ -1901,7 +1864,7 @@ BEGIN
                         UPDATE poc_cot_detalle SET
                             cantidad = _extra_data[cont_fila].cantidad,
                             precio_unitario = _extra_data[cont_fila].precio,
-                            gral_mon_id = _extra_data[cont_fila].monedagrid,
+                            gral_mon_id = _extra_data[cont_fila].moneda_grid,
                             gral_impto_id = _extra_data[cont_fila].id_imp_prod,
                             valor_imp = _extra_data[cont_fila].valor_imp,
                             inv_prod_unidad_id = _extra_data[cont_fila].unidad_id,
@@ -1909,16 +1872,16 @@ BEGIN
                             autorizado = _extra_data[cont_fila].status_autorizacion,
                             precio_aut = _extra_data[cont_fila].precio_autorizado,
                             gral_usr_id_aut = _extra_data[cont_fila].id_user_aut
-                            WHERE id = _extra_data[cont_fila].iddetalle;
+                            WHERE id = _extra_data[cont_fila].id_detalle;
                     END IF;
                     
                     importe_partida := _extra_data[cont_fila].cantidad * _extra_data[cont_fila].precio;
                     
-                    IF _moneda_id <> _extra_data[cont_fila].monedagrid THEN 
-                        IF _moneda_id=1 AND _extra_data[cont_fila].monedagrid<>1 THEN
+                    IF _moneda_id <> _extra_data[cont_fila].moneda_grid THEN 
+                        IF _moneda_id=1 AND _extra_data[cont_fila].moneda_grid<>1 THEN
                             importe_partida := importe_partida::double precision * _tipo_cambio;
                         ELSE
-                            IF _moneda_id<>1 AND _extra_data[cont_fila].monedagrid=1 THEN
+                            IF _moneda_id<>1 AND _extra_data[cont_fila].moneda_grid=1 THEN
                                 importe_partida :=  importe_partida::double precision / _tipo_cambio;
                             END IF;
                         END IF;
@@ -1934,10 +1897,10 @@ BEGIN
                     
                 ELSE
                     --RAISE EXCEPTION '%' ,'str_filas[2]: '||str_filas[2];
-                    IF _extra_data[cont_fila].eliminado = 0 THEN 
+                    IF _extra_data[cont_fila].removido = 0 THEN 
                         --eliminar registro
                         DELETE FROM poc_cot_detalle
-                            WHERE id = _extra_data[cont_fila].iddetalle;
+                            WHERE id = _extra_data[cont_fila].id_detalle;
                     END IF;
                 END IF;
             END LOOP;
@@ -1953,16 +1916,6 @@ BEGIN
             
             valor_retorno := '1';
         END IF;--termina edit Cotizacion
-
-
-        IF _command_selected = 'delete' THEN
-            UPDATE poc_cot SET
-                borrado_logico = true,
-                gral_usr_id_baja = _usuario_id,
-                momento_baja = espacio_tiempo_ejecucion
-                WHERE id = _identificador;
-            valor_retorno := '1';
-        END IF;
     
 
     RETURN valor_retorno;
