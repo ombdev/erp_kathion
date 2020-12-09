@@ -1496,7 +1496,7 @@ CREATE TYPE grid_renglon_cot AS (
     salvar_registro character varying
 );
 
-CREATE OR REPLACE FUNCTION public.poc_adm_procesos_cot(
+CREATE OR REPLACE FUNCTION public.cot_edit(
     _usuario_id integer,
     _identificador integer,
     _select_tipo_cotizacion integer,
