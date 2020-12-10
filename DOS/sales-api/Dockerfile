@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM debian:bullseye
 LABEL maintainer="edward@nygma.com"
 
 # getting last software catalog
@@ -17,9 +17,18 @@ RUN rm -rf /var/lib/apt/lists/*
 
 ENV APP_DIR=/app
 COPY service $APP_DIR
+COPY protos /protos
 WORKDIR $APP_DIR
 
 RUN pip3 install -r requirements.txt
+
+# this is an initial approach
+# (a better one may be read a matrix within a txt)
+RUN python3 -m grpc_tools.protoc \
+    -I../protos \
+    --python_out=. \
+    --grpc_python_out=. \
+    ../protos/helloworld.proto
 
 RUN chmod 755 /app/docker-entrypoint.sh
 
