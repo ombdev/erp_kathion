@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM debian:bullseye
 LABEL maintainer="edward@nygma.com"
 
 # getting last software catalog

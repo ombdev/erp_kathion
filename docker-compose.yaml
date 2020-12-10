@@ -32,6 +32,14 @@ services:
           - ./DWH/migrations:/migrations
         networks:
           - operational_network
+    sales_api:
+        container_name: 'sales_api'
+        build: './DOS/sales-api'
+        ports:
+          - '10090:10080'
+        environment: *commonEnv
+        networks:
+          - operational_network
 
 networks:
     operational_network:
