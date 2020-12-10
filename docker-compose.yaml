@@ -36,7 +36,7 @@ services:
         container_name: 'sales_api'
         build: './DOS/sales-api'
         ports:
-          - '10090:10080'
+          - '10090:10090'
         environment: *commonEnv
         networks:
           - operational_network
