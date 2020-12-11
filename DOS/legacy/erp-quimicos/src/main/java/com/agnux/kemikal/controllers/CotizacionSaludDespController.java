@@ -1,7 +1,5 @@
-/*
- * Éste es el controller para Actualizar el Saludo y la Despedida para la cotización
- */
 package com.agnux.kemikal.controllers;
+
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.common.obj.DataPost;
@@ -25,12 +23,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-/**
- *
- * @author Noe Martínez
- * gpmarsan@gmail.com
- * 19/marzo/2013
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/cotizacionsaludodesp/")
