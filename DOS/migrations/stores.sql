@@ -1522,7 +1522,6 @@ DECLARE
     -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     -- Estas  variables se utilizan en la mayoria de los catalogos
-    requiere_autorizacion boolean;
     valor_retorno character varying = '0';
     emp_id integer := 0;
     suc_id integer := 0;
@@ -1553,6 +1552,9 @@ DECLARE
     monto_subtotal double precision = 0;
     monto_total double precision = 0;
     monto_impuesto double precision = 0;
+
+    -- Si esta autorizado por default le asignamos true al campo requiere_autorizacion
+    requiere_autorizacion boolean = true;
 
     -- Lo simultaneo pasara completamente en el mismo espacio tiempo
     espacio_tiempo_ejecucion timestamp with time zone = now();
@@ -1699,12 +1701,7 @@ BEGIN
                     --str_filas[15]    requiere_autorizacion
                     --str_filas[16]    salvar_registro
 
-                IF _extra_data[cont_fila].status_autorizacion then
-
-                    -- Si esta autorizado por default le asignamos true al campo requiere_autorizacion
-                    requiere_autorizacion := true;
-
-                ELSE
+                IF NOT _extra_data[cont_fila].status_autorizacion then
 
                     requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
 
@@ -1814,14 +1811,9 @@ BEGIN
             -- 0: eliminado
             IF _extra_data[cont_fila].removido != 0 THEN
 
-                IF _extra_data[cont_fila].status_autorizacion THEN
+                IF NOT _extra_data[cont_fila].status_autorizacion THEN
 
-                    -- Si esta autorizado por default le asignamos true al campo requiere_autorizacion
-                    requiere_autorizacion := true;
-
-                ELSE
-
-                   requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
+                    requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
 
                 END IF;
 
