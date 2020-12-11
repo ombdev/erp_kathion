@@ -1,11 +1,5 @@
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 12/03/2012
- */
-
 package com.agnux.kemikal.interfacedaos;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

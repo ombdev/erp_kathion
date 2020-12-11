@@ -1,17 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.interfacedaos;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- *
- * @author vale.vale
- */
+
 public interface ComInterfaceDao {
  public HashMap<String, String> selectFunctionValidateAaplicativo(String data, Integer idApp, String extra_data_array);
     public String selectFunctionForThisApp(String campos_data, String extra_data_array);
@@ -44,10 +37,7 @@ public interface ComInterfaceDao {
     public HashMap<String, String> getDatosPDFOrdenCompra(Integer id_ordenCompra);
     //Esto es para cargar el detalle de la compra en el PDF
     public ArrayList<HashMap<String, String>> getconceptosOrdenCompra(Integer id_ordenCompra);
-	
-    
-    
-    
+
     //METODOS PARA DEVOLUCIONES DE MERCACIA A PROVEEDORES
     //metodos para Notas de Credito Proveedores
     public ArrayList<HashMap<String, String>> getComFacDevolucion_Facturas(Integer id_proveedor);

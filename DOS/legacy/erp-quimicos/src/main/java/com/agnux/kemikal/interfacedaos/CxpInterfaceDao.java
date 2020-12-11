@@ -1,16 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.interfacedaos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- *
- * @author agnux
- */
+
 public interface CxpInterfaceDao {
     public int countAll(String data_string);
     public HashMap<String, String> selectFunctionValidateAaplicativo(String data, Integer idApp, String extra_data_array);

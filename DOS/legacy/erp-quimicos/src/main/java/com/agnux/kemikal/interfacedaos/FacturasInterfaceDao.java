@@ -1,17 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.interfacedaos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-/**
- *
- * @author agnux
- */
+
 public interface FacturasInterfaceDao {
     public int countAll(String data_string);
     public String selectFunctionForFacAdmProcesos(String campos_data, String extra_data_array);

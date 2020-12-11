@@ -1,17 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.interfacedaos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-/**
- *
- * @author pianodaemon
- */
+
 public interface CotizacionesInterfaceDao {
     
     public ArrayList<HashMap<String, Object>> getCotizacion(Integer id_cotizacion);
@@ -88,5 +81,4 @@ public interface CotizacionesInterfaceDao {
     public String getEmp_RazonSocial();
     
     public void getDatosCotizacionDescripcionPdf(Integer id_cotizacion);
-
 }
