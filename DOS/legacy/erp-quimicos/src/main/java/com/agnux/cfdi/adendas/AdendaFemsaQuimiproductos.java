@@ -24,13 +24,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 22/octubre/2013
- * 
- */
+
 public class AdendaFemsaQuimiproductos extends Adenda{
     
     @Override
@@ -43,8 +37,6 @@ public class AdendaFemsaQuimiproductos extends Adenda{
                 
                 //Objeto para contruir xml de la Adenda
                 XmlBuilder xmlBuilder = new XmlBuilder(dataAdenda);
-                //String outXmlString = xmlBuilder.getOutXmlString();
-                //System.out.println("Adenda: "+outXmlString);
                 
                 //Objeto para agregar la Adenda al XML del CDFI
                 AgregarAdendaXmlCfdi addAdenda = new AgregarAdendaXmlCfdi(pathXmlCfdi, xmlBuilder.getDoc());
@@ -58,7 +50,6 @@ public class AdendaFemsaQuimiproductos extends Adenda{
                 //Esta impresion es por  si llega a fallar la creacion del nuevo fichero xml con adenda, 
                 //si esto sucede podremos buscar en el log la cadena  que debe contener el xml, ya que en este punto fue timbrado y generado PDF y actualizado el Inventario.
                 System.out.println("xmlCfdiConAdenda:\n"+xmlString);
-                
                 
                 //Crear fichero
                 File xml_cfdi= new File(pathXmlCfdi);
@@ -123,11 +114,7 @@ public class AdendaFemsaQuimiproductos extends Adenda{
             
             this.setDoc(tmp);
         }
-        
-        
-        
-        
-        
+ 
         public String getOutXmlString() throws TransformerConfigurationException, TransformerException{
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -137,12 +124,8 @@ public class AdendaFemsaQuimiproductos extends Adenda{
             StreamResult result = new StreamResult(new StringWriter());
             DOMSource source = new DOMSource(this.getDoc());
             transformer.transform(source, result);
-            
+ 
             return result.getWriter().toString().replace("standalone=\"no\"", " ");
         }
     }
-
-    
-    
-    
 }
