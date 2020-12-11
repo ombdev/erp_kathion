@@ -1,4 +1,6 @@
 package com.agnux.kemikal.controllers;
+
+
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.obj.ResourceProject;
 import com.agnux.common.obj.UserSessionData;
@@ -28,13 +30,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 08/julio/2013
- *
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/proreportecalidad/")
