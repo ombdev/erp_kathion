@@ -1542,12 +1542,11 @@ DECLARE
     -- Parametros de Facturacion
     facpar record;
 
-    -- Variable para pedidos
+    -- Variable para cotizaciones
     ultimo_id_proceso integer = 0;
     prefijo_consecutivo character varying = '';
     nuevo_consecutivo bigint = 0;
     nuevo_folio character varying = '';
-    incluye_modulo_produccion boolean;
 
     importe_partida double precision = 0;
     impuesto_partida double precision = 0;
@@ -1555,10 +1554,7 @@ DECLARE
     monto_total double precision = 0;
     monto_impuesto double precision = 0;
 
-    -- Variable que indica  si se debe controlar
-    -- existencias por Presentacion
-    control_exis_pres boolean := false;
-
+    -- Lo simultaneo pasara completamente en el mismo espacio tiempo
     espacio_tiempo_ejecucion timestamp with time zone = now();
 
 BEGIN
@@ -1575,13 +1571,6 @@ BEGIN
         FROM fac_par
         WHERE gral_suc_id = suc_id
         INTO facpar;
-
-    -- Query para verificar si la Empresa actual incluye Modulo de Produccion
-    -- y control de Existencias por Presentacion
-    SELECT incluye_produccion, control_exis_pres
-        FROM gral_emp
-        WHERE id = emp_id
-        INTO incluye_modulo_produccion, control_exis_pres;
 
     -- Este consecutivo es para el folio del Pedido
     -- y folio para BackOrder( poc_ped_bo )
