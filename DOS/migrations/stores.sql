@@ -1517,7 +1517,7 @@ DECLARE
 
     -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     -- >> Edit a cotizacion         >>
-    -- >> Version: CDGB             >>
+    -- >> Version: RRM              >>
     -- >> Date: 10/Dic/2020         >>
     -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -1762,13 +1762,14 @@ BEGIN
 
                 END IF;
 
-                    --Redondear el importe de la partida a 4 digitos
-                    importe_partida := round(importe_partida::double precision::numeric,4)::double precision;
-                    impuesto_partida := round((importe_partida::double precision * _extra_data[cont_fila].valor_imp)::numeric,4)::double precision;
-                    monto_subtotal := round((monto_subtotal + importe_partida)::numeric,4)::double precision;
-                    monto_impuesto := round((monto_impuesto + impuesto_partida)::numeric,4)::double precision;
+                --Redondear el importe de la partida a 4 digitos
+                importe_partida := round(importe_partida::double precision::numeric,4)::double precision;
+                impuesto_partida := round((importe_partida::double precision * _extra_data[cont_fila].valor_imp)::numeric,4)::double precision;
+                monto_subtotal := round((monto_subtotal + importe_partida)::numeric,4)::double precision;
+                monto_impuesto := round((monto_impuesto + impuesto_partida)::numeric,4)::double precision;
 
             END IF;
+
         END LOOP;
 
         -- Calcula el monto del pedido
