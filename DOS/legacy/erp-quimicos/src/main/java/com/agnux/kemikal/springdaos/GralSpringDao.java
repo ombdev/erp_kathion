@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.springdaos;
 
 import com.agnux.common.helpers.StringHelper;
@@ -14,12 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 16/03/2012
- */
+
+
 public class GralSpringDao implements GralInterfaceDao{
     private JdbcTemplate jdbcTemplate;
     
@@ -100,21 +92,18 @@ public class GralSpringDao implements GralInterfaceDao{
     @Override
     public String getSslDir() {
         String ssldir = System.getenv("HOME") + "/" + "resources" + "/"+"ssl" + "/";
-        //System.out.println(ssldir);
         return ssldir;
     }
     
     @Override
     public String getXslDir() {
         String xsldir = System.getenv("HOME") + "/" + "resources" +"/"+"schemas" + "/"+"xsl" + "/";
-        //System.out.println(xsldir);
         return xsldir;
     }
     
     @Override
     public String getXsdDir() {
         String xsddir = System.getenv("HOME") + "/" + "resources" +"/"+"schemas" + "/"+"xsd" + "/";
-        //System.out.println(xsddir);
         return xsddir;
     }
     
@@ -151,7 +140,6 @@ public class GralSpringDao implements GralInterfaceDao{
     @Override
     public String getEmpresa_IncluyeModContable(Integer id_empresa){
         String sql_to_query = "select incluye_contabilidad from gral_emp where id="+id_empresa;
-        //System.out.println("sql_to_query:"+sql_to_query);
 
         Map<String, Object> mapConta = this.getJdbcTemplate().queryForMap(sql_to_query);
         String incluye_contabilidad = String.valueOf(mapConta.get("incluye_contabilidad"));
@@ -161,13 +149,9 @@ public class GralSpringDao implements GralInterfaceDao{
         return incluye_contabilidad;
     }
     
-    
-    
-    
     @Override
     public String getEmpresa_NivelCta(Integer id_empresa){
         String sql_to_query = "select nivel_cta from gral_emp where id="+id_empresa;
-        //System.out.println("sql_to_query:"+sql_to_query);
 
         Map<String, Object> mapNivel = this.getJdbcTemplate().queryForMap(sql_to_query);
         String nivel_cta = mapNivel.get("nivel_cta").toString();
@@ -176,10 +160,6 @@ public class GralSpringDao implements GralInterfaceDao{
 
         return nivel_cta;
     }
-    
-    
-    
-    
     
     @Override
     public String getRazonSocialEmpresaEmisora(Integer id_empresa){
@@ -190,8 +170,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String razon_social_emisora = map_razon_social.get("titulo").toString();
         return razon_social_emisora;
     }
-
-
 
     @Override
     public String getRfcEmpresaEmisora(Integer id_empresa){
@@ -244,7 +222,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String archivo_llave_emisora = map_archivo_llave.get("archivo_llave").toString();
         return archivo_llave_emisora;
     }
-
 
     @Override
     public String getPasswordLlavePrivada(Integer id_empresa, Integer id_sucursal) {
@@ -302,47 +279,7 @@ public class GralSpringDao implements GralInterfaceDao{
         String fichero = map.get("archivo_xsd_ctas_contables").toString();
         return fichero;
     }
-/*
-    @Override
-    public String getFicheroXsdRefId(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_xsd_refid from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_xsd_refid").toString();
-        return fichero;
-    }
-*/
-    
-/*
-    @Override
-    public String getFicheroXsdRequestTimbraCfdi(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_xsd_request_timbra_cfdi from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_xsd_request_timbra_cfdi").toString();
-        return fichero;
-    }
-*/
 
-/*
-    @Override
-    public String getFicheroXsdTimbradoCfd(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_xsd_timbrado_cfd from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_xsd_timbrado_cfd").toString();
-        return fichero;
-    }
-*/
-
-/*
-    @Override
-    public String getFicheroWsdlTimbradoCfdi(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_wsdl_timbrado_cfdi from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_wsdl_timbrado_cfdi").toString();
-        return fichero;
-    }
-*/
-    
-    
     @Override
     public String getFicheroPfxTimbradoCfdi(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf.ws_pfx_cert from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
@@ -383,8 +320,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return fichero;
     }
 
-    
-    
     //Este metodo es para obtener el usuario del contrato de servisim
     @Override
     public String getUserContrato(Integer id_empresa, Integer id_sucursal) {
@@ -403,20 +338,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return contrasena;
     }
     
-    
-/*
-    @Override
-    public String getFicheroXsdTimbreFiscalDigital(Integer id_empresa, Integer id_sucursal) {
-        String sql_to_query = "select fac_cfds_conf.archivo_xsd_timbre_fiscal_digital from fac_cfds_conf where fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
-        Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String fichero = map.get("archivo_xsd_timbre_fiscal_digital").toString();
-        return fichero;
-    }
-*/
-
-
-
-
     @Override
     public String getFolioFactura(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.folio_actual "
@@ -429,8 +350,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String folio_factura_emisora = map_folio_factura.get("folio_actual").toString();
         return folio_factura_emisora;
     }
-
-
 
     @Override
     public String getSerieFactura(Integer id_empresa, Integer id_sucursal) {
@@ -445,8 +364,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return serie_factura_emisora;
     }
 
-
-
     @Override
     public String getAnoAprobacionFactura(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.ano_aprobacion "
@@ -460,8 +377,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return ano_aprobacion_factura_emisora;
     }
 
-
-
     @Override
     public String getNoAprobacionFactura(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.no_aprobacion "
@@ -473,7 +388,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return num_aprobacion_factura_emisora;
     }
 
-
     @Override
     public String getSerieNotaCredito(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.serie "
@@ -484,8 +398,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String serie_nota_credito_emisora = map_serie_nota_credito.get("serie").toString();
         return serie_nota_credito_emisora;
     }
-
-
 
     @Override
     public String getFolioNotaCredito(Integer id_empresa, Integer id_sucursal) {
@@ -499,7 +411,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return folio_nota_credito_emisora;
     }
 
-
     @Override
     public String getNoAprobacionNotaCredito(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.no_aprobacion "
@@ -511,7 +422,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String num_aprobacion_nota_credito_emisora = map_num_aprobacion_nota_credito.get("no_aprobacion").toString();
         return num_aprobacion_nota_credito_emisora;
     }
-
 
     @Override
     public String getAnoAprobacionNotaCredito(Integer id_empresa, Integer id_sucursal) {
@@ -525,8 +435,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return ano_aprobacion_nota_credito_emisora;
     }
 
-
-
     @Override
     public String getSerieNotaCargo(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.serie  "
@@ -538,8 +446,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String serie_nota_cargo_emisora = map_serie_nota_cargo.get("serie").toString();
         return serie_nota_cargo_emisora;
     }
-
-
 
     @Override
     public String getFolioNotaCargo(Integer id_empresa, Integer id_sucursal) {
@@ -553,7 +459,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return folio_nota_cargo_emisora;
     }
 
-
     @Override
     public String getAnoAprobacionNotaCargo(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.ano_aprobacion "
@@ -566,8 +471,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return ano_aprobacion_nota_cargo_emisora;
     }
 
-
-
     @Override
     public String getNoAprobacionNotaCargo(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.no_aprobacion "
@@ -579,8 +482,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String num_aprobacion_nota_cargo_emisora = map_num_aprobacion_nota_cargo.get("no_aprobacion").toString();
         return num_aprobacion_nota_cargo_emisora;
     }
-
-
 
     @Override
     public void actualizarFolioFactura(Integer id_empresa, Integer id_sucursal) {
@@ -595,8 +496,6 @@ public class GralSpringDao implements GralInterfaceDao{
         this.getJdbcTemplate().execute(sql_to_query_update);
     }
 
-
-
     @Override
     public void actualizarFolioNotaCredito(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.id "
@@ -609,9 +508,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String sql_to_query_update = "UPDATE fac_cfds_conf_folios SET folio_actual = folio_actual+1 where id = "+id_fac_cfds_conf_folios;
         this.getJdbcTemplate().execute(sql_to_query_update);
     }
-
-
-
 
     @Override
     public void actualizarFolioNotaCargo(Integer id_empresa, Integer id_sucursal) {
@@ -626,7 +522,6 @@ public class GralSpringDao implements GralInterfaceDao{
         this.getJdbcTemplate().execute(sql_to_query_update);
     }
     
-    
     @Override
     public String getSerieFacNomina(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.serie from fac_cfds_conf JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id where lower(trim(fac_cfds_conf_folios.proposito))='nom' AND fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
@@ -635,8 +530,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return serie_nota_cargo_emisora;
     }
 
-
-
     @Override
     public String getFolioFacNomina(Integer id_empresa, Integer id_sucursal) {
         String sql_to_query = "select fac_cfds_conf_folios.folio_actual from fac_cfds_conf JOIN fac_cfds_conf_folios ON fac_cfds_conf_folios.fac_cfds_conf_id=fac_cfds_conf.id where lower(trim(fac_cfds_conf_folios.proposito))='nom' AND fac_cfds_conf.empresa_id="+id_empresa+" AND fac_cfds_conf.gral_suc_id="+id_sucursal+";";
@@ -644,7 +537,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String folio_nota_cargo_emisora = map_folio_nota_cargo.get("folio_actual").toString();
         return folio_nota_cargo_emisora;
     }
-    
 
     @Override
     public String getNoIdEmpresa(Integer id_empresa) {
@@ -654,7 +546,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return no_id;
     }
 
-
     @Override
     public String getCalleDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
         String sql_to_query = "select calle from gral_emp where gral_emp.id ="+id_empresa;
@@ -663,7 +554,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return calle_emisora;
     }
 
-
     @Override
     public String getCpDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
         String sql_to_query = "select cp from gral_emp where gral_emp.id ="+id_empresa;
@@ -671,7 +561,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String cp_emisora = map_cp.get("cp").toString();
         return cp_emisora;
     }
-
 
     @Override
     public String getColoniaDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
@@ -687,9 +576,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return localidad_emisora;
     }
 
-
-
-
     @Override
     public String getMunicipioDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
         //obtener nombre del municipio
@@ -699,7 +585,6 @@ public class GralSpringDao implements GralInterfaceDao{
 
         return municipio_emisora;
     }
-
 
     @Override
     public String getEstadoDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
@@ -711,8 +596,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return estado_emisora;
     }
 
-
-
     @Override
     public String getPaisDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
         //obtener nombre del pais
@@ -722,8 +605,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return pais_emisora;
     }
 
-
-
     @Override
     public String getNoExteriorDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
         String sql_to_query = "select numero_exterior from gral_emp  where id ="+id_empresa;
@@ -732,25 +613,17 @@ public class GralSpringDao implements GralInterfaceDao{
         return numero_emisora;
     }
 
-
     @Override
     public String getNoInteriorDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
-        /*
-        String sql_to_query = "select CASE WHEN numero_interior is null then numero_interior else '' END AS numero_interior from gral_emp  where id ="+id_empresa;
-        Map<String, Object> map_numero_int = this.getJdbcTemplate().queryForMap(sql_to_query);
-        String numero_emisora = map_numero_int.get("numero_interior").toString();
-        */
         String numero_emisora = "";
         return numero_emisora;
     }
-
 
     @Override
     public String getReferenciaDomicilioFiscalEmpresaEmisora(Integer id_empresa) {
         String referencia_emisora = "";
         return referencia_emisora;
     }
-
 
     @Override
     public String getTelefonoEmpresaEmisora(Integer id_empresa) {
@@ -767,9 +640,6 @@ public class GralSpringDao implements GralInterfaceDao{
         String pagina_web = map_pagina_web.get("pagina_web").toString();
         return pagina_web;
     }
-
-
-
 
     @Override
     public String getPaisSucursalEmisora(Integer id_sucursal) {
@@ -789,7 +659,6 @@ public class GralSpringDao implements GralInterfaceDao{
 
         return estado_suc;
     }
-
 
     @Override
     public String getMunicipioSucursalEmisora(Integer id_sucursal) {
@@ -829,7 +698,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return valor_retorno;
     }
     
-    
     @Override
     public String getCodigo2Iso(Integer id_empresa, Integer id_app) {
         String valor_retorno="";
@@ -857,7 +725,6 @@ public class GralSpringDao implements GralInterfaceDao{
             valor_retorno = map.get("valor").toString();
         }
 
-
         return valor_retorno;
     }
 
@@ -882,18 +749,10 @@ public class GralSpringDao implements GralInterfaceDao{
         return valor_retorno;
     }
 
-
-
-
-
-
-
     //metodos  de uso general
     @Override
     public HashMap<String, String> selectFunctionValidateAaplicativo(String data, Integer idApp, String extra_data_array) {
         String sql_to_query = "select erp_fn_validaciones_por_aplicativo from erp_fn_validaciones_por_aplicativo('"+data+"',"+idApp+",array["+extra_data_array+"]);";
-        //System.out.println("Validacion:"+sql_to_query);
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
 
         HashMap<String, String> hm = (HashMap<String, String>) this.jdbcTemplate.queryForObject(
             sql_to_query,
@@ -909,7 +768,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return hm;
     }
 
-
     @Override
     public String selectFunctionForThisApp(String campos_data, String extra_data_array) {
         String sql_to_query = "select * from gral_adm_catalogos('"+campos_data+"',array["+extra_data_array+"]);";
@@ -920,7 +778,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return valor_retorno;
     }
 
-
     @Override
     public int countAll(String data_string) {
         String sql_busqueda = "select id from gral_bus_catalogos('"+data_string+"') as foo (id integer)";
@@ -930,11 +787,8 @@ public class GralSpringDao implements GralInterfaceDao{
         return rowCount;
     }
 
-
-
-
     //metodos para el Catalogo de Puestos
-     ///guarda los datos de los puestos
+    ///guarda los datos de los puestos
     @Override
     public ArrayList<HashMap<String, String>> getPuesto_Datos(Integer id) {
 
@@ -955,8 +809,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return dato_puesto;
     }
 
-
-
     @Override
     public ArrayList<HashMap<String, Object>> getPuestos_PaginaGrid(String data_string, int offset, int pageSize, String orderBy, String asc) {
         String sql_busqueda = "select id from gral_bus_catalogos(?) as foo (id integer)";
@@ -968,8 +820,6 @@ public class GralSpringDao implements GralInterfaceDao{
         +"where gral_puestos.borrado_logico=false "
         +"order by "+orderBy+" "+asc+" limit ? OFFSET ?";
 
-        //System.out.println("Busqueda GetPage: "+sql_to_query+" "+data_string+" "+ offset +" "+ pageSize);
-        //System.out.println("esto es el query  :  "+sql_to_query);
         ArrayList<HashMap<String, Object>> hm = (ArrayList<HashMap<String, Object>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{data_string, new Integer(pageSize),new Integer(offset)}, new RowMapper() {
@@ -984,8 +834,6 @@ public class GralSpringDao implements GralInterfaceDao{
         );
         return hm;
     }
-
-
 
     //METODOS DEL CATALOGO DE EMPLEADOS
     @Override
@@ -1004,9 +852,6 @@ public class GralSpringDao implements GralInterfaceDao{
                                 +"JOIN ("+sql_busqueda+") as subt on subt.id=gral_empleados.id "
                                 +"order by "+orderBy+" "+asc+" limit ? OFFSET ? ";
 
-        //System.out.println("Busqueda GetPage: "+sql_to_query);
-
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
         ArrayList<HashMap<String, Object>> hm = (ArrayList<HashMap<String, Object>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{data_string, new Integer(pageSize),new Integer(offset)}, new RowMapper() {
@@ -1026,7 +871,7 @@ public class GralSpringDao implements GralInterfaceDao{
     }
 
 
-   //muestra los datos al momento de editar
+    //muestra los datos al momento de editar
     @Override
     public ArrayList<HashMap<String, Object>> getEmpleados_Datos(Integer id) {
 
@@ -1099,9 +944,6 @@ public class GralSpringDao implements GralInterfaceDao{
             +"left join  gral_usr on gral_usr.gral_empleados_id=gral_empleados.id "
             +"where gral_empleados.borrado_logico=false AND gral_empleados.id=?;";
           
-        //System.out.println("Ejecutando query getEmpleado:"+ sql_query);
-        //System.out.println("Obteniendo datos del empleado: "+id);
-        
         ArrayList<HashMap<String, Object>> empleado = (ArrayList<HashMap<String, Object>>) this.jdbcTemplate.query(
             sql_query,
             new Object[]{new Integer(id)}, new RowMapper() {
@@ -1181,12 +1023,8 @@ public class GralSpringDao implements GralInterfaceDao{
         return empleado;
     }
 
-
-
-
     @Override
     public ArrayList<HashMap<String, Object>> getPaises() {
-        //String sql_to_query = "select DISTINCT cve_pais ,pais_ent from municipios;";
         String sql_to_query = "select DISTINCT id as cve_pais, titulo as pais_ent from gral_pais;";
 
         ArrayList<HashMap<String, Object>> pais = (ArrayList<HashMap<String, Object>>) this.jdbcTemplate.query(
@@ -1208,9 +1046,7 @@ public class GralSpringDao implements GralInterfaceDao{
 
     @Override
     public ArrayList<HashMap<String, Object>> getEntidadesForThisPais(String id_pais) {
-        //String sql_to_query = "select DISTINCT cve_ent ,nom_ent from municipios where cve_pais='"+id_pais+"' order by nom_ent;";
         String sql_to_query = "select id as cve_ent, titulo as nom_ent from gral_edo where pais_id="+id_pais+" order by nom_ent;";
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
         ArrayList<HashMap<String, Object>> hm = (ArrayList<HashMap<String, Object>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{}, new RowMapper(){
@@ -1230,10 +1066,7 @@ public class GralSpringDao implements GralInterfaceDao{
 
     @Override
     public ArrayList<HashMap<String, Object>> getLocalidadesForThisEntidad(String id_pais, String id_entidad) {
-        //String sql_to_query = "select DISTINCT cve_mun ,nom_mun from municipios where cve_ent='"+id_entidad+"' and cve_pais='"+id_pais+"' order by nom_mun;";
         String sql_to_query = "select id as cve_mun, titulo as nom_mun from gral_mun where estado_id="+id_entidad+" and pais_id="+id_pais+" order by nom_mun;";
-
-        //System.out.println("Ejecutando query loc_for_this_entidad: "+sql_to_query);
 
         ArrayList<HashMap<String, Object>> hm = (ArrayList<HashMap<String, Object>>) this.jdbcTemplate.query(
             sql_to_query,
@@ -1250,14 +1083,7 @@ public class GralSpringDao implements GralInterfaceDao{
         return hm;
     }
 
-
-
-
-
-
-
     //alimenta select de tipo de escolaridad
-
     @Override
     public ArrayList<HashMap<String, Object>> getEscolaridad(Integer id_empresa) {
 
@@ -1373,8 +1199,7 @@ public class GralSpringDao implements GralInterfaceDao{
         );
         return religion;
     }
-    
-    
+
     //Obtiene todos los departamentos de la empresa
     @Override
     public ArrayList<HashMap<String, Object>> getDepartamentos(Integer id_empresa) {
@@ -1395,7 +1220,6 @@ public class GralSpringDao implements GralInterfaceDao{
         return hm;
     }
     
-    
     @Override
     public ArrayList<HashMap<String, Object>> getSucursal(Integer id_empresa) {
         String sql_to_query = "select id,titulo from gral_suc  where empresa_id=? order by titulo";
@@ -1414,6 +1238,7 @@ public class GralSpringDao implements GralInterfaceDao{
         );
         return religion;
     }
+
     @Override
     public ArrayList<HashMap<String, Object>> getPuestoForCategoria(String id_puesto) {
         String sql_to_query = "select "
@@ -1424,7 +1249,6 @@ public class GralSpringDao implements GralInterfaceDao{
                                 + "join gral_puestos on gral_puestos.id=gral_categ.gral_puesto_id "
                                 + "where gral_categ.gral_puesto_id ="+id_puesto+" "
                                 + "order by titulo";
-        //System.out.println("sql_to_query: "+sql_to_query);
         ArrayList<HashMap<String, Object>> categoria = (ArrayList<HashMap<String, Object>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{}, new RowMapper(){
@@ -1466,9 +1290,8 @@ public class GralSpringDao implements GralInterfaceDao{
         );
         return roles;
     }
-    
-    
-     //Obtiene los roles de los empleados
+
+    //Obtiene los roles de los empleados
     @Override
     public ArrayList<HashMap<String, Object>> getRolsEdit(Integer id_usuario) {
         String sql_to_query = ""
@@ -1526,7 +1349,6 @@ public class GralSpringDao implements GralInterfaceDao{
     }
 
     //edicion de contraseñas de los usuarios
-
     @Override
     public ArrayList<HashMap<String, Object>> getRegion() {
         String sql_to_query=" select "
@@ -1550,10 +1372,7 @@ public class GralSpringDao implements GralInterfaceDao{
             );
         return cambio_pass;
     }
-
-
-    
-    
+ 
     //Obtiene los regimenes de contratacion
     @Override
     public ArrayList<HashMap<String, Object>> getEmpleados_RegimenContratacion() {
@@ -1572,8 +1391,7 @@ public class GralSpringDao implements GralInterfaceDao{
         );
         return hm;
     }
-    
-    
+
     //Obtiene los tipos de contrato
     @Override
     public ArrayList<HashMap<String, Object>> getEmpleados_TiposContrato() {
