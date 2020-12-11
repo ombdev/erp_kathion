@@ -1679,8 +1679,10 @@ BEGIN
 
         FOR cont_fila IN 1 .. total_filas LOOP
 
-            --str_filas[1] removido
-            IF _extra_data[cont_fila].removido != 0 THEN --1: no esta eliminado, 0:eliminado
+            -- str_filas[1] removido
+            -- 1: no esta eliminado
+            -- 0: eliminado
+            IF _extra_data[cont_fila].removido != 0 THEN
                     --str_filas[2]    id_detalle
                     --str_filas[3]    id_producto
                     --str_filas[4]    id_presentacion
@@ -1698,10 +1700,14 @@ BEGIN
                     --str_filas[16]    salvar_registro
 
                 IF _extra_data[cont_fila].status_autorizacion then
-                    --Si esta autorizado por default le asignamos true al campo requiere_autorizacion
+
+                    -- Si esta autorizado por default le asignamos true al campo requiere_autorizacion
                     requiere_autorizacion := true;
+
                 ELSE
+
                     requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
+
                 END IF;
 
                 -- Crea registros para tabla poc_pedidos_detalle
@@ -1797,10 +1803,6 @@ BEGIN
             gral_usr_id_actualizacion = _usuario_id,
             momento_actualizacion = espacio_tiempo_ejecucion
         WHERE id = _identificador;
-
-        -- Elimina los registros de las presentaciones del producto
-        DELETE FROM poc_cot_incoterm_x_cot
-        WHERE poc_cot_id = _identificador;
 
         -- Obtiene total de elementos del arreglo
         total_filas:= array_length( _extra_data, 1 );
