@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.springdaos;
+
 
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.kemikal.interfacedaos.LogInterfaceDao;
@@ -13,12 +10,7 @@ import java.util.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 30/julio/2012
- */
+
 public class LogSpringDao implements LogInterfaceDao{
     private JdbcTemplate jdbcTemplate;
     
@@ -36,9 +28,7 @@ public class LogSpringDao implements LogInterfaceDao{
     @Override
     public HashMap<String, String> selectFunctionValidateAaplicativo(String data, Integer idApp, String extra_data_array) {
         String sql_to_query = "select erp_fn_validaciones_por_aplicativo from erp_fn_validaciones_por_aplicativo('"+data+"',"+idApp+",array["+extra_data_array+"]);";
-        //System.out.println("Validacion:"+sql_to_query);
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
-        
+
         HashMap<String, String> hm = (HashMap<String, String>) this.jdbcTemplate.queryForObject(
             sql_to_query, 
             new Object[]{}, new RowMapper() {
