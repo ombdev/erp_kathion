@@ -1539,8 +1539,10 @@ DECLARE
     -- Contador de filas o posiciones del arreglo
     cont_fila integer;
 
+    -- Parametros de Facturacion
+    facpar record;
+
     -- Variable para pedidos
-    facpar record;--parametros de Facturacion
     ultimo_id_proceso integer = 0;
     prefijo_consecutivo character varying = '';
     nuevo_consecutivo bigint = 0;
@@ -1589,8 +1591,9 @@ BEGIN
     -- Crea cotizacion
     IF _identificador = 0 THEN
 
-        -- crea registro en tabla erp_proceso
-        -- y retorna el id del registro creado. El flujo del proceso es 1 = Cotizacion
+        -- Crea registro en tabla erp_proceso
+        -- y retorna el id del registro creado.
+        -- El flujo del proceso es 1 = Cotizacion
         INSERT INTO erp_proceso (
             proceso_flujo_id,
             empresa_id,
@@ -1601,9 +1604,10 @@ BEGIN
             suc_id
         ) RETURNING id into ultimo_id_proceso;
 
-        id_tipo_consecutivo := 5; -- consecutivo de Cotizaciones a clientes
+        -- Consecutivo de cotizaciones a clientes
+        id_tipo_consecutivo := 5;
 
-        -- aqui entra para tomar el consecutivo del pedido de la sucursal actual
+        -- Aqui entra para tomar el consecutivo del pedido de la sucursal actual
         UPDATE gral_cons SET
             consecutivo = (
                 SELECT sbt.consecutivo + 1
@@ -1615,26 +1619,26 @@ BEGIN
               AND gral_cons_tipo_id = id_tipo_consecutivo
         RETURNING prefijo, consecutivo INTO prefijo_consecutivo, nuevo_consecutivo;
 
-        -- concatenamos el prefijo y el nuevo consecutivo para obtener el nuevo folio
+        -- Concatenamos el prefijo y el nuevo consecutivo para obtener el nuevo folio
         nuevo_folio := prefijo_consecutivo || nuevo_consecutivo::character varying;
 
-        -- crear registro en la tabla poc_cot y retorna el id del registro creado
+        -- Crear registro en la tabla poc_cot y retorna el id del registro creado
         INSERT INTO poc_cot (
-            folio, --nuevo_folio,
-            tipo, --str_data[5]::integer,
-            observaciones, --str_data[8]::text,
-            incluye_img_desc,--str_data[7]::boolean,
-            tipo_cambio,--str_data[9]::double precision,
-            gral_mon_id,--str_data[10]::integer,
-            fecha,--str_data[11]::date,
-            cxc_agen_id,--str_data[12]::integer,
-            dias_vigencia,--str_data[13]::smallint,
-            incluye_iva,--str_data[14]::boolean,
-            tc_usd, --str_data[16]::double precision,
-            proceso_id,--ultimo_id_proceso,
-            gral_usr_id_creacion,--usuario_id,
-            momento_creacion,--espacio_tiempo_ejecucion,
-            borrado_logico--false
+            folio,
+            tipo,
+            observaciones,
+            incluye_img_desc,
+            tipo_cambio,
+            gral_mon_id,
+            fecha,
+            cxc_agen_id,
+            dias_vigencia,
+            incluye_iva,
+            tc_usd,
+            proceso_id,
+            gral_usr_id_creacion,
+            momento_creacion,
+            borrado_logico
         ) VALUES (
             nuevo_folio,
             _select_tipo_cotizacion,
@@ -1656,7 +1660,7 @@ BEGIN
         -- Tipo
         -- 1 = Cliente,
         -- 2 = Prospecto
-        IF _select_tipo_cotizacion=1 THEN
+        IF _select_tipo_cotizacion = 1 THEN
 
             -- Crear registro para relacionar la Cotizacion con el Cliente
             INSERT INTO poc_cot_clie (
@@ -1713,19 +1717,19 @@ BEGIN
 
                 -- Crea registros para tabla poc_pedidos_detalle
                 INSERT INTO poc_cot_detalle(
-                    poc_cot_id, --ultimo_id,
-                    inv_prod_id, --str_filas[3]:.integer,
-                    inv_presentacion_id,--str_filas[4]::integer,
-                    cantidad, --str_filas[5]::double precision,
-                    precio_unitario, --str_filas[6]::double precision,
-                    gral_mon_id,--str_filas[7]::integer,
-                    gral_impto_id,--str_filas[9]::integer,
-                    valor_imp,--str_filas[10]::double precision
-                    inv_prod_unidad_id,--str_filas[11]::integer,
-                    requiere_aut, --str_filas[15]::boolean,
-                    autorizado, --str_filas[12]::boolean, 
-                    precio_aut, --str_filas[13]::double precision,
-                    gral_usr_id_aut --str_filas[14]::integer 
+                    poc_cot_id,
+                    inv_prod_id,
+                    inv_presentacion_id,
+                    cantidad,
+                    precio_unitario,
+                    gral_mon_id,
+                    gral_impto_id,
+                    valor_imp,
+                    inv_prod_unidad_id,
+                    requiere_aut,
+                    autorizado,
+                    precio_aut,
+                    gral_usr_id_aut
                 ) VALUES (
                     ultimo_id,
                     _extra_data[cont_fila].id_producto,
@@ -1762,7 +1766,7 @@ BEGIN
 
                 END IF;
 
-                --Redondear el importe de la partida a 4 digitos
+                -- Redondear el importe de la partida a 4 digitos
                 importe_partida := round(importe_partida::double precision::numeric,4)::double precision;
                 impuesto_partida := round((importe_partida::double precision * _extra_data[cont_fila].valor_imp)::numeric,4)::double precision;
                 monto_subtotal := round((monto_subtotal + importe_partida)::numeric,4)::double precision;
@@ -1885,13 +1889,13 @@ BEGIN
 
                 IF _moneda_id <> _extra_data[cont_fila].moneda_grid THEN
 
-                    IF _moneda_id=1 AND _extra_data[cont_fila].moneda_grid<>1 THEN
+                    IF _moneda_id = 1 AND _extra_data[cont_fila].moneda_grid <> 1 THEN
 
                         importe_partida := importe_partida::double precision * _tipo_cambio;
 
                     ELSE
 
-                        IF _moneda_id<>1 AND _extra_data[cont_fila].moneda_grid = 1 THEN
+                        IF _moneda_id <> 1 AND _extra_data[cont_fila].moneda_grid = 1 THEN
 
                             importe_partida :=  importe_partida::double precision / _tipo_cambio;
 
