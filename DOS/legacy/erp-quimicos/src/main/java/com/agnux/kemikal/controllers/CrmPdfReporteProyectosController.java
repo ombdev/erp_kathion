@@ -1,12 +1,3 @@
-/*
-package com.agnux.kemikal.controllers;
-public class CrmPdfReporteVisitasController {
-
-}*/
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -46,13 +37,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- * /**
- *
- * @author GMAS
- * Viernes 10 de Marzo del 2017
- * Este controller es para generar el reporte de Proyectos
- */
 
 @Controller
 @SessionAttributes({"user"})

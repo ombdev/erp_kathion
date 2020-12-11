@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -31,13 +27,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- *
 
- * @author valentin santos
- * valentin.vale8490@gmail.com
- * 24/abril/2012
- */
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/cotpoliticasdepago/")
@@ -45,14 +35,6 @@ public class CotpoliticasdePagoController {
     ResourceProject resource = new ResourceProject();
     private static final Logger log  = Logger.getLogger(CotpoliticasdePagoController.class.getName());
 
-    /*
-    @Autowired
-    @Qualifier("daoCxp")
-    private CxpInterfaceDao cxpDao;
-
-    public CxpInterfaceDao getCxpDao() {
-        return cxpDao;
-    }*/
     //dao de procesos comerciales
     @Autowired
     @Qualifier("daoPoc")
@@ -89,15 +71,11 @@ public class CotpoliticasdePagoController {
         //codificar id de usuario
         String codificado = Base64Coder.encodeString(userId);
 
-        //decodificar id de usuario
-        //String decodificado = Base64Coder.decodeString(codificado);
-
         //id de usuario codificado
         x = x.addObject("iu", codificado);
 
         return x;
     }
-
 
 
     //para el grid
