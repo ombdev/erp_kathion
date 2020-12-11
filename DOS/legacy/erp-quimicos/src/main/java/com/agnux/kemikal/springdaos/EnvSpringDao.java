@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.springdaos;
 
 import com.agnux.common.helpers.StringHelper;
@@ -13,12 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 09/abril/2012
- */
+
+
 public class EnvSpringDao implements EnvInterfaceDao{
     private JdbcTemplate jdbcTemplate;
 
@@ -45,7 +37,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
     public HashMap<String, String> selectFunctionValidateAplicativo(String data, String extra_data_array) {
         String sql_to_query = "select env_validaciones from env_validaciones('"+data+"',array["+extra_data_array+"]);";
         System.out.println("Validacion:"+sql_to_query);
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
 
         HashMap<String, String> hm = (HashMap<String, String>) this.jdbcTemplate.queryForObject(
             sql_to_query,
@@ -73,9 +64,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
         return valor_retorno;
     }
     
-    
-    
-
     @Override
     public ArrayList<HashMap<String, String>> getBuscadorProductos(String sku, String tipo, String descripcion, Integer id_empresa) {
         String where = "";
@@ -104,7 +92,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
                 + "WHERE inv_prod.empresa_id="+id_empresa+" "
                 + "AND inv_prod.borrado_logico=false "+where+" "
                 + "ORDER BY inv_prod.descripcion;";
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
 
         ArrayList<HashMap<String, String>> hm_datos_productos = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
             sql_to_query,
@@ -146,7 +133,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
                 + "AND inv_prod.borrado_logico=false "
                 + "AND inv_prod.sku='"+codigo.toUpperCase()+"' "
                 + "LIMIT 1;";
-        //log.log(Level.INFO, "Ejecutando query de {0}", sql_to_query);
         
         ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
             sql_to_query,
@@ -261,9 +247,8 @@ public class EnvSpringDao implements EnvInterfaceDao{
 
         return hm;
     }
-    
-    
-    
+
+
     //Obtiene los almacenes de una sucursal
     @Override
     public ArrayList<HashMap<String, String>> getAlmacenes(Integer id_empresa, Integer id_sucursal) {
@@ -292,16 +277,11 @@ public class EnvSpringDao implements EnvInterfaceDao{
         return hm_alm;
     }
 
-    
-    
-    
 
     //obtiene los Envases configurados para este producto
     @Override
     public ArrayList<HashMap<String, String>> getEnvasesPorProducto(Integer idProd) {
         String sql_query = "SELECT DISTINCT env_conf.id AS id_conf_env,tbl_pres.id,tbl_pres.titulo,tbl_pres.cantidad FROM env_conf JOIN inv_prod_presentaciones AS tbl_pres ON tbl_pres.id=env_conf.inv_prod_presentacion_id  WHERE env_conf.inv_prod_id="+idProd+" AND env_conf.borrado_logico=FALSE;";
-        
-        //System.out.println("getEnvases: "+sql_query);
         
         ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
             sql_query,
@@ -381,8 +361,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
                 + "JOIN inv_prod_unidades ON inv_prod_unidades.id=inv_prod.unidad_id "
                 + "WHERE env_conf.id=?;";
         
-        //System.out.println("sql_to_query: "+sql_to_query);
-        //System.out.println("id: "+id);
         ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{new Integer(id)}, new RowMapper(){
@@ -401,9 +379,7 @@ public class EnvSpringDao implements EnvInterfaceDao{
         );
         return hm;
     }
-    
-    
-    
+
     @Override
     public ArrayList<HashMap<String, String>> getEnvConf_DatosGrid(Integer id) {
         String sql_to_query = ""
@@ -420,8 +396,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
                 + "JOIN inv_prod_unidades ON inv_prod_unidades.id=inv_prod.unidad_id "
                 + "WHERE env_conf_det.env_conf_id=?;";
         
-        //System.out.println("sql_to_query: "+sql_to_query);
-        //System.out.println("id: "+id);
         ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{new Integer(id)}, new RowMapper(){
@@ -473,7 +447,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
                 + "JOIN ("+sql_busqueda+") as subt on subt.id=env_reenv.id "
                 + "order by "+orderBy+" "+asc+" limit ? OFFSET ?";
         
-        //System.out.println("data_string: "+data_string);
         ArrayList<HashMap<String, Object>> hm = (ArrayList<HashMap<String, Object>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{new String(data_string),new Integer(pageSize),new Integer(offset)}, new RowMapper() {
@@ -522,8 +495,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
                 + "JOIN inv_prod_unidades ON inv_prod_unidades.id=inv_prod.unidad_id "
                 + "WHERE env_reenv.id=?;";
         
-        //System.out.println("sql_to_query: "+sql_to_query);
-        //System.out.println("id: "+id);
         ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{new Integer(id)}, new RowMapper(){
@@ -568,8 +539,6 @@ public class EnvSpringDao implements EnvInterfaceDao{
                 + "JOIN env_conf ON env_conf.id=env_reenv_det.env_conf_id "
                 + "WHERE env_reenv_det.env_reenv_id=?;";
         
-        //System.out.println("getDatosGrid: "+sql_to_query);
-        //System.out.println("id: "+id);
         ArrayList<HashMap<String, String>> hm = (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
             sql_to_query,
             new Object[]{new Integer(id)}, new RowMapper(){
