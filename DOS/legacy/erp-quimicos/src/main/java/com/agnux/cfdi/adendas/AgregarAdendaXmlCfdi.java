@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.cfdi.adendas;
 
 import java.io.File;
@@ -22,13 +18,7 @@ import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 23/octubre/2013
- * 
- */
+
 public final class AgregarAdendaXmlCfdi {
     private String path_xml_cfdi;
     private Document doc_adenda;
@@ -71,11 +61,9 @@ public final class AgregarAdendaXmlCfdi {
         tf.setOutputProperty(OutputKeys.INDENT, "yes");
         Writer out = new StringWriter();
         tf.transform(new DOMSource(this.getDocCFDI()), new StreamResult(out));
-        //System.out.println("Nuevo: \n"+out.toString());
-        
+ 
         return out.toString();
     }
-    
     
     public Document getDoc_adenda() {
         return doc_adenda;

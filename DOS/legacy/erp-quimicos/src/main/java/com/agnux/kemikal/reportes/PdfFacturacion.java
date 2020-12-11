@@ -1,8 +1,3 @@
-/*
- * @author Noe Mtz
- * gpmarsan@gmail.com
- * 02/marzo/2012
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.common.helpers.StringHelper;
@@ -65,9 +60,7 @@ public final class PdfFacturacion {
             
             table.setKeepTogether(false);
             table.setHeaderRows(1);
-            
-            
-            
+
             // Encabezado de Celda
             cell = new PdfPCell(new Paragraph("Factura",headerFont));
             cell.setUseAscender(true);
@@ -78,7 +71,6 @@ public final class PdfFacturacion {
             cell.setFixedHeight(13);
             table.addCell(cell);
             
-            
             cell = new PdfPCell(new Paragraph("O. Compra",headerFont));
             cell.setUseAscender(true);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -88,7 +80,6 @@ public final class PdfFacturacion {
             cell.setFixedHeight(13);
             table.addCell(cell);
             
-            
             cell = new PdfPCell(new Paragraph("Fecha",headerFont));
             cell.setUseAscender(true);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -97,8 +88,7 @@ public final class PdfFacturacion {
             cell.setBackgroundColor(BaseColor.BLACK);
             cell.setFixedHeight(13);
             table.addCell(cell);
-                      
-            
+ 
             cell = new PdfPCell(new Paragraph("Cliente",headerFont));
             cell.setUseAscender(true);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -107,8 +97,7 @@ public final class PdfFacturacion {
             cell.setBackgroundColor(BaseColor.BLACK);
             cell.setFixedHeight(13);
             table.addCell(cell);
-            
-            
+
             cell = new PdfPCell(new Paragraph("Moneda",headerFont));
             cell.setUseAscender(true);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -117,9 +106,7 @@ public final class PdfFacturacion {
             cell.setBackgroundColor(BaseColor.BLACK);
             cell.setFixedHeight(13);
             table.addCell(cell);
-            
-            
-            
+
             cell = new PdfPCell(new Paragraph("Sub-total",headerFont));
             cell.setUseAscender(true);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -130,7 +117,7 @@ public final class PdfFacturacion {
             cell.setColspan(2);
             table.addCell(cell);
             
-             cell = new PdfPCell(new Paragraph("IEPS",headerFont));
+            cell = new PdfPCell(new Paragraph("IEPS",headerFont));
             cell.setUseAscender(true);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setUseDescender(true);
@@ -159,8 +146,7 @@ public final class PdfFacturacion {
             cell.setFixedHeight(13);
             cell.setColspan(2);
             table.addCell(cell);
-    
-            
+
             if(listaFacturas.size() > 0){
                 
                 for (int x=0; x<=listaFacturas.size()-1;x++){

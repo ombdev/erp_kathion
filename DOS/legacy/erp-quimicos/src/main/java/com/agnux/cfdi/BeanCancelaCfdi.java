@@ -1,8 +1,5 @@
-/*
- * Se utiliza para la cancelacion de Facturas y Notas de Credito CFDI
- *
- */
 package com.agnux.cfdi;
+
 import com.agnux.common.helpers.FileHelper;
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.kemikal.interfacedaos.GralInterfaceDao;
@@ -11,13 +8,7 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 03/julio/2012
- * 
- */
+
 public class BeanCancelaCfdi {
     @Autowired
     @Qualifier("daoGral")
@@ -57,7 +48,6 @@ public class BeanCancelaCfdi {
         
         
         //obtiene el directorio de solicitudes cfi de la empresa
-        //String directorioSolicitudesCfdi=this.getGralDao().getCfdiSolicitudesDir() + this.getRfc_emisor();
         String directorioSolicitudesCfdi=this.getGralDao().getCfdiSolicitudesDir() + "in/";
         
         boolean fichero_txt_ok = FileHelper.createFileWithText(directorioSolicitudesCfdi , txt_file_name, strOutput4File);
@@ -69,12 +59,6 @@ public class BeanCancelaCfdi {
         }
         
     }
-    
-    
-    
-    
-    
-    
     
     private class StringMakerForCfdiRequest{
         
@@ -107,12 +91,6 @@ public class BeanCancelaCfdi {
         
     }
     
-    
-    
-    
-    
-    
-
     public String getEmRfc() {
         return emRfc;
     }

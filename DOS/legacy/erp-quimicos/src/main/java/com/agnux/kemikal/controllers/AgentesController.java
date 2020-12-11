@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.common.obj.DataPost;
@@ -31,11 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 02/04/2012
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/agentes/")
@@ -89,9 +82,6 @@ public class AgentesController {
         //codificar id de usuario
         String codificado = Base64Coder.encodeString(userId);
        
-        //decodificar id de usuario
-        //String decodificado = Base64Coder.decodeString(codificado);
-        
         //id de usuario codificado
         x = x.addObject("iu", codificado);
         
@@ -114,10 +104,6 @@ public class AgentesController {
         
         return jsonretorno;
     }
-    
-    
-    
-    
     
     @RequestMapping(value="/getAllAgentes.json", method = RequestMethod.POST)
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getAllAgentesJson(
@@ -166,18 +152,7 @@ public class AgentesController {
         return jsonretorno;
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     @RequestMapping(method = RequestMethod.POST, value="/getAgente.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, String>>> getAgenteJson(
             @RequestParam(value="id", required=true) Integer id,
@@ -214,14 +189,8 @@ public class AgentesController {
         
         return jsonretorno;
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+
     //crear y editar un Agente
     @RequestMapping(method = RequestMethod.POST, value="/edit.json")
     public @ResponseBody HashMap<String, String> editJson(
@@ -261,24 +230,5 @@ public class AgentesController {
         log.log(Level.INFO, "Salida json {0}", String.valueOf(jsonretorno.get("success")));
         return jsonretorno;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }
