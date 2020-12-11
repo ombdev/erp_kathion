@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.contae;
 
 import java.io.ByteArrayOutputStream;
@@ -17,13 +13,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import mx.gob.sat.esquemas.contabilidade._1_1.balanzacomprobacion.Balanza;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 22/abril/2016
- * 
- */
+
 public class BalanzaComprobacionXmlBuilder {
     private ByteArrayOutputStream baos = new ByteArrayOutputStream();
     
