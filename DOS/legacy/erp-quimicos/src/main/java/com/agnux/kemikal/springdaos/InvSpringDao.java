@@ -1,10 +1,5 @@
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 12/03/2012
- */
 package com.agnux.kemikal.springdaos;
+
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.common.helpers.TimeHelper;
 import com.agnux.kemikal.interfacedaos.InvInterfaceDao;
@@ -16,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+
 
 public class InvSpringDao implements InvInterfaceDao{
     private static final Logger log  = Logger.getLogger(InvSpringDao.class.getName());

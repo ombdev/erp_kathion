@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 import com.agnux.cfd.v2.ArchivoInformeMensual;
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.cfd.v2.BeanFromCfdXml;
@@ -44,12 +41,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @author gpmarsan@gmail.com
- * Noe Martinez 
- * 28/mayo/2013
- * En esta fecha se separo en dos aplicativos(antes solo era Consulta Cancelacion)
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/facconsultas/")
