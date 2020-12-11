@@ -1542,12 +1542,11 @@ DECLARE
     -- Parametros de Facturacion
     facpar record;
 
-    -- Variable para pedidos
+    -- Variable para cotizaciones
     ultimo_id_proceso integer = 0;
     prefijo_consecutivo character varying = '';
     nuevo_consecutivo bigint = 0;
     nuevo_folio character varying = '';
-    incluye_modulo_produccion boolean;
 
     importe_partida double precision = 0;
     impuesto_partida double precision = 0;
@@ -1555,10 +1554,7 @@ DECLARE
     monto_total double precision = 0;
     monto_impuesto double precision = 0;
 
-    -- Variable que indica  si se debe controlar
-    -- existencias por Presentacion
-    control_exis_pres boolean := false;
-
+    -- Lo simultaneo pasara completamente en el mismo espacio tiempo
     espacio_tiempo_ejecucion timestamp with time zone = now();
 
 BEGIN
@@ -1575,13 +1571,6 @@ BEGIN
         FROM fac_par
         WHERE gral_suc_id = suc_id
         INTO facpar;
-
-    -- Query para verificar si la Empresa actual incluye Modulo de Produccion
-    -- y control de Existencias por Presentacion
-    SELECT incluye_produccion, control_exis_pres
-        FROM gral_emp
-        WHERE id = emp_id
-        INTO incluye_modulo_produccion, control_exis_pres;
 
     -- Este consecutivo es para el folio del Pedido
     -- y folio para BackOrder( poc_ped_bo )
@@ -1690,8 +1679,10 @@ BEGIN
 
         FOR cont_fila IN 1 .. total_filas LOOP
 
-            --str_filas[1] removido
-            IF _extra_data[cont_fila].removido != 0 THEN --1: no esta eliminado, 0:eliminado
+            -- str_filas[1] removido
+            -- 1: no esta eliminado
+            -- 0: eliminado
+            IF _extra_data[cont_fila].removido != 0 THEN
                     --str_filas[2]    id_detalle
                     --str_filas[3]    id_producto
                     --str_filas[4]    id_presentacion
@@ -1709,10 +1700,14 @@ BEGIN
                     --str_filas[16]    salvar_registro
 
                 IF _extra_data[cont_fila].status_autorizacion then
-                    --Si esta autorizado por default le asignamos true al campo requiere_autorizacion
+
+                    -- Si esta autorizado por default le asignamos true al campo requiere_autorizacion
                     requiere_autorizacion := true;
+
                 ELSE
+
                     requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
+
                 END IF;
 
                 -- Crea registros para tabla poc_pedidos_detalle
@@ -1809,10 +1804,6 @@ BEGIN
             momento_actualizacion = espacio_tiempo_ejecucion
         WHERE id = _identificador;
 
-        -- Elimina los registros de las presentaciones del producto
-        DELETE FROM poc_cot_incoterm_x_cot
-        WHERE poc_cot_id = _identificador;
-
         -- Obtiene total de elementos del arreglo
         total_filas:= array_length( _extra_data, 1 );
         cont_fila := 1;
@@ -1830,7 +1821,7 @@ BEGIN
 
                 ELSE
 
-                   requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
+                    requiere_autorizacion := _extra_data[cont_fila].requiere_autorizacion;
 
                 END IF;
 

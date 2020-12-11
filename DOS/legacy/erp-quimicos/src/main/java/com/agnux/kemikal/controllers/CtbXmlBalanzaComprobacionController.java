@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -31,13 +27,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 22/abril/2016
- * 
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/ctbxmlbalanzacomprobacion/")
@@ -121,10 +111,7 @@ public class CtbXmlBalanzaComprobacionController {
         
         jsonretorno.put("Anios", this.getCtbDao().getCtbRepAuxCtas_Anios());
         jsonretorno.put("Dato", arrayExtra);
-        //Aqui solo nos interesa las subcuentas del nivel uno, por lo tanto le pasamos el numero 1
-        //jsonretorno.put("Cta", this.getCtbDao().getCtbRepAuxCtas_Ctas(1,"","", "", "", id_empresa));
-        //jsonretorno.put("Suc", this.getCtbDao().getCtb_Sucursales(id_empresa));
-        
+
         return jsonretorno;
     }
     
@@ -166,13 +153,6 @@ public class CtbXmlBalanzaComprobacionController {
         String rutaFicheroLlave = this.getGralDao().getSslDir() + rfcEmpresa + "/" + this.getGralDao().getFicheroLlavePrivada(id_empresa, id_sucursal);
         String passwordLlavePrivada = this.getGralDao().getPasswordLlavePrivada(id_empresa, id_sucursal);
         String rutaFicheroXsd = this.getGralDao().getXsdDir() + this.getGralDao().getFicheroXsdXmlCuentasContables(id_empresa, id_sucursal);
-        
-        /*
-        System.out.println("rutaFicheroCertificado= "+rutaFicheroCertificado);
-        System.out.println("ficheroXsl= "+ficheroXsl);
-        System.out.println("rutaFicheroLlave= "+rutaFicheroLlave);
-        System.out.println("passwordLlavePrivada= "+passwordLlavePrivada);
-        */
         
         //Obtener el numero de dias del Mes
         int numeroDiasMes = TimeHelper.getNumDiasMes(Integer.parseInt(anio), Integer.parseInt(mes));
@@ -326,17 +306,8 @@ public class CtbXmlBalanzaComprobacionController {
                             error=true;
                         } 
                     }
-                    /*
-                    if (llave.equals("subCtaDe")){ 
-                        if(valor.equals("") || valor==null){ 
-                            error=true;
-                        } 
-                    }
-                    */
                 }
-                
-                //System.out.println("codAgrup="+i.get("codAgrup")+" | numCta="+i.get("numCta")+" | subCtaDe="+i.get("subCtaDe")+" | natur="+i.get("natur")+" | nivel="+i.get("nivel")+" | desc="+i.get("desc"));
-                
+ 
                 if(error){ 
                     
                     retorno.add(i);
@@ -346,5 +317,4 @@ public class CtbXmlBalanzaComprobacionController {
         
         return retorno;
     }
-    
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.cfdi.timbre;
 
 import com.agnux.cfd.v2.CryptoEngine;
@@ -28,12 +24,8 @@ import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-/**
- *
- * @author Noe Martínez
- * gpmarsan@gmail.com
- * 09/diciembre/2012
- */
+
+
 public class BeanFacturadorCfdiTimbre {
     
     private static final Logger log = Logger.getLogger(BeanFacturadorCfdiTimbre.class.getName());
