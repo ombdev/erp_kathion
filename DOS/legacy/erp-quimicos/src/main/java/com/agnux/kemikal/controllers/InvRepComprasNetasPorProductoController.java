@@ -40,12 +40,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- * @author gpmarsan@gmail.com
- * Noe Martinez
- * 12/mayo/2012
- * 
- */
 
 @Controller
 @SessionAttributes({"user"})

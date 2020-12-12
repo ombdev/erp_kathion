@@ -41,13 +41,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 27/septiembre/2012
- * 
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/invordendev/")

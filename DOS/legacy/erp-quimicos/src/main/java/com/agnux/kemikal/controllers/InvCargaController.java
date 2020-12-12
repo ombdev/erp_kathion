@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.FileHelper;
@@ -42,13 +39,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 08/julio/2014
- * 
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/invcarga/")

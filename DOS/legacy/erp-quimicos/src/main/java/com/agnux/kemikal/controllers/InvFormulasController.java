@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.kemikal.interfacedaos.InvInterfaceDao;
@@ -44,10 +40,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- *
- * @author Vale Santos
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/invformulas/")
