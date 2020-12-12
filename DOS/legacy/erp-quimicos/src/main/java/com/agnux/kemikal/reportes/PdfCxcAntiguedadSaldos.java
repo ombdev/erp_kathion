@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.common.helpers.StringHelper;
@@ -30,12 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
-/**
- * Reporte de antiguedad de saldos de clientes
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 17/julio/2012
- */
+
+
 public class PdfCxcAntiguedadSaldos {
 
     public PdfCxcAntiguedadSaldos(String fileout, String ruta_imagen, String razon_soc_empresa, String fecha_actual,List<HashMap<String, String>> lista_facturas) throws DocumentException, FileNotFoundException {

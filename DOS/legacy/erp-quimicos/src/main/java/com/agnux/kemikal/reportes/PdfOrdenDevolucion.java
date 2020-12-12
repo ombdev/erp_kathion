@@ -1,8 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
+
+
 import com.agnux.common.helpers.StringHelper;
 import com.itextpdf.text.Image;
 import java.net.URISyntaxException;
@@ -26,13 +24,8 @@ import com.itextpdf.text.pdf.BaseFont;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 27/ago/2013
- * 
- */
+
+
 public class PdfOrdenDevolucion {
     //--variables para pdf--
     private String imagen;
