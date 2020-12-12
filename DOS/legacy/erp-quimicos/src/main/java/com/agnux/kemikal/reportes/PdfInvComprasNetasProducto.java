@@ -1,11 +1,5 @@
-/**
- * Reporte de Compras Netas por Producto y Proveedor
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 12/may0/2012
- */
-
 package com.agnux.kemikal.reportes;
+
 import com.agnux.common.helpers.StringHelper;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -32,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
+
 
 public class PdfInvComprasNetasProducto {
 
