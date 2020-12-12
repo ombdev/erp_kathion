@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.common.helpers.StringHelper;
@@ -29,13 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
     
     
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 05/noviembre/2012
- * 
- */
 public final class PdfOrdenTraspaso {
     private HashMap<String, String> datosHeaderFooter = new HashMap<String, String>();
     private ArrayList<HashMap<String, String>> lista_productos = new ArrayList<HashMap<String, String>>();

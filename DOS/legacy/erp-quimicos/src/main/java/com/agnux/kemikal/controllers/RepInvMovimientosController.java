@@ -37,13 +37,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 12/marzo/2013
- *
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/repinvmovimientos/")
