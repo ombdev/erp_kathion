@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 
@@ -17,10 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author agnux
- */
+
 public class CtbPdfReporteAuxiliarDeMovimientosDeCuentas {
     public File archivoSalida;
     HashMap<String, String> datosHeaderFooter;
@@ -90,8 +83,8 @@ public class CtbPdfReporteAuxiliarDeMovimientosDeCuentas {
         
         HeaderFooter event = new HeaderFooter(this.getDatosHeaderFooter());
         Document doc = new Document(PageSize.LETTER.rotate(),-50,-50,60,30);
-        doc.addCreator("gpmarsan@gmail.com");
-        doc.addAuthor("Noe Martinez");
+        doc.addCreator("replicas@gmail.com");
+        doc.addAuthor("Vacio sin inspiracion");
         PdfWriter writer = null;
         try {
             
