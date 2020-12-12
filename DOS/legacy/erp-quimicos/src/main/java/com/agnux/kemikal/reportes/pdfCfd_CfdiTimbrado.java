@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.kemikal.interfacedaos.GralInterfaceDao;
@@ -19,12 +15,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 15/enero/2013
- */
 public final class pdfCfd_CfdiTimbrado {
    //--variables para pdf--
     private  GralInterfaceDao gralDao;
