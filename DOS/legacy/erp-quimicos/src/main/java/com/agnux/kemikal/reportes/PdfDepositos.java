@@ -1,9 +1,5 @@
-/*
- * @author Noe Mtz
- * gpmarsan@gmail.com
- * 29/febrero/2012
- */
 package com.agnux.kemikal.reportes;
+
 
 import com.agnux.common.helpers.StringHelper;
 import com.itextpdf.text.BaseColor;
