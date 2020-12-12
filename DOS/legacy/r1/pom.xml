@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.maxima</groupId>
   <artifactId>r1</artifactId>
-  <version>1.0-RELEASE</version>
+  <version>MAZINGER</version>
   <packaging>pom</packaging>
   <name>r1</name>
     <modules>

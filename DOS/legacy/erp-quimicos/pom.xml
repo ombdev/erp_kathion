@@ -5,7 +5,7 @@
     
     <groupId>com.mycompany</groupId>
     <artifactId>Agnux</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>STARZINGER</version>
     <packaging>war</packaging>
     
     <name>web-ui</name>
@@ -20,13 +20,13 @@
         <dependency>
             <groupId>com.maxima</groupId>
             <artifactId>bbgum-jcli</artifactId>
-            <version>1.0-Alpha</version>
+            <version>CAPTAIN-FUTURE</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.agnux</groupId>
             <artifactId>bbgum-impt</artifactId>
-            <version>1.0-Alpha</version>
+            <version>CAPTAIN-FUTURE</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
