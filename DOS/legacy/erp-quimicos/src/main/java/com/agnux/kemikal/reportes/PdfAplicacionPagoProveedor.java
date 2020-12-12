@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.common.helpers.StringHelper;
@@ -34,11 +30,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * @author Noe Mtz
- * gpmarsan@gmail.com
- * 04/junio/2012
- */
+ 
 public class PdfAplicacionPagoProveedor {
 
     public PdfAplicacionPagoProveedor(String fileout, String ruta_imagen, String razon_soc_empresa,  ArrayList<HashMap<String, String>> listaPagos) throws DocumentException {
