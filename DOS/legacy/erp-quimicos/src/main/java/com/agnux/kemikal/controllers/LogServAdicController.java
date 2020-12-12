@@ -1,9 +1,3 @@
-/*
- * Catalogo de Servicios Adicionales para el viaje
- * Toma productos tipo Servicios del catálogo de productos y las mete en una tabla con la finalidad 
- * de conocer cuales servicios se deben utilizar como servicios adicionales en el viaje.
- * 
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -30,11 +24,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 10/noviembre/2014
+
+/*
+ * Catalogo de Servicios Adicionales para el viaje
+ * Toma productos tipo Servicios del catálogo de productos y las mete en una tabla con la finalidad 
+ * de conocer cuales servicios se deben utilizar como servicios adicionales en el viaje.
  * 
  */
 @Controller
