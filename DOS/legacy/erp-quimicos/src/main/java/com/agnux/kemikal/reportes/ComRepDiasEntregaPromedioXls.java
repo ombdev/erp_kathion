@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import java.io.FileOutputStream;
@@ -17,12 +13,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 03/diciembre/2013
- */
+
 public class ComRepDiasEntregaPromedioXls {
     
     public ComRepDiasEntregaPromedioXls(String fileout, String tituloReporte, String razon_soc_empresa, String periodo,ArrayList<HashMap<String, String>> datos) {
