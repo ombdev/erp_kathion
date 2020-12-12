@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.cfd.v2.BeanFacturador;
 import com.agnux.cfdi.BeanFacturadorCfdi;
@@ -36,11 +33,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @author gpmarsan@gmail.com
- * Noe Martinez 
- * 04/mayo/2012
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/facdevoluciones/")
@@ -125,9 +118,7 @@ public class FacDevolucionesController {
         x = x.addObject("sucursal", user.getSucursal());
         
         String userId = String.valueOf(user.getUserId());
-        
-        //System.out.println("id_de_usuario: "+userId);
-        
+ 
         String codificado = Base64Coder.encodeString(userId);
         
         //id de usuario codificado
@@ -135,10 +126,7 @@ public class FacDevolucionesController {
         
         return x;
     }
-    
-    
-    
-    
+
     @RequestMapping(value="/getAllFacturas.json", method = RequestMethod.POST)
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getAllFacturasJson(
            @RequestParam(value="orderby", required=true) String orderby,

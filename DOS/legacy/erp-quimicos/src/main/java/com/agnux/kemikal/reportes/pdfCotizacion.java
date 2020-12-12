@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.common.helpers.StringHelper;
@@ -32,12 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.StringEscapeUtils;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 10/febrero/2013
- */
+
 public class pdfCotizacion {
     private HashMap<String, String> datosHeaderFooter = new HashMap<String, String>();
     private ArrayList<HashMap<String, String>> lista_productos = new ArrayList<HashMap<String, String>>();
@@ -146,9 +137,8 @@ public class pdfCotizacion {
         this.setCliePais(datosCliente.get("cliePais"));
         this.setClieRfc(datosCliente.get("clieRfc"));
         this.setClieTel(datosCliente.get("clieTel"));
-    }//termina Constructor pdfCotizacion
-    
-    
+    }
+
     public void ViewPDF() throws URISyntaxException {
         try {
             Font smallsmall = new Font(Font.FontFamily.HELVETICA,5,Font.NORMAL,BaseColor.BLACK);
@@ -180,12 +170,9 @@ public class pdfCotizacion {
             }
             
             document.addCreator("gpmarsan@gmail.com");
-           // Document document =      new Document(PageSize.LETTER.rotate(), -50, -50, 60, 30);
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(this.getFile_out()));
             writer.setPageEvent(event);
             document.open();
-            
-            //System.out.println("this.getFile_out(): "+ this.getFile_out());
             
             float [] widths = {6,12,6};
             tablaHeader = new PdfPTable(widths);
@@ -234,27 +221,16 @@ public class pdfCotizacion {
                     "R.F.C.: " + StringHelper.capitalizaString(this.getEmisorRfc())+"\n"+
                     this.getEmisorPaginaWeb(), smallFont));
             cell.setBorder(0);
-            //cell.setBorderWidth(1);
             cell.setUseAscender(true);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setRowspan(7);
             tablaHeader.addCell(cell);
-            
-            //aqui hay que agregar nueva fila
-            
-            
-            
-            
-            
-            
-            
-            
-            
+ 
             //tabla donde va los datos del cliente
             float [] wid = {1.5f,1};
             PdfPTable tableHelper = new PdfPTable(wid);
             String etiqueta_tipo="";
-            
+
             //si el origen de la Orden de entrada pone los datos del proveedor en el PDF en otro caso pone el tipo de Movimiento
             if(this.getTipo().equals("1")){
                 etiqueta_tipo="CLIENTE";
@@ -287,29 +263,23 @@ public class pdfCotizacion {
             //cell.setBorderWidth(1);
             cell.setRightIndent(10);
             tableHelper.addCell(cell);
-            
-            
-            
+ 
             //FILA 2
             cell = new PdfPCell(new Paragraph(StringHelper.capitalizaString(cadena_datos), smallFont));
             cell.setBorder(0);
-            //cell.setBorderWidth(1);
             cell.setRowspan(2);
             cell.setRightIndent(10);
             cell.setVerticalAlignment(Element.ALIGN_TOP);
             tableHelper.addCell(cell);
-            
-            
+ 
             cell = new PdfPCell(new Paragraph("CONTACTO:",smallFont));
             cell.setBorder(0);
-            //cell.setBorderWidth(1);
             cell.setRightIndent(10);
             tableHelper.addCell(cell);
-            
+
             //FILA 3
             cell = new PdfPCell(new Paragraph(StringHelper.capitalizaString(this.getClieContacto()), smallFont));
             cell.setBorder(0);
-            //cell.setBorderWidth(1);
             cell.setRightIndent(10);
             cell.setVerticalAlignment(Element.ALIGN_TOP);
             tableHelper.addCell(cell);
@@ -317,7 +287,6 @@ public class pdfCotizacion {
             
             cell = new PdfPCell(tableHelper);
             cell.setBorder(0);
-            //cell.setBorderWidth(1);
             cell.setColspan(3);
             tablaHeader.addCell(cell);
             
@@ -339,9 +308,7 @@ public class pdfCotizacion {
                 tablaSaludo.setSpacingAfter(10f);
                 document.add(tablaSaludo);
             }
-            
-            
-            
+ 
             float [] medidas;
             
             //INICIA TABLA PARA LISTADO DE PRODUCTOS
@@ -358,7 +325,6 @@ public class pdfCotizacion {
                 0.8f//moneda
             };
 
-                
             //INICIA TABLA PARA LISTADO DE PRODUCTOS
             float [] widths2 = {
                 1,//codigo

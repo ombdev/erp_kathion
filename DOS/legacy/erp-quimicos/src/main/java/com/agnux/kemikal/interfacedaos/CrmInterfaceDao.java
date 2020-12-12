@@ -1,13 +1,9 @@
-
 package com.agnux.kemikal.interfacedaos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- *
- * @author luis Carrillo
- */
+
 public interface CrmInterfaceDao {
 
     //metodos  de uso general

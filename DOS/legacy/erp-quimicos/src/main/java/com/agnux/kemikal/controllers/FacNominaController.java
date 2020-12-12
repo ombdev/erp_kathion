@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.cfdi.BeanFromCfdiXml;
 import com.agnux.cfdi.timbre.BeanFacturadorCfdiTimbre;
@@ -44,13 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 17/febrero/2014
- * 
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/facnomina/")
@@ -118,8 +109,6 @@ public class FacNominaController {
         
         String userId = String.valueOf(user.getUserId());
         
-        //System.out.println("id_de_usuario: "+userId);
-        
         String codificado = Base64Coder.encodeString(userId);
         
         //id de usuario codificado
@@ -181,9 +170,6 @@ public class FacNominaController {
         return jsonretorno;
     }
 
-    
-    
-    
     //Obtiene los Tipos de Periodicidad para el Buscador
     @RequestMapping(method = RequestMethod.POST, value="/getDatosParaBuscador.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getDatosParaBuscadorJson(
@@ -202,9 +188,7 @@ public class FacNominaController {
         
         return jsonretorno;
     }
-    
-    
-    
+
     @RequestMapping(method = RequestMethod.POST, value="/getNomina.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getNominaJson(
             @RequestParam(value="identificador", required=true) Integer identificador,
@@ -278,10 +262,7 @@ public class FacNominaController {
         
         return jsonretorno;
     }
-    
-    
-    
-    
+ 
     //Obtiene todos los empleados que se les paga en el periodo indicado
     @RequestMapping(method = RequestMethod.POST, value="/getEmpleados.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getEmpleadosJson(
@@ -296,14 +277,12 @@ public class FacNominaController {
         Integer id_usuario = Integer.parseInt(Base64Coder.decodeString(id_user));
         userDat = this.getHomeDao().getUserById(id_usuario);
         Integer id_empresa = Integer.parseInt(userDat.get("empresa_id"));
-        //Integer id_sucursal = Integer.parseInt(userDat.get("sucursal_id"));
         
         jsonretorno.put("Empleados", this.getFacdao().getFacNomina_Empleados(id_empresa, periodicidad_id));
         
         return jsonretorno;
     }
-    
-    
+
     //Obtiene todos los periodos de un Tipo de Periodicidad
     @RequestMapping(method = RequestMethod.POST, value="/getPeriodosPorTipoPeridicidad.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getPeriodosPorTipoPeridicidadJson(
@@ -319,15 +298,12 @@ public class FacNominaController {
         Integer id_usuario = Integer.parseInt(Base64Coder.decodeString(id_user));
         userDat = this.getHomeDao().getUserById(id_usuario);
         Integer id_empresa = Integer.parseInt(userDat.get("empresa_id"));
-        //Integer id_sucursal = Integer.parseInt(userDat.get("sucursal_id"));
         
         jsonretorno.put("Periodos", this.getFacdao().getFacNomina_PeriodosPorTipo(periodicidad_id, id_empresa, identificador));
         
         return jsonretorno;
     }
-    
-    
-    
+
     //Obtiene datos de la Nomina de un Empleado
     @RequestMapping(method = RequestMethod.POST, value="/getDataNominaEmpleado.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getDataNominaEmpleadoJson(
@@ -347,7 +323,6 @@ public class FacNominaController {
         Integer id_usuario = Integer.parseInt(Base64Coder.decodeString(id_user));
         userDat = this.getHomeDao().getUserById(id_usuario);
         Integer id_empresa = Integer.parseInt(userDat.get("empresa_id"));
-        //Integer id_sucursal = Integer.parseInt(userDat.get("sucursal_id"));
         Integer tipo=0;
         
         if(id_nom_det!=0){
@@ -379,10 +354,8 @@ public class FacNominaController {
         
         return jsonretorno;
     }
-    
-    
-    
-    
+
+ 
     //Edicion y nuevo
     @RequestMapping(method = RequestMethod.POST, value="/edit.json")
     public @ResponseBody HashMap<String, String> editJson(
@@ -411,7 +384,6 @@ public class FacNominaController {
             @ModelAttribute("user") UserSessionData user
         ) throws Exception {
         
-        //System.out.println(TimeHelper.getFechaActualYMDH()+": INICIO------------------------------------");
         HashMap<String, String> jsonretorno = new HashMap<String, String>();
         HashMap<String, String> userDat = new HashMap<String, String>();
         HashMap<String, String> succes = new HashMap<String, String>();

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.common.helpers.StringHelper;
@@ -87,8 +83,8 @@ public class CtbPdfReporteBalanzaComprobacion {
         HeaderFooter event = new HeaderFooter(this.getDatosHeaderFooter());
         Document doc = new Document(PageSize.LETTER,-50,-50,60,30);
         //Document doc = new Document(PageSize.LETTER,-50,-50,60,30);
-        doc.addCreator("gpmarsan@gmail.com");
-        doc.addAuthor("Noe Martinez");
+        doc.addCreator("queen@gmail.com");
+        doc.addAuthor("Freedy Mercurio");
         PdfWriter writer = null;
         try {
             

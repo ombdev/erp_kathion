@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.obj.ResourceProject;
@@ -31,13 +28,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 27/mayo/2014
- * 
- * Reporte de BackOrder de Ordenes de Compra
- */
 
 @Controller
 @SessionAttributes({"user"})
@@ -101,44 +91,6 @@ public class ComRepBackOrderController {
         
         return x;
     }
-    
-    
-    
-    
-    
-    /*
-    //Obtiene datos para el buscador de traspasos
-    @RequestMapping(method = RequestMethod.POST, value="/getAlmacenes.json")
-    public @ResponseBody HashMap<String,ArrayList<HashMap<String, String>>> getAlmacenesJson(
-            @RequestParam(value="iu", required=true) String id_user,
-            Model model
-            ) {
-        
-        log.log(Level.INFO, "Ejecutando getAlmacenesJson de {0}", InvRepExisController.class.getName());
-        HashMap<String,ArrayList<HashMap<String, String>>> jsonretorno = new HashMap<String,ArrayList<HashMap<String, String>>>();
-        ArrayList<HashMap<String, String>> Almacenes = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> userDat = new HashMap<String, String>();
-        
-        //decodificar id de usuario
-        Integer id_usuario = Integer.parseInt(Base64Coder.decodeString(id_user));
-        userDat = this.getHomeDao().getUserById(id_usuario);
-        
-        Integer id_empresa = Integer.parseInt(userDat.get("empresa_id"));
-        
-        Almacenes = this.getComDao().getAlmacenes2(id_empresa);
-        
-        jsonretorno.put("Almacenes", Almacenes);
-        
-        return jsonretorno;
-    }
-    */
-    
-    
-    
-    
-    
-    
-    
    
     //obtiene la existencia de un Almacen en especifico
     @RequestMapping(method = RequestMethod.POST, value="/getBackorder.json")
@@ -172,102 +124,4 @@ public class ComRepBackOrderController {
         
         return jsonretorno;
     }
-    
-   
-    
-    
-
-    
-    
-    
-    /*
-   //Genera pdf de Reporte de Existencias en Inventario
-    @RequestMapping(value = "/getReporteExistencias/{cadena}/{iu}/out.json", method = RequestMethod.GET ) 
-    public ModelAndView getReporteExistenciasJson(ho
-                @PathVariable("cadena") String cadena,
-                @PathVariable("iu") String id_user,
-                HttpServletRequest request, 
-                HttpServletResponse response, 
-                Model model)
-            throws ServletException, IOException, URISyntaxException, DocumentException, Exception {
-        
-        HashMap<String, String> userDat = new HashMap<String, String>();
-        
-        System.out.println("cadena: "+cadena);
-        
-        String cad[] = cadena.split("___");
-        
-        Integer opcion_reporte = Integer.parseInt(cad[0]);
-        Integer almacen = Integer.parseInt(cad[1]);
-        String codigo_producto = cad[2];
-        String descripcion = cad[3];
-        String lote_interno = cad[4];
-        
-        
-        if(codigo_producto.equals("0")){
-            codigo_producto="";
-        }
-        
-        if(descripcion.equals("0")){
-            descripcion="";
-        }
-        
-        if(lote_interno.equals("0")){
-            lote_interno="";
-        }
-        
-        System.out.println("Generando Reporte de Existencias de Lotes");
-        
-        //decodificar id de usuario
-        Integer id_usuario = Integer.parseInt(Base64Coder.decodeString(id_user));
-        
-        userDat = this.getHomeDao().getUserById(id_usuario);
-        Integer id_empresa = Integer.parseInt(userDat.get("empresa_id"));
-        String rfc_empresa = this.getGralDao().getRfcEmpresaEmisora(id_empresa);
-        String razon_social_empresa = this.getGralDao().getRazonSocialEmpresaEmisora(id_empresa);
-        
-        //obtener el directorio temporal
-        String dir_tmp = this.getGralDao().getTmpDir();
-        
-        
-        String[] array_company = razon_social_empresa.split(" ");
-        String company_name= array_company[0].toLowerCase();
-        //String ruta_imagen = this.getGralDao().getImagesDir() +"logo_"+ company_name +".png";
-        
-        File file_dir_tmp = new File(dir_tmp);
-        System.out.println("Directorio temporal: "+file_dir_tmp.getCanonicalPath());
-        
-        
-        String file_name = "exis_lote_"+rfc_empresa+".pdf";
-        //ruta de archivo de salida
-        String fileout = file_dir_tmp +"/"+  file_name;
-        
-        ArrayList<HashMap<String, String>> lista_existencias = new ArrayList<HashMap<String, String>>();
-        
-        //obtiene las facturas del periodo indicado
-        lista_existencias = this.getComDao().getReporteExistenciasLotes_Datos(almacen, codigo_producto, descripcion, opcion_reporte, lote_interno);
-        
-        String fecha_actual = TimeHelper.getFechaActualYMD();
-        
-        System.out.println("fecha_actual: "+fecha_actual);
-        
-        //instancia a la clase que construye el pdf del reporte de existencias
-        PdfReporteInvExisLotes pdf = new PdfReporteInvExisLotes( lista_existencias, fileout, razon_social_empresa);
-        pdf.ViewPDF();
-        
-        System.out.println("Recuperando archivo: " + fileout);
-        File file = new File(fileout);
-        int size = (int) file.length(); // Tamaño del archivo
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-        response.setBufferSize(size);
-        response.setContentLength(size);
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition","attachment; filename=\"" + file.getCanonicalPath() +"\"");
-        FileCopyUtils.copy(bis, response.getOutputStream());  	
-        response.flushBuffer();
-        
-        FileHelper.delete(fileout);
-        return null;
-    } 
-    */
 }

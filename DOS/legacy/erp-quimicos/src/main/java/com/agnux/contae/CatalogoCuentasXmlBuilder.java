@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.contae;
 
 import java.io.ByteArrayOutputStream;
@@ -13,13 +9,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import mx.gob.sat.esquemas.contabilidade._1_1.catalogocuentas.Catalogo;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 04/abril/2016
- * 
- */
+
 public class CatalogoCuentasXmlBuilder {
     private ByteArrayOutputStream baos = new ByteArrayOutputStream();
     

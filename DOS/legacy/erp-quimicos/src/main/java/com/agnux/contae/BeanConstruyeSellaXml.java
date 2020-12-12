@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.contae;
+
 
 import com.agnux.cfd.v2.CryptoEngine;
 import com.agnux.common.helpers.FileHelper;
@@ -13,14 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 04/abril/2016
- * 
- */
+
 public class BeanConstruyeSellaXml {
+
     private ByteArrayOutputStream baos = null;
     private boolean success = false;
     private String mensaje = null;
@@ -79,7 +71,6 @@ public class BeanConstruyeSellaXml {
                 cadenaXml = xml.getBaos().toString();
             }
             
-            
             //Obtener la cadena original necesario para obtener el sello
             String cadenaOriginal = XmlHelper.transformar(cadenaXml, rutaFicheroXsl);
             
@@ -91,22 +82,14 @@ public class BeanConstruyeSellaXml {
             boolean fichero_xml_ok = FileHelper.createFileWithText(rutaFicheroXml, cadenaXml);
             
             if(fichero_xml_ok){
-                /*
-                byte[] bytes = cadenaXml.getBytes();
-                ByteArrayOutputStream baos1 = new ByteArrayOutputStream(bytes.length);
-                baos1.write(bytes, 0, bytes.length);
-                
-                this.setBaos(baos1);
-                */
-                
+ 
                 this.setSuccess(true);
-                
+
             }else{
                 this.setSuccess(false);
                 this.setMensaje("No se ha podido crear el fichero xml");
             }
 
-            
         } catch (Exception ex) {
             Logger.getLogger(BeanConstruyeSellaXml.class.getName()).log(Level.SEVERE, null, ex);
         }

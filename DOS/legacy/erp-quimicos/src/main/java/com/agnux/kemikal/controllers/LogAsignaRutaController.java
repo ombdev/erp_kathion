@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.StringHelper;
@@ -37,13 +34,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 
-
-/**
- *
- * @author Noe Martinez
- * gomarsan@gmail.com
- * 
- */
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/logasignarutas/")
@@ -74,9 +64,7 @@ public class LogAsignaRutaController {
     public GralInterfaceDao getGralDao() {
         return gralDao;
     }
-    
-    
-    
+
     @RequestMapping(value="/startup.agnux")
     public ModelAndView startUp(HttpServletRequest request, HttpServletResponse response, 
             @ModelAttribute("user") UserSessionData user
@@ -106,19 +94,13 @@ public class LogAsignaRutaController {
         
         //codificar id de usuario
         String codificado = Base64Coder.encodeString(userId);
-        
-        //decodificar id de usuario
-        //String decodificado = Base64Coder.decodeString(codificado);
-        
+
         //id de usuario codificado
         x = x.addObject("iu", codificado);
         
         return x;
     }
-    
-    
-    
-    
+
     @RequestMapping(value="/getAllRutas.json", method = RequestMethod.POST)
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getAllRutasJson(
            @RequestParam(value="orderby", required=true) String orderby,

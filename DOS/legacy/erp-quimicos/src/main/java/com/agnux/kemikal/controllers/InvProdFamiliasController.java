@@ -1,6 +1,3 @@
-/*
- * Catalogo de Familias
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -31,11 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 11/mayo/2012
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/invprodfamilias/")

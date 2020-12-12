@@ -1,19 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.interfacedaos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 16/03/2012
- */
+
 public interface GralInterfaceDao {
     
     public String getJvmTmpDir();
@@ -54,12 +45,7 @@ public interface GralInterfaceDao {
     public String getFicheroXslTimbre(Integer id_empresa, Integer id_sucursal);
     public String getFicheroXsdCfdi(Integer id_empresa, Integer id_sucursal);
     public String getFicheroXsdXmlCuentasContables(Integer id_empresa, Integer id_sucursal);
-    //public String getFicheroXsdRefId(Integer id_empresa, Integer id_sucursal);
-    //public String getFicheroXsdRequestTimbraCfdi(Integer id_empresa, Integer id_sucursal);
-    //public String getFicheroXsdTimbradoCfd(Integer id_empresa, Integer id_sucursal);
-    //public String getFicheroWsdlTimbradoCfdi(Integer id_empresa, Integer id_sucursal);
     public String getUrlFicheroWsdlTimbradoCfdi(Integer id_empresa, Integer id_sucursal);
-    //public String getFicheroXsdTimbreFiscalDigital(Integer id_empresa, Integer id_sucursal);
     public String getJavaVmDir(Integer id_empresa, Integer id_sucursal);
     public String getFicheroPfxTimbradoCfdi(Integer id_empresa, Integer id_sucursal);
     public String getPasswdFicheroPfxTimbradoCfdi(Integer id_empresa, Integer id_sucursal);

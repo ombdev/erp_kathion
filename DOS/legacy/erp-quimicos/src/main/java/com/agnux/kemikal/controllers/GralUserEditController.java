@@ -1,6 +1,3 @@
-/*
- * Este aplicativo es para que el usuario puede modificar su contraseña.
- */
 package com.agnux.kemikal.controllers;
 
 
@@ -27,13 +24,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 10/diciembre/2013
- * 
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/graluseredit/")

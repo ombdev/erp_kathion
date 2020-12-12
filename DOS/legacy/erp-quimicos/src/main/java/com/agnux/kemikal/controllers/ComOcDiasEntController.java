@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 
@@ -41,12 +37,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 29/noviembre/2013
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/comdiasentrega/")

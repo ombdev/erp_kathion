@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.StringHelper;
@@ -31,12 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 22/03/2012
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/cuentasmayor/")
@@ -51,9 +43,7 @@ public class CtbCuentasDeMayorController {
     public CtbInterfaceDao getCtbDao() {
         return ctbDao;
     }
-    
-    
-    
+
     @RequestMapping(value="/startup.agnux")
     public ModelAndView startUp(HttpServletRequest request, HttpServletResponse response, 
             @ModelAttribute("user") UserSessionData user
@@ -83,18 +73,13 @@ public class CtbCuentasDeMayorController {
         
         //codificar id de usuario
         String codificado = Base64Coder.encodeString(userId);
-       
-        //decodificar id de usuario
-        //String decodificado = Base64Coder.decodeString(codificado);
-        
+
         //id de usuario codificado
         x = x.addObject("iu", codificado);
         
         return x;
     }
-    
-    
-    
+
     @RequestMapping(value="/getAllCuentasDeMayor.json", method = RequestMethod.POST)
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getAllCuentasDeMayorJson(
            @RequestParam(value="orderby", required=true) String orderby,
@@ -141,9 +126,7 @@ public class CtbCuentasDeMayorController {
         
         return jsonretorno;
     }
-    
-    
-    
+
     //obtiene las clases de cuentas de mayor
     @RequestMapping(method = RequestMethod.POST, value="/getClasesCtaMayorBuscador.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, String>>> getgetClasesCtaMayorBuscadorJson(

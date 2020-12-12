@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -36,13 +32,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@hotmail.com
- * 21/mayo/2015
- * 
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/invordpresuben2/")

@@ -1,17 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.interfacedaos;
+
+
 import com.agnux.kemikal.controllers.PotCatCusorder;
 import java.util.ArrayList;
 import java.util.HashMap;
-/**
- *
- * @author Noé Martinez
- * gpmarsan@gmail.com
- * 21/junio/2012
- */
+
+
 public interface PocInterfaceDao{
     public ArrayList<HashMap<String, String>> getUsos();
     public ArrayList<HashMap<String, String>> getMetodos();

@@ -1,8 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
+
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.FileHelper;
 import com.agnux.common.helpers.TimeHelper;
@@ -40,12 +38,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 11/octubre/2013
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/cxcrepsaldomes/")

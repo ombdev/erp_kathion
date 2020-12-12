@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -27,10 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-/**
- *
- * @author vale8490@hotmail.com
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/invplazassucursales/")
@@ -165,6 +159,4 @@ public class InvPlazasSucursalesController {
 
         return jsonretorno;                 
     }   
-    
-    
 }

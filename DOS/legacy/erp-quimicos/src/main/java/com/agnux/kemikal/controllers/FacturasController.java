@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.ArchivoInformeMensual;
@@ -51,11 +47,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- * @author gpmarsan@gmail.com
- * Noe Martinez 
- * 04/mayo/2012
- */
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/facturas/")
@@ -131,8 +123,6 @@ public class FacturasController {
         
         String userId = String.valueOf(user.getUserId());
         
-        //System.out.println("id_de_usuario: "+userId);
-        
         String codificado = Base64Coder.encodeString(userId);
         
         //id de usuario codificado
@@ -140,10 +130,7 @@ public class FacturasController {
         
         return x;
     }
-    
-    
-    
-    
+ 
     @RequestMapping(value="/getAllFacturas.json", method = RequestMethod.POST)
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getAllFacturasacturasJson(
            @RequestParam(value="orderby", required=true) String orderby,
@@ -195,7 +182,6 @@ public class FacturasController {
         return jsonretorno;
     }
     
-    
     //obtiene los Agentes para el Buscador pricipal del Aplicativo
     @RequestMapping(method = RequestMethod.POST, value="/getAgentesParaBuscador.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getAgentesParaBuscador(
@@ -218,7 +204,6 @@ public class FacturasController {
         jsonretorno.put("Agentes", agentes);
         return jsonretorno;
     }
-    
     
     @RequestMapping(method = RequestMethod.POST, value="/getFactura.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getFacturaJson(
@@ -273,12 +258,7 @@ public class FacturasController {
         
         return jsonretorno;
     }
-    
-    
-    
-    
-    
-    
+
     //obtiene datos para generador  de informe
     @RequestMapping(method = RequestMethod.POST, value="/datos_generador_informe.json")
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Integer>>> get_datos_generador_informeJson(Model model) {

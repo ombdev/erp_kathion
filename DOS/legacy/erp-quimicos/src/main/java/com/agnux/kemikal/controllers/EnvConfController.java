@@ -1,11 +1,9 @@
 /*******************************************************************************
  * Modulo: ENVASADO
  * Aplicativo: CONFIGURACION DE ENVASADO
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 09/abril/2013
  *******************************************************************************/
 package com.agnux.kemikal.controllers;
+
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.common.obj.DataPost;

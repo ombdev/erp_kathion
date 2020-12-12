@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
+
 import com.agnux.kemikal.interfacedaos.TesInterfaceDao;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -31,10 +28,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- * @author Noe Martinez
- * 12/05/2012
- */
 
 @Controller
 @SessionAttributes({"user"})
@@ -79,10 +72,7 @@ public class TesBanController {
         
         //codificar id de usuario
         String codificado = Base64Coder.encodeString(userId);
-       
-        //decodificar id de usuario
-        //String decodificado = Base64Coder.decodeString(codificado);
-        
+ 
         //id de usuario codificado
         x = x.addObject("iu", codificado);
         

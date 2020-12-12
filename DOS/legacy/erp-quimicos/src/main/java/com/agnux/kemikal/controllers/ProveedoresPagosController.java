@@ -1,8 +1,5 @@
-/*
- * Registro de pagos  a facturas de proveedores
- * 
- */
 package com.agnux.kemikal.controllers;
+
 
 import com.agnux.cfd.v2.Base64Coder;
 import com.agnux.common.helpers.FileHelper;
@@ -45,13 +42,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-/**
- *
- * @author gpmarsan@gmail.com
- * Noe Martinez
- * 06/mayo/2012
- * 
- */
 
 @Controller
 @SessionAttributes({"user"})
@@ -127,10 +117,7 @@ public class ProveedoresPagosController {
         
         return x;
     }
-    
-
-    
-    
+ 
     //obtiene listado de pagos para el grid
     @RequestMapping(value="/getPagos.json", method = RequestMethod.POST)
     public @ResponseBody HashMap<String,ArrayList<HashMap<String, Object>>> getPagosJson(

@@ -8,13 +8,11 @@ xmlns:beans="http://www.springframework.org/schema/beans"
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security-3.1.xsd
        ">
-        
-        
+
     <global-method-security secured-annotations="disabled">
     </global-method-security>
     
     <http auto-config="true">
-        <!--Noe-->
         <intercept-url pattern="/controllers/home/startup.agnux" access="
         ROLE_ADMIN,
         ROLE_CONSULTAS_ALMACEN,
@@ -175,7 +173,6 @@ xmlns:beans="http://www.springframework.org/schema/beans"
         <intercept-url pattern="/controllers/entradamercancias/startup.agnux" access="ROLE_ADMIN,ROLE_FACTURAS_COMPRAS" />
         <intercept-url pattern="/controllers/prefacturas/startup.agnux" access="ROLE_ADMIN,ROLE_FACTURACION" />
         <intercept-url pattern="/controllers/faccancelacion/startup.agnux" access="ROLE_ADMIN,ROLE_FAC_CANCELACION" />
-        <intercept-url pattern="/controllers/faccancelacionv2/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/facconsultas/startup.agnux" access="ROLE_ADMIN,ROLE_FAC_CONSULTAS" />
         <intercept-url pattern="/controllers/facdevoluciones/startup.agnux" access="ROLE_ADMIN,ROLE_FAC_DEVOLUCIONES" />
         <intercept-url pattern="/controllers/facnomina/startup.agnux" access="ROLE_ADMIN,ROLE_FAC_NOMINA" />
@@ -199,7 +196,6 @@ xmlns:beans="http://www.springframework.org/schema/beans"
         <intercept-url pattern="/controllers/remisiones/startup.agnux" access="ROLE_ADMIN,ROLE_FAC_REMS" />
         <intercept-url pattern="/controllers/notascredito/startup.agnux" access="ROLE_ADMIN,ROLE_NOTA_CREDITO" />
         <intercept-url pattern="/controllers/programacionrutas/startup.agnux" access="ROLE_ADMIN,ROLE_PROGRAMA_RUTA" />
-        
         
         <intercept-url pattern="/controllers/invordenentrada/startup.agnux" access="ROLE_ADMIN,ROLE_ORDEN_DE_ENTRADA" />
         <intercept-url pattern="/controllers/invordensalida/startup.agnux" access="ROLE_ADMIN,ROLE_ORDEN_DE_SALIDA" />
@@ -239,40 +235,37 @@ xmlns:beans="http://www.springframework.org/schema/beans"
         <intercept-url pattern="/controllers/gralmetodosdepago/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_METODO_PAGO" />
         
         
-        <intercept-url pattern="/controllers/invrepexis/startup.agnux" access="ROLE_ADMIN,ROLE_CONSULTAS_ALMACEN" /><!--Noe-->
-        <intercept-url pattern="/controllers/repfacturacion/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_FACTURAS" /><!--Noe-->
-        <intercept-url pattern="/controllers/repedoctacliente/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_EDO_CTA_CLIENTE" /><!--Noe-->
-        <intercept-url pattern="/controllers/invrepcomprasnetasporproducto/startup.agnux" access="ROLE_ADMIN,ROLE_COMPRAS_NETAS_PRODUCTO" /><!--Noe-->
-        <intercept-url pattern="/controllers/repantiguedadsaldocliente/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_ANT_SALDOS_CXC" /><!--Noe-->
-        <intercept-url pattern="/controllers/repinvexislote/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_EXIS_LOTE" /><!--Noe-->
+        <intercept-url pattern="/controllers/invrepexis/startup.agnux" access="ROLE_ADMIN,ROLE_CONSULTAS_ALMACEN" />
+        <intercept-url pattern="/controllers/repfacturacion/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_FACTURAS" />
+        <intercept-url pattern="/controllers/repedoctacliente/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_EDO_CTA_CLIENTE" />
+        <intercept-url pattern="/controllers/invrepcomprasnetasporproducto/startup.agnux" access="ROLE_ADMIN,ROLE_COMPRAS_NETAS_PRODUCTO" />
+        <intercept-url pattern="/controllers/repantiguedadsaldocliente/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_ANT_SALDOS_CXC" />
+        <intercept-url pattern="/controllers/repinvexislote/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_EXIS_LOTE" />
         <intercept-url pattern="/controllers/cxprepsaldomes/startup.agnux" access="ROLE_ADMIN,ROLE_CXP_REP_SALDO_MES" />
         <intercept-url pattern="/controllers/cxcrepsaldomes/startup.agnux" access="ROLE_ADMIN,ROLE_CXC_REP_SALDO_MES" />
         <intercept-url pattern="/controllers/comdiasentrega/startup.agnux" access="ROLE_ADMIN,ROLE_CXP_REP_OC_DIAS_ENTREGA" />
         <intercept-url pattern="/controllers/comrepbackorder/startup.agnux" access="ROLE_ADMIN,ROLE_COM_REP_BACKORDER" />
-        
-        
+
+
         <!--MODULO DE ENVASADO-->
-        <intercept-url pattern="/controllers/envconf/startup.agnux" access="ROLE_ADMIN,ROLE_ENV_CONFIGURACION" /><!--Noe-->
-        <intercept-url pattern="/controllers/envreenv/startup.agnux" access="ROLE_ADMIN,ROLE_ENV_REENVASADO" /><!--Noe-->
+        <intercept-url pattern="/controllers/envconf/startup.agnux" access="ROLE_ADMIN,ROLE_ENV_CONFIGURACION" />
+        <intercept-url pattern="/controllers/envreenv/startup.agnux" access="ROLE_ADMIN,ROLE_ENV_REENVASADO" />
+
+        <intercept-url pattern="/controllers/crmmotivosvisitas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_MOTIVOS_VISITA" />
+        <intercept-url pattern="/controllers/crmformascontacto/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_FORMAS_CONTACTO" />
+        <intercept-url pattern="/controllers/crmmotivosllamadas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_MOTIVOS_LLAMADA" />
+        <intercept-url pattern="/controllers/crmprospectos/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_PROSPECTOS" />
+        <intercept-url pattern="/controllers/crmcontactos/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_CONTACTOS" />
+        <intercept-url pattern="/controllers/crmregistrovisitas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_VISITA" />
+        <intercept-url pattern="/controllers/crmregistroproyectos/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_PROYECTO" />
+        <intercept-url pattern="/controllers/crmregistrollamadas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_LLAMADAS" />
+        <intercept-url pattern="/controllers/crmoportunidades/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_OPORTUNIDADES" />
+        <intercept-url pattern="/controllers/crmmetas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_METAS" />
+        <intercept-url pattern="/controllers/crmregistrocasos/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_CASOS" />
+        <intercept-url pattern="/controllers/crmconsultas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CONSULTAS" />
+        <intercept-url pattern="/controllers/crmreportevisitas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REPORTE_VISITAS" />
+        <intercept-url pattern="/controllers/crmvisitaseguimiento/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_TIPO_SEGUIMIENTO_VISITA" />
         
-        <intercept-url pattern="/controllers/crmmotivosvisitas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_MOTIVOS_VISITA" /><!--Luis-->
-        <intercept-url pattern="/controllers/crmformascontacto/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_FORMAS_CONTACTO" /><!--Luis-->
-        <intercept-url pattern="/controllers/crmmotivosllamadas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_MOTIVOS_LLAMADA" /><!--Luis-->
-        <intercept-url pattern="/controllers/crmprospectos/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_PROSPECTOS" /><!--Vale-->
-        <intercept-url pattern="/controllers/crmcontactos/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CATALOGO_CONTACTOS" /><!--Paco-->
-        <intercept-url pattern="/controllers/crmregistrovisitas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_VISITA" /><!--Noe-->
-        <intercept-url pattern="/controllers/crmregistroproyectos/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_PROYECTO" /><!--Noe-->
-        <intercept-url pattern="/controllers/crmregistrollamadas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_LLAMADAS" /><!--Luis-->
-        <intercept-url pattern="/controllers/crmoportunidades/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_OPORTUNIDADES" /><!--Paco-->
-        <intercept-url pattern="/controllers/crmmetas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_METAS" /><!--Luis-->
-        <intercept-url pattern="/controllers/crmregistrocasos/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REGISTRO_CASOS" /><!--Vale-->
-        <intercept-url pattern="/controllers/crmconsultas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_CONSULTAS" /><!--Paco-->
-        <intercept-url pattern="/controllers/crmreportevisitas/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_REPORTE_VISITAS" /><!--Paco-->
-        <intercept-url pattern="/controllers/crmvisitaseguimiento/startup.agnux" access="ROLE_ADMIN,ROLE_CRM_TIPO_SEGUIMIENTO_VISITA" /><!--Noe-->
-        
-        
-        
-        <!--vale-->
         <intercept-url pattern="/controllers/clientsgrupos/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/clientszonas/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/proveedoresclasif1/startup.agnux" access="ROLE_ADMIN" />
@@ -290,12 +283,11 @@ xmlns:beans="http://www.springframework.org/schema/beans"
         <intercept-url pattern="/controllers/invformulas/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_FORMULA" />
         <intercept-url pattern="/controllers/logasignarutas/startup.agnux" access="ROLE_ADMIN,ROLE_ASIGNA_RUTA" />
         <intercept-url pattern="/controllers/comordencompra/startup.agnux" access="ROLE_ADMIN,ROLE_ORDEN_COMPRA" />
-        <intercept-url pattern="/controllers/comcompraautorizacion/startup.agnux" access="ROLE_ADMIN,ROLE_AUTORIZACION_ORDEN_COMPRA" /><!--Craedo por Luis Garcia-->
+        <intercept-url pattern="/controllers/comcompraautorizacion/startup.agnux" access="ROLE_ADMIN,ROLE_AUTORIZACION_ORDEN_COMPRA" />
         <intercept-url pattern="/controllers/invetiquetas/startup.agnux" access="ROLE_ADMIN,ROLE_IMPRESION_ETIQUETAS" />
         <intercept-url pattern="/controllers/graltipocambio/startup.agnux" access="ROLE_ADMIN,ROLE_ACTUALIZADOR_TIPO_CAMBIO" />
-        <intercept-url pattern="/controllers/cotpoliticasdepago/startup.agnux" access="ROLE_ADMIN,ROLE_COT_POLITICAS_PAGO" /><!--Vale-->
-        
-        
+        <intercept-url pattern="/controllers/cotpoliticasdepago/startup.agnux" access="ROLE_ADMIN,ROLE_COT_POLITICAS_PAGO" />
+
         <intercept-url pattern="/controllers/reppronoscobranza/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_CXC_PRONOSTICO" />
         <intercept-url pattern="/controllers/repventasnetasxcliente/startup.agnux" access="ROLE_ADMIN,ROLE_CXC_REPORTE_VENTAS" />
         <intercept-url pattern="/controllers/repventasnetasproductofactura/startup.agnux" access="ROLE_ADMIN,ROLE_CXC_REPORTE_VENTAS" />
@@ -306,9 +298,8 @@ xmlns:beans="http://www.springframework.org/schema/beans"
         <intercept-url pattern="/controllers/repremisionfacturada/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_REMISIONES_FACTURADAS" />
         <intercept-url pattern="/controllers/repinvmovimientos/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_INV_MOV" />
         <intercept-url pattern="/controllers/repclientes/startup.agnux" access="ROLE_ADMIN,ROLE_CXC_REPORTE_CLIENTES" />
-        <intercept-url pattern="/controllers/proreportecalidad/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_REPORTE_CALIDAD" /><!--Noe-->
+        <intercept-url pattern="/controllers/proreportecalidad/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_REPORTE_CALIDAD" />
         
-        <!--Paco-->
         <intercept-url pattern="/controllers/tiposmovinventario/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/invsecciones/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/invprodlineas/startup.agnux" access="ROLE_ADMIN" />
@@ -326,28 +317,22 @@ xmlns:beans="http://www.springframework.org/schema/beans"
         <intercept-url pattern="/controllers/proformulasdesarrollo/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_FORMULAS_DESARROLLO" />
         <intercept-url pattern="/controllers/proordensimulacion/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_SIMULACION_PRODUCCION" />
         <intercept-url pattern="/controllers/proinstrumentosmedicion/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_INSTRUMENTOS_MEDICION" />
-        <intercept-url pattern="/controllers/protipoequipo/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_TIPO_EQUIPO" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/proreporteproduccion/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_REPORTE_PRODUCCION" /><!--Vale-->
+        <intercept-url pattern="/controllers/protipoequipo/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_TIPO_EQUIPO" />
+        <intercept-url pattern="/controllers/proreporteproduccion/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_REPORTE_PRODUCCION" />
         
-        <intercept-url pattern="/controllers/proequiposadic/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_EQUIPOS_ADICIONALES" /><!--Aron-->
-        <intercept-url pattern="/controllers/proequipos/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_EQUIPOS" /><!--Aron-->
-        <intercept-url pattern="/controllers/procalidad/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_ASEG_CALIDAD" /><!--Noe-->
-        
-        
-        <!--Paco, Noe-->
+        <intercept-url pattern="/controllers/proequiposadic/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_EQUIPOS_ADICIONALES" />
+        <intercept-url pattern="/controllers/proequipos/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_EQUIPOS" />
+        <intercept-url pattern="/controllers/procalidad/startup.agnux" access="ROLE_ADMIN,ROLE_PRO_ASEG_CALIDAD" />
+
         <intercept-url pattern="/controllers/invordpresuben/startup.agnux" access="ROLE_ADMIN,ROLE_ORDEN_PRODUCCION_SUBENSAMBLE" />
         <intercept-url pattern="/controllers/invordsubensamble/startup.agnux" access="ROLE_ADMIN,ROLE_CONSULTAS_ALMACEN,ROLE_PRODUCCION_SUBENSAMBLE" />
-        
-        
-        <!--Luis y vale (duo dinamico)-->
+
         <intercept-url pattern="/controllers/invmarcas/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/invplazas/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/invzonas/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/invprodgrupos/startup.agnux" access="ROLE_ADMIN" />
         <intercept-url pattern="/controllers/invplazassucursales/startup.agnux" access="ROLE_ADMIN" />
-        
-        
-        <!--Luis Garcia-->
+
         <intercept-url pattern="/controllers/repestadisticasanualesventas/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_ESTADISTICO_VENTAS" />
         <intercept-url pattern="/controllers/repestadisticaanualventasproducto/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_ESTADISTICO_VENTAS" />
         <intercept-url pattern="/controllers/reppedidos/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_PEDIDOS" />
@@ -355,38 +340,36 @@ xmlns:beans="http://www.springframework.org/schema/beans"
         <intercept-url pattern="/controllers/graldocs/startup.agnux" access="ROLE_ADMIN,ROLE_ACTUALIZA_CODIGO_ISO" />
         <intercept-url pattern="/controllers/repanticiposnoaplicados/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_ANTICIPOS_CXC" />
         
-        <!--Ezequiel-->
-        <intercept-url pattern="/controllers/logvehiculos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_VEHICULO" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/gralpuestos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_PUESTO" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/gralescolaridads/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_ESCOLARIDAD" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/gralreligions/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_RELIGION" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/gralsangretipos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_TIPO_SANGRE" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/invprodequiv/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_PRODUCTOS_EQUIV" /><!--Ezequiel-->
+        <intercept-url pattern="/controllers/logvehiculos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_VEHICULO" />
+        <intercept-url pattern="/controllers/gralpuestos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_PUESTO" />
+        <intercept-url pattern="/controllers/gralescolaridads/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_ESCOLARIDAD" />
+        <intercept-url pattern="/controllers/gralreligions/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_RELIGION" />
+        <intercept-url pattern="/controllers/gralsangretipos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_TIPO_SANGRE" />
+        <intercept-url pattern="/controllers/invprodequiv/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_PRODUCTOS_EQUIV" />
         
-        <intercept-url pattern="/controllers/graldiasnolaborables/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_DIA_NO_LABORABLE" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/gralcateg/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_CATGORIA_EMPLEADO" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/graldeptos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_DEPARTAMENTO" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/graldeptosturnos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_TURNO" /><!--Ezequiel-->
-        <intercept-url pattern="/controllers/repedoctaprov/startup.agnux" access="ROLE_ADMIN,ROLE_REP_EDOCTA_PROVEEDOR" /><!--Ezequiel-->
+        <intercept-url pattern="/controllers/graldiasnolaborables/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_DIA_NO_LABORABLE" />
+        <intercept-url pattern="/controllers/gralcateg/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_CATGORIA_EMPLEADO" />
+        <intercept-url pattern="/controllers/graldeptos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_DEPARTAMENTO" />
+        <intercept-url pattern="/controllers/graldeptosturnos/startup.agnux" access="ROLE_ADMIN,ROLE_ALTA_TURNO" />
+        <intercept-url pattern="/controllers/repedoctaprov/startup.agnux" access="ROLE_ADMIN,ROLE_REP_EDOCTA_PROVEEDOR" />
         
         <intercept-url pattern="/controllers/repcobranzadiaria/startup.agnux" access="ROLE_ADMIN,ROLE_REPORTE_COBRANZA_DIARIA" />
         
-        <intercept-url pattern="/controllers/logoperadores/startup.agnux" access="ROLE_ADMIN,ROLE_LOG_OPERADORES" /><!--Federico-->
-        <intercept-url pattern="/controllers/repprov/startup.agnux" access="ROLE_ADMIN,ROLE_CXP_REP_PROVEEDORES" /><!--Federico-->
-        <intercept-url pattern="/controllers/gralieps/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_IEPS" /><!--Federico-->
-        <intercept-url pattern="/controllers/repcomparativoasventasanuales/startup.agnux" access="ROLE_ADMIN,ROLE_CXC_REP_COMP_VENTAS_CLIENTE" /><!--Federico-->
-        <intercept-url pattern="/controllers/repcomparativoasventasanualesproducto/startup.agnux" access="ROLE_ADMIN,ROLE_CXC_REP_COMP_VENTAS_PROD" /><!--Federico-->
-        <intercept-url pattern="/controllers/gralpercepciones/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_CATALOGO_PRECEP" /><!--Federico-->
-        <intercept-url pattern="/controllers/graldeducciones/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_CATALOGO_DEDUC" /><!--Federico-->
-        <intercept-url pattern="/controllers/gralconfigperiodospago/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_CONFIG_PERIODOS_PAGO" /><!--Federico-->
+        <intercept-url pattern="/controllers/logoperadores/startup.agnux" access="ROLE_ADMIN,ROLE_LOG_OPERADORES" />
+        <intercept-url pattern="/controllers/repprov/startup.agnux" access="ROLE_ADMIN,ROLE_CXP_REP_PROVEEDORES" />
+        <intercept-url pattern="/controllers/gralieps/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_IEPS" />
+        <intercept-url pattern="/controllers/repcomparativoasventasanuales/startup.agnux" access="ROLE_ADMIN,ROLE_CXC_REP_COMP_VENTAS_CLIENTE" />
+        <intercept-url pattern="/controllers/repcomparativoasventasanualesproducto/startup.agnux" access="ROLE_ADMIN,ROLE_CXC_REP_COMP_VENTAS_PROD" />
+        <intercept-url pattern="/controllers/gralpercepciones/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_CATALOGO_PRECEP" />
+        <intercept-url pattern="/controllers/graldeducciones/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_CATALOGO_DEDUC" />
+        <intercept-url pattern="/controllers/gralconfigperiodospago/startup.agnux" access="ROLE_ADMIN,ROLE_GRAL_CONFIG_PERIODOS_PAGO" />
         
         
-        <intercept-url pattern="/controllers/reppagosdiaria/startup.agnux" access="ROLE_ADMIN,ROLE_CXP_REP_PAGO_DIARIO" /><!--Federico-->
+        <intercept-url pattern="/controllers/reppagosdiaria/startup.agnux" access="ROLE_ADMIN,ROLE_CXP_REP_PAGO_DIARIO" />
         
         <intercept-url pattern="/controllers/ctbxmlbalanzacomprobacion/startup.agnux" access="ROLE_ADMIN,ROLE_CTB_REP_BALANZA_COMP" />
         <intercept-url pattern="/controllers/ctbxmlcuentascontables/startup.agnux" access="ROLE_ADMIN,ROLE_CAT_CTAS_CONTABLES" />
-        
-        
+
         <form-login 
             login-page="/index.jsp" 
             default-target-url="/controllers/home/startup.agnux"
@@ -395,63 +378,11 @@ xmlns:beans="http://www.springframework.org/schema/beans"
         />
         <logout logout-url="/controllers/home/logout.agnux" delete-cookies="JSESSIONID"  logout-success-url="/index.jsp"  />
     </http>
-    
-    
-    
-    
+
     <authentication-manager>
         <authentication-provider>
             <jdbc-user-service data-source-ref="dataSource"/>
         </authentication-provider>
     </authentication-manager>
-    
-    
-    
-    
-    <!--
-    		users-by-username-query="SELECT username,password,enabled FROM erp_users WHERE username = ?"
-		authorities-by-username-query="" />
-            Especifica el proceso de autenticación mediante un formulario:
-            [login-page]: URL del formulario de autenticación.
-            [authentication-failure-url]: URL de la página en caso la autenticación falle. 
-            [login-processing-url]: URL hacia el cual la autenticación será procesada. 
-            [default-target-url]: URL hacia el cual se redirigirá el control luego de un login exitoso		
-    -->
-    <!--
-    <security:form-login 
-            login-page="/login.jsp" 
-            default-target-url="/public/mostrarFormulario.htm" 
-            authentication-failure-url="/loginerror.jsp"/>
-            -->
 
-    <!--  Especifica el tipo de autenticación:-->
-    <!--<security:http-basic />-->
-
-    <!--
-            Especifica el tratamiento para los fines de sesión o logouts:
-            [invalidate-session]: Si el proceso de logout debe de terminar la sesión(default=true) 
-            [logout-url]: URL que determina el fin de sesión. 
-            [logout-success-url]: URL del recurso que será mostrado una vez terminada la sesión.
-    -->
-    <!--
-    <security:logout 
-            invalidate-session="true" 
-            logout-url="/public/terminarSesion.htm"
-            logout-success-url="/logout.jsp"  />
-    <security:remember-me/>
-    --> 
-    
-    
-    
-    <!--
-    <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="gpmarsan" password="marsan" authorities="ROLE_USER" />
-                <user name="noe" password="noe" authorities="ROLE_ADMIN" />
-            </user-service>
-        </authentication-provider>
-    </authentication-manager>
-    -->
-    
 </beans:beans>
