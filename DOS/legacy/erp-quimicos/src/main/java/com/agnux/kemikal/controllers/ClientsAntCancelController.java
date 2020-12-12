@@ -30,13 +30,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-/**
- *
- * @author gpmarsan@gmail.com
- * Noe Martinez 
- * 08/ago/2013
- * 
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/clientsantcancel/")

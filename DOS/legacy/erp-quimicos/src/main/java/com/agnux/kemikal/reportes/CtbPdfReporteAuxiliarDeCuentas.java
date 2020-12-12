@@ -33,13 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 17/diciembre/2013
- * 
- */
+
+
 public class CtbPdfReporteAuxiliarDeCuentas {
     public File archivoSalida;
     HashMap<String, String> datosHeaderFooter;
@@ -98,8 +93,8 @@ public class CtbPdfReporteAuxiliarDeCuentas {
         
         HeaderFooter event = new HeaderFooter(this.getDatosHeaderFooter());
         Document doc = new Document(PageSize.LETTER,-50,-50,60,30);
-        doc.addCreator("gpmarsan@gmail.com");
-        doc.addAuthor("Noe Martinez");
+        doc.addCreator("replicas@gmail.com");
+        doc.addAuthor("Six Million Dollar");
         PdfWriter writer = null;
         try {
             

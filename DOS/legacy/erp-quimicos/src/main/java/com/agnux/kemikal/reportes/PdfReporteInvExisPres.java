@@ -1,9 +1,6 @@
 /**
  * Modulo: Inventarios
  * Aplicativo: Pdf de Reporte de existencias por Presentaciones
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 28/abril/2013
  */
 
 package com.agnux.kemikal.reportes;
@@ -30,6 +27,7 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 public class PdfReporteInvExisPres {
     private HashMap<String, String> datosHeaderFooter = new HashMap<String, String>();

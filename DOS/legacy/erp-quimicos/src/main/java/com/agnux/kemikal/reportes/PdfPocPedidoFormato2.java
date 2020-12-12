@@ -1,8 +1,6 @@
-/*
- * Aquí se construye el formato 2 para Pedidos.
- * Éste formato solo abarca la mitad de la Hoja para todo el pedido.
- */
 package com.agnux.kemikal.reportes;
+
+
 import com.agnux.common.helpers.StringHelper;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
@@ -11,12 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.File;
 import java.util.Arrays;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 01/marzo/2013
- * 
+
+
+/*
+ * Aquí se construye el formato 2 para Pedidos.
+ * Éste formato solo abarca la mitad de la Hoja para todo el pedido.
  */
 public class PdfPocPedidoFormato2 {
     private String imagen;

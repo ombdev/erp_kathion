@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.itextpdf.text.Font;
@@ -17,13 +13,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 25/marzo/2015
- * 
- */
 public class CxcIepsCobradoPorClienteXls {
 
     public CxcIepsCobradoPorClienteXls(HashMap<String,Object> data) {

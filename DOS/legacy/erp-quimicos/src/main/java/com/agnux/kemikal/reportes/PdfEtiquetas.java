@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.itextpdf.text.*;
@@ -15,13 +11,7 @@ import java.util.HashMap;
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 24/septiembre/2015
- * 
- */
+
 public class PdfEtiquetas {
     public ArrayList<HashMap<String, Object>> rows;
 

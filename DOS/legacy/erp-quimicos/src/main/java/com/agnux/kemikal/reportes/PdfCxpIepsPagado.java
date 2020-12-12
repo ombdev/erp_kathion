@@ -15,13 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 01/agosto/2014
- * 
- */
+
 public class PdfCxpIepsPagado {
 
     public PdfCxpIepsPagado(HashMap<String,Object> data) {

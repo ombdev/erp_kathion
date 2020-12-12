@@ -9,12 +9,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Noe Martinez 
- * gpmarsan@gmail.com
- * 10/julio/2013
- */
+
 public class PdfProReporteCalidad {
 
     public PdfProReporteCalidad(HashMap<String, String> datosEncabezadoPie, String fileout, ArrayList<HashMap<String, String>> Datos_Reporte_Calidad) throws DocumentException {

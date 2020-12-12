@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
+
 
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -34,10 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author agnux
- */
+
 public class CtbPdfReporteEstadoDeResultados {
     public File archivoSalida;
     HashMap<String, String> datosHeaderFooter;
@@ -97,8 +91,8 @@ public class CtbPdfReporteEstadoDeResultados {
         HeaderFooter event = new HeaderFooter(this.getDatosHeaderFooter());
         Document doc = new Document(PageSize.LETTER.rotate(),-50,-50,60,30);
         //Document doc = new Document(PageSize.LETTER,-50,-50,60,30);
-        doc.addCreator("gpmarsan@gmail.com");
-        doc.addAuthor("Noe Martinez");
+        doc.addCreator("replicas@gmail.com");
+        doc.addAuthor("Memy one");
         PdfWriter writer = null;
         try {
             

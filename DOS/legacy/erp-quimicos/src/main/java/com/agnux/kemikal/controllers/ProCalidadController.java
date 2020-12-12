@@ -32,13 +32,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 20-junio-2013
- * 
- */
+
+
 @Controller
 @SessionAttributes({"user"})
 @RequestMapping("/procalidad/")

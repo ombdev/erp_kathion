@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
+
 import com.agnux.common.helpers.StringHelper;
 import java.net.URISyntaxException;
 import java.util.Iterator;
@@ -28,13 +25,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
     
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 30/enero/2013
- * 
- */
+
 public class PdfInvControlCosto {
     private HashMap<String, String> datosHeaderFooter = new HashMap<String, String>();
     private ArrayList<HashMap<String, String>> lista_productos = new ArrayList<HashMap<String, String>>();

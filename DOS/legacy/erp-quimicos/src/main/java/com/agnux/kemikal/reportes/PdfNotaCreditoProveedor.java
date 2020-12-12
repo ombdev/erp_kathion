@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
+
 
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.common.helpers.n2t;
@@ -28,13 +25,6 @@ import java.math.BigInteger;
 import java.util.HashMap;
     
     
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 12/octubre/2012
- * 
- */
 public final class PdfNotaCreditoProveedor {
     private HashMap<String, String> datosHeaderFooter = new HashMap<String, String>();
     private String fileout;

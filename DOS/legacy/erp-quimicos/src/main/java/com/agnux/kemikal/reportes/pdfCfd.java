@@ -1,7 +1,3 @@
- /* 
- * @author Noe Mtz
- * gpmarsan@gmail.com
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.kemikal.interfacedaos.GralInterfaceDao;

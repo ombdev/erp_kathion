@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.itextpdf.text.*;
@@ -15,13 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 30/julio/2014
- * 
- */
+
 public class PdfCxcIepsCobrado {
 
     public PdfCxcIepsCobrado(HashMap<String,Object> data) {
@@ -36,12 +26,6 @@ public class PdfCxcIepsCobrado {
         conf = (HashMap<String, Object>) data.get("conf");
         columns = (LinkedHashMap<String, String>) conf.get("Columns");
         totales = (LinkedHashMap<String, String>) data.get("totales");
-        
-        /*
-        conf.put("ColumnsHead", columnsHead);
-        conf.put("noCols", noCols);
-        conf.put("", fileout);
-        */
         
         String fileout = String.valueOf(conf.get("fileout"));
         

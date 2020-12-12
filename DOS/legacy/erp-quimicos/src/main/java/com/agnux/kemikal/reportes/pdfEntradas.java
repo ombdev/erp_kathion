@@ -1,9 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-//este es la Clase para contruir el PDF de Facturas Compras
 package com.agnux.kemikal.reportes;
+
 import com.agnux.common.helpers.StringHelper;
 import com.agnux.common.helpers.n2t;
 import com.itextpdf.text.Image;
@@ -32,11 +28,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- *
- * @author Noe Mtz
- * gpmarsan@gmail.com
- */
+
+//este es la Clase para contruir el PDF de Facturas Compras
 public class pdfEntradas {
     //--variables para pdf--
     private String imagen;

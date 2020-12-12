@@ -1,8 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
+
+
 import com.agnux.common.helpers.StringHelper;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -32,13 +30,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 11/octubre/2013
- * 
- */
+
 public class PdfCxcSaldoMensual {
     /*en el metodo creamos el documento lo abrimosañadimos parrafos de texto y lo cerramos, tambien creamos nuestro archivo pdf*/
     public PdfCxcSaldoMensual(String fileout, String ruta_imagen, String tituloReporte, String razon_soc_empresa, String fecha_corte,ArrayList<HashMap<String, String>> facturas) throws DocumentException, IOException {
