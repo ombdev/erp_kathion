@@ -93,8 +93,8 @@ public class CtbPdfReporteAuxiliarDeCuentas {
         
         HeaderFooter event = new HeaderFooter(this.getDatosHeaderFooter());
         Document doc = new Document(PageSize.LETTER,-50,-50,60,30);
-        doc.addCreator("gpmarsan@gmail.com");
-        doc.addAuthor("Noe Martinez");
+        doc.addCreator("replicas@gmail.com");
+        doc.addAuthor("Six Million Dollar");
         PdfWriter writer = null;
         try {
             

@@ -1,6 +1,3 @@
-/*
-Clase que construye el pdf del Reporte de Dias Promedio de entrega de OC
- */
 package com.agnux.kemikal.reportes;
 
 import com.itextpdf.text.BaseColor;
@@ -30,12 +27,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 04/diciembre/2013
- */
+
+
+// Clase que construye el pdf del Reporte de Dias Promedio de entrega de OC
 public class ComRepDiasEntregaPromedioPdf {
     
     public ComRepDiasEntregaPromedioPdf(String fileout, String tituloReporte, String razon_soc_empresa, String periodo,ArrayList<HashMap<String, String>> datos) throws DocumentException {
