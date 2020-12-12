@@ -33,13 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 17/diciembre/2013
- * 
- */
+
+
 public class CtbPdfReporteAuxiliarDeCuentas {
     public File archivoSalida;
     HashMap<String, String> datosHeaderFooter;
