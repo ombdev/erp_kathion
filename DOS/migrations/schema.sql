@@ -55,29 +55,6 @@ BEGIN
 	SELECT EXTRACT(YEAR FROM espacio_tiempo_ejecucion) INTO ano_actual;
 	SELECT EXTRACT(MONTH FROM espacio_tiempo_ejecucion) INTO mes_actual;
 
-	--select * from asignar_unidad_id_tablas_dtalle()
-	
-	/*
-	
-	--Obtiene lista de de productos de la tabla poc_pedidos_detalle
-	cadena_sql:='
-	SELECT 
-		0::integer AS id_pedido,
-		erp_prefacturas.folio_pedido,
-		erp_prefacturas.cliente_id,
-		erp_prefacturas_detalles.producto_id,
-		erp_prefacturas_detalles.presentacion_id
-	FROM erp_prefacturas
-	JOIN erp_prefacturas_detalles ON erp_prefacturas_detalles.prefacturas_id=erp_prefacturas.id;';
-	
-	FOR fila IN EXECUTE(cadena_sql) LOOP
-		SELECT id FROM poc_pedidos WHERE folio=fila.folio_pedido AND cxc_clie_id=fila.cliente_id INTO fila.id_pedido;
-		IF fila.id_pedido IS NULL THEN fila.id_pedido:=0; END IF;
-		
-		UPDATE poc_pedidos_detalle SET inv_prod_id=fila.producto_id WHERE presentacion_id=fila.presentacion_id AND poc_pedido_id=fila.id_pedido;
-	END LOOP;
-	*/
-
 
 	--Obtiene lista de de productos de la tabla poc_pedidos_detalle
 	cadena_sql:='SELECT id, inv_prod_id, 0::integer AS unidad_id FROM poc_pedidos_detalle ORDER BY inv_prod_id;';
