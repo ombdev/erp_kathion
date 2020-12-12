@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.itextpdf.text.*;
@@ -15,13 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 25/marzo/2015
- * 
- */
+
 public class CxcIepsCobradoPorClientePdf {
 
     public CxcIepsCobradoPorClientePdf(HashMap<String,Object> data) {
