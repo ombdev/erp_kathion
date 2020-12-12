@@ -1,9 +1,6 @@
 /*******************************************************************************
  * Modulo: ENVASADO
  * Aplicativo: REENVASADO
- * @author Noe Martinez
- * gpmarsan@gmail.com
- * 12/abril/2012
  *******************************************************************************/
 package com.agnux.kemikal.controllers;
 

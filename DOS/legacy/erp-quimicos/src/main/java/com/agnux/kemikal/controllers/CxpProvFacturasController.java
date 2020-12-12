@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.controllers;
 
 import com.agnux.cfd.v2.Base64Coder;
@@ -33,13 +29,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+
+
 /**
  *Este controller es para ingresar facturas, de las entradas que se dieron con remision, 
  * al ingresar la factura se genera un registro en Cuentas por Pagar.
  *Tambien se utiliza para dar de alta facturas que no provienen de entradas de mercancia.
  * 
- * @author gpmarsan@gmail.com
- * 23/abril/2012
  */
 @Controller
 @SessionAttributes({"user"})
