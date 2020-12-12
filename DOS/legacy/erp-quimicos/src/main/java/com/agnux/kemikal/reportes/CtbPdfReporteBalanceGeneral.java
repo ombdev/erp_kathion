@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 import com.agnux.common.helpers.StringHelper;
@@ -15,10 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-/**
- *
- * @author agnux
- */
+
+
 public class CtbPdfReporteBalanceGeneral {
     public File archivoSalida;
     HashMap<String, String> datosHeaderFooter;
