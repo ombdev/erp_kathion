@@ -567,12 +567,6 @@ CREATE FUNCTION public.com_adm_procesos(campos_data text, extra_data text[]) RET
     AS $$
 DECLARE
 
---###################################
---# Wrtten by:  valentin santos santiago  #
---# mailto: valentin.vale@gmail.com	  #
---# 12 / 09 / 2012               	  #
---###################################
-
 	--estas  variables se utilizan en la mayoria de los catalogos
 	str_data text[];
 	app_selected integer;
@@ -1432,12 +1426,6 @@ CREATE FUNCTION public.conversion_costo_para_lista_precio(costo double precision
     LANGUAGE plpgsql
     AS $$
 
---###################################
---# Wrtten by: Noe Martinez         #
---# mailto: gpmarsan@gmail.com      #
---# 08 / febrero / 2013             #
---###################################
-
 --costo: El costo siempre debe venir en M.N.
 --tc_usd: Éste es el tipo de cambio para convertir el costo en USD si la moneda_lista=2
 --tc_eur: Éste es el tipo de cambio para convertir el costo en EUR si la moneda_lista=3
@@ -1666,11 +1654,6 @@ CREATE FUNCTION public.crm_adm_procesos(campos_data text, extra_data text[]) RET
     LANGUAGE plpgsql
     AS $$
 
---###################################
---# Wrtten by: Noe Martinez         #
---# mailto: gpmarsan@gmail.com      #
---# 16 / enero / 2013               #
---###################################
 
 DECLARE
 	app_selected integer;
@@ -2895,11 +2878,6 @@ CREATE FUNCTION public.crm_consultas(id integer, agente integer, tipo_seleccion 
 
 DECLARE
 
---###################################
---# Wrtten by: Luis Carrillo        #
---# mailto: 1381029@gmail.com       #
---# 1 / febrero / 2013              #
---###################################
 
 	cadena_sql text = '';
 	cadena_where text ='';
@@ -4018,11 +3996,6 @@ CREATE FUNCTION public.crm_consultas_bigpicture(usuario integer, agente integer,
 
 DECLARE
 
---###################################
---# Wrtten by: paco mora        #
---# mailto: fmora@agnux.com       #
---# 26 / marzo / 2013              #
---###################################
 
 	cadena_sql text = '';
 	cadena_where text ='';
@@ -5360,11 +5333,6 @@ CREATE FUNCTION public.ctb_adm_procesos(campos_data text, extra_data text[]) RET
     LANGUAGE plpgsql
     AS $$
 
---###################################
---# Wrtten by: Noe Martinez         #
---# mailto: gpmarsan@gmail.com      #
---# 08 / noviembre / 2012           #
---###################################
 
 DECLARE 
 	app_selected integer;
@@ -7765,11 +7733,6 @@ CREATE FUNCTION public.cxc_adm_procesos(campos_data text, extra_data text[]) RET
     LANGUAGE plpgsql
     AS $$
 
---###################################
---# Wrtten by: Noe Martinez         #
---# mailto: gpmarsan@gmail.com      #
---# 25 / abril / 2012               #
---###################################
 
 DECLARE
 	app_selected integer;
@@ -8526,11 +8489,6 @@ CREATE FUNCTION public.cxp_adm_procesos(campos_data text, extra_data text[]) RET
     LANGUAGE plpgsql
     AS $$
 
---###################################
---# Wrtten by: Noe Martinez         #
---# mailto: gpmarsan@gmail.com      #
---# 25 / abril / 2012               #
---###################################
 
 DECLARE
 	app_selected integer;
@@ -10121,11 +10079,6 @@ CREATE FUNCTION public.env_adm_procesos(campos_data text, extra_data text[]) RET
 --###################################
 --Procedimiento para todos los Catalogos y Aplicativos del Modulo de Envasado
 
---###################################
---# Wrtten by: Noe Martinez         #
---# mailto: gpmarsan@gmail.com      #
---# 09 / abril / 2013               #
---###################################
 
 DECLARE
 	app_selected integer;
@@ -11846,11 +11799,6 @@ CREATE FUNCTION public.env_bus_aplicativos(campos_data text) RETURNS SETOF recor
     AS $$ 
 DECLARE
 
---###################################
---# Wrtten by: NOE    	    	    #
---# mailto: gpmarsan@gmail.com      #
---# 09 / abril / 2013               #
---###################################
 --éste procedimiento es para los buscadores 
 --de todos los Aplicativos del Modulo de Envasado
 	
@@ -12040,12 +11988,7 @@ CREATE FUNCTION public.env_validaciones(campos_data text, extra_data text[]) RET
     LANGUAGE plpgsql
     AS $$
 --Procedimiento para validaciones de los Aplicativos del Modulo de Envasado
---###################################
---# Wrtten by: Noe Martinez         #
---# mailto: gpmarsan@gmail.com      #
---# 09 / abril / 2013               #
---###################################
-	
+
 DECLARE
 	
 	app_selected integer;
@@ -12704,11 +12647,6 @@ CREATE FUNCTION public.erp_fn_agregar_ceros(consecutivo character varying, num i
     AS $$ 
 
 DECLARE
---###################################
---# Escrito por: Edwin Plauchu      #
---# mailto: pianodaemon@gmail.com   #
---# 9 / dic / 2008                  #
---###################################
 	ceros text;
 BEGIN
 	SELECT INTO ceros lpad(consecutivo, num, '0');
@@ -12729,11 +12667,6 @@ CREATE FUNCTION public.erp_fn_aplicativo_cotizacions_acciones(identificador inte
     AS $$
 DECLARE
 
---#######################################
---# Wrtten by: NOE    	   	 	#
---# mailto: gpmarsan@gmail.com 	 	#
---# 28 / oct / 2011         	 	#
---#######################################
 
 filares	record;
 str_data text[];
@@ -12903,11 +12836,6 @@ CREATE FUNCTION public.erp_fn_aplicativo_empleado_acciones(identificador integer
     LANGUAGE plpgsql
     AS $$DECLARE
 
---###################################
---# Wrtten by: NOE    	            #
---# mailto: gpmarsan@gmail.com      #
---# 08 / ago / 2011                 #
---###################################
 
 str_data text[];
 valor_retorno integer = 0;
@@ -13011,11 +12939,6 @@ CREATE FUNCTION public.erp_fn_aplicativo_traspasomercancias_acciones(identificad
     LANGUAGE plpgsql
     AS $$DECLARE
 
---#######################################
---# Wrtten by: NOE    	   	 	#
---# mailto: gpmarsan@gmail.com 	 	#
---# 14 / sep / 2011         	 	#
---#######################################
 
 filares	record;
 str_data text[];
@@ -13286,11 +13209,6 @@ CREATE FUNCTION public.erp_fn_buscador_cotizacions(folio character varying, clie
     AS $$ 
 DECLARE
 
---###################################
---# Wrtten by: NOE    	    	    #
---# mailto: gpmarsan@gmail.com      #
---# 28 / oct / 2011                 #
---###################################
 
 sql_busqueda_cotizacions text;
 fila             record;
@@ -13353,11 +13271,6 @@ CREATE FUNCTION public.erp_fn_buscador_traspasomercancias(folio character varyin
     AS $$ 
 DECLARE
 
---###################################
---# Wrtten by: NOE    	    	    #
---# mailto: gpmarsan@gmail.com      #
---# 10 / oct / 2011                 #
---###################################
 
 sql_busqueda_traspasos text;
 fila             record;
@@ -13441,11 +13354,6 @@ CREATE FUNCTION public.erp_fn_obtener_consecutivo(character varying) RETURNS cha
     AS $_$
 
 DECLARE
---###################################
---# Escrito por: Edwin Plauchu      #
---# mailto: pianodaemon@gmail.com   #
---# 9 / dic / 2008                  #
---###################################
 
 	valor_retorno       character varying:= NULL;
 	ultimo_consecutivo  character varying:= NULL;
@@ -13970,11 +13878,6 @@ CREATE FUNCTION public.erp_fn_validaciones_dir_consignacion_cliente(campos_data 
     LANGUAGE plpgsql
     AS $_$DECLARE
 
---###################################
---# Wrtten by: Noe martinez 	    #
---# mailto: gpmarsan@gmail.com 	    #
---# 20 / octubre / 2011             #
---###################################
 
 str_data text[];
 valor_retorno text = '';
@@ -14068,11 +13971,6 @@ CREATE FUNCTION public.erp_fn_validaciones_por_aplicativo(campos_data text, id_a
 
 DECLARE
 
-	--###################################
-	--# Wrtten by: Paco Mora     	    #
-	--# mailto: fmora@agnux.com  	    #
-	--# 22 / jul / 2011                 #
-	--###################################
 	espacio_tiempo_ejecucion timestamp with time zone := now();
 	ano_actual integer:=0;
 	mes_actual integer:=0;
@@ -25891,11 +25789,6 @@ CREATE FUNCTION public."erp_fn_validaciones_por_aplicativo_BK"(campos_data text,
 
 DECLARE
 
-	--###################################
-	--# Wrtten by: Paco Mora     	    #
-	--# mailto: fmora@agnux.com  	    #
-	--# 22 / jul / 2011                 #
-	--###################################
 	espacio_tiempo_ejecucion timestamp with time zone := now();
 	ano_actual integer:=0;
 	mes_actual integer:=0;
@@ -37882,11 +37775,6 @@ CREATE FUNCTION public.fac_adm_procesos(campos_data text, extra_data text[]) RET
     LANGUAGE plpgsql
     AS $$
 
---###################################
---# Wrtten by: Noe Martinez         #
---# mailto: gpmarsan@gmail.com      #
---# 27 / abril / 2012               #
---###################################
 
 DECLARE
 	str_data text[];
@@ -42456,11 +42344,6 @@ CREATE FUNCTION public.gral_adm_catalogos(campos_data text, extra_data text[]) R
 
 DECLARE
 	
-	--###################################
-	--# Wrtten by: Noe Martinez    	    #
-	--# mailto: gpmarsan@gmail.com	    #
-	--# 12 / marzo / 2012               #
-	--###################################
 
 	--estas  variables se utilizan en la mayoria de los catalogos
 	str_data text[];
@@ -47603,11 +47486,6 @@ CREATE FUNCTION public."gral_adm_catalogos_BK"(campos_data text, extra_data text
     AS $$
 DECLARE
 	
-	--###################################
-	--# Wrtten by: Noe Martinez    	    #
-	--# mailto: gpmarsan@gmail.com	    #
-	--# 12 / marzo / 2012               #
-	--###################################
 
 	--estas  variables se utilizan en la mayoria de los catalogos
 	str_data text[];
@@ -52750,11 +52628,6 @@ CREATE FUNCTION public.gral_bus_catalogos(campos_data text) RETURNS SETOF record
     AS $$ 
 DECLARE
 
---###################################
---# Wrtten by: NOE    	    	    #
---# mailto: gpmarsan@gmail.com      #
---# 12 / marzo / 2012               #
---###################################
 
 
 	str_data text[];
@@ -57397,11 +57270,6 @@ CREATE FUNCTION public.inv_adm_movimientos(campos_data text, extra_data text[]) 
     LANGUAGE plpgsql
     AS $$
 
---###################################
---# Wrtten by: Edwin Plauchu        #
---# mailto: pianodaemon@gmail.com   #
---# 12 / marzo / 2012               #
---###################################
 
 -- #### Premisas de ejecucion de este procedimiento almacenado:
 -- * Cuando se genera un Traspaso se genera una SALIDA en el almacen origen 
@@ -63458,11 +63326,6 @@ CREATE FUNCTION public.log_adm_procesos(campos_data text, extra_data text[]) RET
     AS $$
 DECLARE
 
---###################################
---# Wrtten by: Noe Martinez    	    #
---# mailto: gpmarsan@gmail.com	    #
---# 12 / marzo / 2012               #
---###################################
 
 --Estas  variables se utilizan en la mayoria de los catalogos
 str_data text[];
@@ -65894,12 +65757,6 @@ CREATE FUNCTION public.poc_adm_procesos(campos_data text, extra_data text[]) RET
     LANGUAGE plpgsql
     AS $_$
 DECLARE
-	
-	--###################################
-	--# Wrtten by: Noe Martinez    	    #
-	--# mailto: gpmarsan@gmail.com	    #
-	--# 22 / junio / 2012               #
-	--###################################
 	
 	--estas  variables se utilizan en la mayoria de los catalogos
 	str_data text[];
@@ -70685,11 +70542,6 @@ CREATE FUNCTION public.pro_adm_procesos(campos_data text, extra_data text[]) RET
     LANGUAGE plpgsql
     AS $_$
 
---###################################
---# Wrtten by: Paco Mora         #
---# mailto: fmora@agnux.com      #
---# 25 / abril / 2012               #
---###################################
 
 DECLARE
 	app_selected integer;
