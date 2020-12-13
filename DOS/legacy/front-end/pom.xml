@@ -18,6 +18,12 @@
     
     <dependencies>
         <dependency>
+           <groupId>com.maxima</groupId>
+           <artifactId>sales-grpc-jcli</artifactId>
+           <version>GREAT-DRAGON-GAIKING</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.maxima</groupId>
             <artifactId>bbgum-jcli</artifactId>
             <version>CAPTAIN-FUTURE</version>

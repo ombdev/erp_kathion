@@ -8,7 +8,7 @@
   <name>r1</name>
     <modules>
         <module>../bbgum-jcli</module>
-        <module>../erp-quimicos</module>
+        <module>../front-end</module>
         <module>../bbgum-impt</module>
         <module>../sales-grpc-jcli</module>
     </modules>

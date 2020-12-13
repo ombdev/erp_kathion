@@ -12,5 +12,5 @@ Some of the elements of this project may be deemed as obsoletes but there is cur
 | DOS/legacy/sales-grpc-jcli | java client part of the sales api |
 | DOS/legacy/bbgum-jcli | java client part of bbgum tcp protocol |
 | DOS/legacy/bbgum-impt | implementation bbgum client for r1 | 
-| DOS/legacy/erp-quimicos | web-ui with the overall of user interfaces that has agnux erp |
+| DOS/legacy/front-end | web-ui with the overall of user interfaces that has agnux erp |
 | DOS/legacy/r1           | POM project, usable as a parent for other modules |
