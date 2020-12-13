@@ -12,21 +12,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-public class ReportsEndPoints {
-
-
 @RestController
 @RequestMapping("/v1")
-public class EndpointsInventory {
+public class ReportsEndPoints {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
     @GetMapping("ventas/{fecha_inicial}/{fecha_final}/{empresa_id}/netas/cliente")
-    public @ResponseBody ArrayList<HashMap<String, String>> ventasNetasCliente(@PathVariable("fecha_inicial") String fecha_inicial,
-                @PathVariable("fecha_final") String fecha_final,
+    @ResponseBody
+    ArrayList<HashMap<String, String>> ventasNetasCliente(@PathVariable(value = "fecha_inicial") String fecha_inicial,
+                @PathVariable(value = "fecha_final") String fecha_final,
                 @PathVariable(value = "empresa_id") int empresaId) {
         
         return SalesDAO.getVentasNetasxCliente(jdbcTemplate, fecha_inicial, fecha_final, empresaId);
-    }}
+    }
 }
