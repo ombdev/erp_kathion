@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.agnux.kemikal.reportes;
 
 
@@ -13,17 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-/**
- *
- * @author valentin.vale8490@gmail.com
- */
-/**
- *
- * @author agnux
- */
+
 public class PdfRepVentasNetasxCliente {
     public String  empresa_emisora;
     public static String fecha_reporte;
+    public java.util.List<HashMap<String, String>> rows;
 
     public static String getFecha_reporte() {
         return fecha_reporte;
@@ -32,7 +22,6 @@ public class PdfRepVentasNetasxCliente {
     public static void setFecha_reporte(String fecha_reporte) {
         PdfRepVentasNetasxCliente.fecha_reporte = fecha_reporte;
     }
-    public java.util.List<HashMap<String, String>> rows;
 
     public java.util.List<HashMap<String, String>> getRows() {
         return rows;
@@ -41,9 +30,6 @@ public class PdfRepVentasNetasxCliente {
     public void setRows(java.util.List<HashMap<String, String>> rows) {
         this.rows = rows;
     }
-    
-
-    
 
     public String getEmpresa_emisora() {
         return empresa_emisora;
@@ -53,15 +39,10 @@ public class PdfRepVentasNetasxCliente {
         this.empresa_emisora = empresa_emisora;
     }
 
-    
-    
     public PdfRepVentasNetasxCliente(ArrayList<HashMap<String, String>> lista_ventas,String fecha_inicial,String fecha_final, String razon_social_empresa, String fileout) {
-    this.setEmpresa_emisora(razon_social_empresa);
-        //this.setEmpresa_emisora(razon_social_empresa);
+
+        this.setEmpresa_emisora(razon_social_empresa);
         PdfRepVentasNetasxCliente.HeaderFooter event = new PdfRepVentasNetasxCliente.HeaderFooter();
-        
-        //Font largeBoldFont = new Font(Font.FontFamily.HELVETICA,8,Font.BOLD,BaseColor.BLACK); 
-        //Font smallFont = new Font(Font.FontFamily.HELVETICA,6,Font.NORMAL,BaseColor.BLACK);
         
         Font fontCols = new Font(Font.FontFamily.HELVETICA, 9,Font.NORMAL);
         Font smallFont = new Font(Font.FontFamily.HELVETICA,8,Font.NORMAL,BaseColor.BLACK);
@@ -88,18 +69,11 @@ public class PdfRepVentasNetasxCliente {
 
             String fecha_reporte = "DEl      "+fi[2]+"/"+fi[1]+"/"+fi[0] + "      Al:      " +ff[2]+"/"+ff[1]+"/"+ff[0];
             this.setFecha_reporte(fecha_reporte);
-            /*
-            float [] widths = {0.5f,2f,0.2f,1f,1f};
-            table_titulos = new PdfPTable(widths);
-            table_titulos.setKeepTogether(false);
-            table_titulos.setKeepTogether(true);
-            */
             float [] pronosticos = {0.5f,2f,0.2f,1f,1f};
             table_iteraciones = new PdfPTable(pronosticos);
             table_iteraciones.setKeepTogether(false);
             table_iteraciones.setKeepTogether(true);
-            
-            
+
             String[] titulos = {"No.Control","Cliente","","Venta","%"};
             
             for (int i = 0; i<=titulos.length -1; i++){
@@ -123,8 +97,7 @@ public class PdfRepVentasNetasxCliente {
                 if(titulos[i] == "%"){
                     cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                 }
-                
-                
+
                 cell.setBorder(0);
                 cell.setUseAscender(true);
                 cell.setUseDescender(true);
@@ -133,14 +106,8 @@ public class PdfRepVentasNetasxCliente {
                 cell.setBorderWidthLeft(0);
                 table_iteraciones.addCell(cell);
             }
-            //document.add(table_titulos);
-            
-            
-            
+
             //table_iteraciones
-            
-            
-            
             
              String  cliente ="";
              double Sumatoriaventa_neta =0.0;
@@ -189,30 +156,15 @@ public class PdfRepVentasNetasxCliente {
                                 celda.setHorizontalAlignment(Element.ALIGN_RIGHT);
                                 celda.setVerticalAlignment(Element.ALIGN_MIDDLE);
                             }
-                            
-                            
-                            //celda.setBorder(0);
-                            //table_iteraciones.addCell(celda);
                 }
             }
-             
-             
-             
-             
-             
-             
-             
-             
+
             //¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
             for (HashMap<String, String>  i : this.getRows()){
                 //Indices del HashMap que representa el row
                 String[] wordList = {"numero_control","cliente","pesos","Tventa_neta","porcentaje"};
                 java.util.List<String>  indices1 = (java.util.List<String>) Arrays.asList(wordList);
-                                
-                
-                
-                
-                
+
                         for (String omega : indices1){
                             PdfPCell celda = null;
 
@@ -245,9 +197,6 @@ public class PdfRepVentasNetasxCliente {
                                 TPventa_neta= Double.valueOf(i.get(omega)).doubleValue();
                                 porciento=((TPventa_neta/ Sumatoriaventa_neta ) * 100);
                                 sumatotoriaporciento = sumatotoriaporciento + ((TPventa_neta/ Sumatoriaventa_neta ) * 100);
-                                
-                                
-                                
                             }
 
                             if (omega.equals("porcentaje")){
@@ -255,10 +204,11 @@ public class PdfRepVentasNetasxCliente {
                                 celda.setHorizontalAlignment(Element.ALIGN_RIGHT);
                                 celda.setVerticalAlignment(Element.ALIGN_MIDDLE);
                             }
-                            //celda.setBorder(0);
+
                             table_iteraciones.addCell(celda);
                 }
             }
+
             //FILA DE TOTAL GENERAL (SUMA DE TODOS LAS VENTAS NETAS ABAJO!)
 
                 cell = new PdfPCell(new Paragraph("TOTAL GENERAL:",smallFont));

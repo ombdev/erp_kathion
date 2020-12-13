@@ -2,14 +2,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.maxima</groupId>
-  <artifactId>r1</artifactId>
+  <artifactId>godinez</artifactId>
   <version>MAZINGER</version>
   <packaging>pom</packaging>
-  <name>r1</name>
+  <name>godinez</name>
     <modules>
-        <module>../bbgum-jcli</module>
-        <module>../front-end</module>
-        <module>../bbgum-impt</module>
-        <module>../sales-grpc-jcli</module>
+       <module>../builders</module>
+       <module>../service</module>
     </modules>
 </project>
