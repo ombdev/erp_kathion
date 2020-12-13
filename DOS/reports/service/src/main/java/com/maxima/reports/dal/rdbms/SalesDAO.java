@@ -3,24 +3,13 @@ package com.maxima.reports.dal.rdbms;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class SalesDAO {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
-
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    public ArrayList<HashMap<String, String>> getVentasNetasxCliente(
+    public static ArrayList<HashMap<String, String>> getVentasNetasxCliente(
+            final JdbcTemplate jdbcTemplate,
             final String fecha_inicial,
             final String fecha_final,
             final int id_empresa) {
@@ -55,7 +44,7 @@ public class SalesDAO {
                 + " )as tb3  "
                 + " order by tventa_neta desc ";
 
-        return (ArrayList<HashMap<String, String>>) this.jdbcTemplate.query(
+        return (ArrayList<HashMap<String, String>>) jdbcTemplate.query(
                 sql_to_query,
                 new Object[]{}, (ResultSet rs, int rowNum) -> {
                     HashMap<String, String> row = new HashMap<>();
