@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.grpc.examples.helloworld;
+package com.maxima.sales.cli.grpc;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
