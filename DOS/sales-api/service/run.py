@@ -1,3 +1,4 @@
+import sys
 import grpc
 from concurrent import futures
 
@@ -9,6 +10,10 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
 
     def SayHello(self, request, context):
         return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
+    
+    def EditCot(self, request, context):
+        print(request)
+        return helloworld_pb2.CotResponse(valorRetorno='(python server) Cot Response: {}'.format(request.observaciones))
 
 
 def _engage():
@@ -28,7 +33,7 @@ if __name__ == '__main__':
     except:
         if True:
             print('Whoops! Problem in server:', file=sys.stderr)
-            traceback.print_exc(file=sys.stderr)
+            # traceback.print_exc(file=sys.stderr)
         sys.exit(1)
 
     # assuming everything went right, exit gracefully

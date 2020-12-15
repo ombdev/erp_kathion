@@ -53,6 +53,37 @@ public class HelloWorldClient {
       return;
     }
     logger.info("Greeting: " + response.getMessage());
+
+    CotRequest cotRequest =
+      CotRequest.newBuilder()
+        .setUsuarioId(2)
+        .setCheckDescripcionLarga(true)
+        .setObservaciones("mi observacion")
+        .setTipoCambio(20.0015)
+        .addExtraData(
+          CotRequest.GridRenglonCot.newBuilder()
+            .setRemovido(1)
+            .setIdDetalle(1)
+            .setCantidad(15)
+            .setNotr("mi notr")
+            .setRequiereAutorizacion(true))
+        .addExtraData(
+          CotRequest.GridRenglonCot.newBuilder()
+            .setRemovido(1)
+            .setIdDetalle(2)
+            .setCantidad(7)
+            .setNotr("2. mi notr 2")
+            .setRequiereAutorizacion(true))
+        .build();
+    CotResponse cotResponse;
+    
+    try {
+      cotResponse = blockingStub.editCot(cotRequest);
+    } catch (StatusRuntimeException e) {
+      logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+      return;
+    }
+    logger.info("(java client) Cot Response: " + cotResponse.getValorRetorno());
   }
 
   /**
