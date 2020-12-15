@@ -13,7 +13,13 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
     
     def EditCot(self, request, context):
         print(request)
-        return helloworld_pb2.CotResponse(valorRetorno='(python server) Cot Response: {}'.format(request.observaciones))
+        return helloworld_pb2.CotResponse(
+            valorRetorno='(python server) observaciones, extraData[1].cantidad, extraData[1].requiereAutorizacion: {}, {}, {}'.format(
+                request.observaciones,
+                request.extraData[1].cantidad,
+                request.extraData[1].requiereAutorizacion
+            )
+        )
 
 
 def _engage():

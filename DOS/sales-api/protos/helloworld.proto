@@ -40,19 +40,39 @@ message HelloReply {
 // The request message containing the quotation parameters
 message CotRequest {
   int32 usuarioId = 1;
-  bool checkDescripcionLarga = 2;
-  string observaciones = 3;
-  double tipoCambio = 4;
+  int32 identificador = 2;
+  int32 selectTipoCotizacion = 3;
+  int32 idClienteOProspecto = 4;
+  bool checkDescripcionLarga = 5;
+  string observaciones = 6;
+  double tipoCambio = 7;
+  int32 monedaId = 8;
+  string fecha = 9;
+  int32 agenteId = 10;
+  int32 vigencia = 11;
+  bool incluyeIva = 12;
+  double tcUSD = 13;
 
   message GridRenglonCot {
     int32 removido = 1;
     int32 idDetalle = 2;
-    double cantidad = 3;
-    string notr = 4;
-    bool requiereAutorizacion = 5;
+    int32 idProducto = 3;
+    int32 idPresentacion = 4;
+    double cantidad = 5;
+    double precio = 6;
+    int32 monedaGrId = 7;
+    string notr = 8;
+    int32 idImpProd = 9;
+    double valorImp = 10;
+    int32 unidadId = 11;
+    bool statusAutorizacion = 12;
+    double precioAutorizado = 13;
+    int32 idUserAut = 14;
+    bool requiereAutorizacion = 15;
+    string salvarRegistro = 16;
   }
 
-  repeated GridRenglonCot extraData = 5;
+  repeated GridRenglonCot extraData = 14;
 }
 
 // The response message containing the quotation's create/edit operation results
