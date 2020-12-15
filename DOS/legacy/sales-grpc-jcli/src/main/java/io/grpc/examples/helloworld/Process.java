@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.grpc.examples.helloworld;
+package com.maxima.sales.cli.grpc;
 
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
@@ -27,13 +27,13 @@ import java.util.logging.Logger;
 /**
  * A simple client that requests a greeting from the {@link HelloWorldServer}.
  */
-public class HelloWorldClient {
-  private static final Logger logger = Logger.getLogger(HelloWorldClient.class.getName());
+public class Process {
+  private static final Logger logger = Logger.getLogger(Process.class.getName());
 
   private final GreeterGrpc.GreeterBlockingStub blockingStub;
 
   /** Construct client for accessing HelloWorld server using the existing channel. */
-  public HelloWorldClient(Channel channel) {
+  public Process(Channel channel) {
     // 'channel' here is a Channel, not a ManagedChannel, so it is not this code's responsibility to
     // shut it down.
 
@@ -149,7 +149,7 @@ public class HelloWorldClient {
         .usePlaintext()
         .build();
     try {
-      HelloWorldClient client = new HelloWorldClient(channel);
+      Process client = new Process(channel);
       client.greet(user);
     } finally {
       // ManagedChannels use resources like threads and TCP connections. To prevent leaking these
