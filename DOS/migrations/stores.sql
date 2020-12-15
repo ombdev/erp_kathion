@@ -83,7 +83,8 @@ DECLARE
 
 BEGIN
 
-    -- obtiene empresa_id, sucursal_id y sucursal_id
+    -- Se deducen variables con respecto al usuario
+    -- ejecutando la validacion
     SELECT gral_suc.empresa_id,
         gral_usr_suc.gral_suc_id,
         inv_suc_alm.almacen_id
@@ -101,7 +102,7 @@ BEGIN
     FROM gral_emp WHERE id = emp_id
     INTO incluye_modulo_produccion, controlExisPres;
 
-    --tomar el id del almacen para ventas
+    -- Tomar el id del almacen para ventas
     id_almacen := facpar.inv_alm_id;
   
     IF curr_val = '' THEN
@@ -132,7 +133,8 @@ BEGIN
         FOR counter IN 1 .. no_rows LOOP
             SELECT INTO row_cells string_to_array(matrix[counter], '___');
 
-            --1: no esta eliminado, 0:eliminado
+            -- 0: eliminado
+            -- 1: no esta eliminado
             IF row_cells[ C_DELFLAG ]::integer <> 0 THEN
                 IF trim( row_cells[ C_QUANTITY ] ) = '' THEN
                     -- Es necesario ingresar la cantidad
