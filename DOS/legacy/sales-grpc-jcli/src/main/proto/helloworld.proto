@@ -24,6 +24,7 @@ package helloworld;
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc EditCot (CotRequest) returns (CotResponse) {}
 }
 
 // The request message containing the user's name.
@@ -34,4 +35,27 @@ message HelloRequest {
 // The response message containing the greetings
 message HelloReply {
   string message = 1;
+}
+
+// The request message containing the quotation parameters
+message CotRequest {
+  int32 usuarioId = 1;
+  bool checkDescripcionLarga = 2;
+  string observaciones = 3;
+  double tipoCambio = 4;
+
+  message GridRenglonCot {
+    int32 removido = 1;
+    int32 idDetalle = 2;
+    double cantidad = 3;
+    string notr = 4;
+    bool requiereAutorizacion = 5;
+  }
+
+  repeated GridRenglonCot extraData = 5;
+}
+
+// The response message containing the quotation's create/edit operation results
+message CotResponse {
+  string valorRetorno = 1;
 }
