@@ -57,23 +57,54 @@ public class HelloWorldClient {
     CotRequest cotRequest =
       CotRequest.newBuilder()
         .setUsuarioId(2)
+        .setIdentificador(0)
+        .setSelectTipoCotizacion(1)
+        .setIdClienteOProspecto(156)
         .setCheckDescripcionLarga(true)
         .setObservaciones("mi observacion")
         .setTipoCambio(20.0015)
+        .setMonedaId(3)
+        .setFecha("2020-12-10")
+        .setAgenteId(22)
+        .setVigencia(44)
+        .setIncluyeIva(false)
+        .setTcUSD(21.9908)
         .addExtraData(
           CotRequest.GridRenglonCot.newBuilder()
             .setRemovido(1)
             .setIdDetalle(1)
-            .setCantidad(15)
-            .setNotr("mi notr")
-            .setRequiereAutorizacion(true))
+            .setIdProducto(45)
+            .setIdPresentacion(9)
+            .setCantidad(15.11)
+            .setPrecio(1588.12)
+            .setMonedaGrId(2)
+            .setNotr("mi notr, sabe que es eso")
+            .setIdImpProd(33)
+            .setValorImp(160.00)
+            .setUnidadId(3)
+            .setStatusAutorizacion(false)
+            .setPrecioAutorizado(1500.25)
+            .setIdUserAut(16)
+            .setRequiereAutorizacion(true)
+            .setSalvarRegistro("salvado el record"))
         .addExtraData(
           CotRequest.GridRenglonCot.newBuilder()
-            .setRemovido(1)
+            .setRemovido(0)
             .setIdDetalle(2)
-            .setCantidad(7)
-            .setNotr("2. mi notr 2")
-            .setRequiereAutorizacion(true))
+            .setIdProducto(47)
+            .setIdPresentacion(11)
+            .setCantidad(62.5)
+            .setPrecio(884.33)
+            .setMonedaGrId(1)
+            .setNotr("mi notr2, sabe que es eso2")
+            .setIdImpProd(30)
+            .setValorImp(270.00)
+            .setUnidadId(3)
+            .setStatusAutorizacion(true)
+            .setPrecioAutorizado(520.25)
+            .setIdUserAut(15)
+            .setRequiereAutorizacion(false)
+            .setSalvarRegistro("2.salvado el 2record"))
         .build();
     CotResponse cotResponse;
     
@@ -83,7 +114,7 @@ public class HelloWorldClient {
       logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
       return;
     }
-    logger.info("(java client) Cot Response: " + cotResponse.getValorRetorno());
+    logger.info("(java client) Cot Response valorRetorno: " + cotResponse.getValorRetorno());
   }
 
   /**
