@@ -5,6 +5,7 @@ from concurrent import futures
 import helloworld_pb2
 import helloworld_pb2_grpc
 
+from dal import cotizacion
 
 class Greeter(helloworld_pb2_grpc.GreeterServicer):
 
@@ -13,12 +14,25 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
     
     def EditCot(self, request, context):
         print(request)
+        
+        valor_retorno = cotizacion.edit_cot(
+            request.usuarioId,
+            request.identificador,
+            request.selectTipoCotizacion,
+            request.idClienteOProspecto,
+            request.checkDescripcionLarga,
+            request.observaciones,
+            request.tipoCambio,
+            request.monedaId,
+            request.fecha,
+            request.agenteId,
+            request.vigencia,
+            request.incluyeIva,
+            request.tcUSD,
+            request.extraData
+        )
         return helloworld_pb2.CotResponse(
-            valorRetorno='(python server) observaciones, extraData[1].cantidad, extraData[1].requiereAutorizacion: {}, {}, {}'.format(
-                request.observaciones,
-                request.extraData[1].cantidad,
-                request.extraData[1].requiereAutorizacion
-            )
+            valorRetorno='(python server) valorRetorno: {}'.format(valor_retorno)
         )
 
 
