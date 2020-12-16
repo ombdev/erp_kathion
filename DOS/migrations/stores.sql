@@ -2323,7 +2323,7 @@ BEGIN
                 cxc_clie_id
             ) VALUES (
                 ultimo_id,
-                _cliente_o_prospecto
+                _id_cliente_o_prospecto
             );
 
         ELSE
@@ -2334,7 +2334,7 @@ BEGIN
                  crm_prospecto_id
            ) VALUES (
                  ultimo_id,
-                 _cliente_o_prospecto
+                 _id_cliente_o_prospecto
            );
 
         END IF;

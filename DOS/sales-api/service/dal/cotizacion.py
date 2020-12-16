@@ -41,10 +41,10 @@ def edit_cot(usuario_id, identificador, select_tipo_cotizacion, id_cliente_o_pro
         )
 
     rmsg = run_stored_procedure(sql)
-    if rmsg != '1':
+    if rmsg[0] != '1':
         raise Exception(rmsg)
 
-    return rmsg
+    return rmsg[0]
 
 
 def renglones_cot_to_comp_type_arr_lit(extra_data):
