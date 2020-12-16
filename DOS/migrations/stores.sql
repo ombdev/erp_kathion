@@ -31,16 +31,16 @@ DECLARE
     facpar record;
     mask_general character varying;
     match_cadena boolean;
-    
+
     -- number of rows within matrix
     no_rows integer;
-    
+
     -- row with cell values
     row_cells text[];
-    
+
     -- a counter for loops iterations
     counter integer;
-    
+
     -- Cantidad en la unidad de Venta, esto se utiliza cuando la unidad del producto es diferente a la de venta
     cantUnidadVenta double precision := 0;
 
@@ -57,20 +57,20 @@ DECLARE
 
     -- Existencia actual de la presentacion
     exisActualPres double precision:=0;
-	
+
     -- Id de la unidad de medida del producto
     idUnidadMedida integer := 0;
     tipo integer;
-	
+
     -- Nombre de la unidad de medida del producto
     nombreUnidadMedida character varying := '';
-	
+
     -- Densidad del producto
     densidadProd double precision := 0;
-    
+
     -- Numero de decimales permitidos para la unidad
     noDecUnidad integer := 0;
-    
+
     -- cell indexes as per column order inside matrix
     C_DELFLAG  integer := 1;
     C_DETID    integer := 2;
@@ -79,7 +79,7 @@ DECLARE
     C_QUANTITY integer := 6;
     C_NOTR     integer := 9;
     C_SELECT   integer := 10;
-    C_UNIT     integer := 11;    
+    C_UNIT     integer := 11;
 
 BEGIN
 
@@ -96,7 +96,7 @@ BEGIN
 
     -- Obtener parametros para la facturacion
     SELECT * FROM fac_par WHERE gral_suc_id = suc_id INTO facpar;
-    
+
     -- query para verificar si la Empresa actual incluye Modulo de Produccion
     SELECT incluye_produccion, control_exis_pres
     FROM gral_emp WHERE id = emp_id
@@ -104,12 +104,12 @@ BEGIN
 
     -- Tomar el id del almacen para ventas
     id_almacen := facpar.inv_alm_id;
-  
+
     IF curr_val = '' THEN
         -- Es necesario ingresar el tipo de cambio
         valor_retorno := ''||valor_retorno||'tc:Es necesario ingresar el tipo de cambio___';
     END IF;
-    
+
     IF date_lim = '' THEN
         -- Es necesario ingresar la Fecha de Compromiso
         valor_retorno := ''||valor_retorno||'fcompromiso:Es necesario ingresar la Fecha de Compromiso___';
@@ -150,12 +150,12 @@ BEGIN
                                 inv_prod_unidades.titulo, inv_prod.densidad,
                                 (CASE WHEN inv_prod_unidades.id IS NULL THEN 0 ELSE inv_prod_unidades.decimales END) AS no_dec
                             FROM inv_prod LEFT JOIN inv_prod_unidades ON inv_prod_unidades.id = inv_prod.unidad_id
-                            WHERE inv_prod.id = row_cells[ C_PRODID ]::integer 
+                            WHERE inv_prod.id = row_cells[ C_PRODID ]::integer
                             INTO tipo, idUnidadMedida, nombreUnidadMedida, densidadProd, noDecUnidad;
 
                             --Tomamos la cantidad en la unidad de Venta seleccionada por el usuario
                             cantUnidadVenta := row_cells[ C_QUANTITY ]::double precision;
-								
+
                             IF cambiaUnidadMedida THEN
                                 IF idUnidadMedida::integer <> row_cells[ C_UNIT ]::integer THEN
                                     IF densidadProd IS NULL OR densidadProd=0 THEN
@@ -174,10 +174,10 @@ BEGIN
                                     END IF;
                                 END IF;
                             END IF;
-                            
+
                             -- Redondear la Cantidad
-                            row_cells[ C_QUANTITY ] := round(row_cells[ C_QUANTITY ]::numeric, noDecUnidad)::double precision; 
-                            cantUnidadVenta := round(cantUnidadVenta::numeric, noDecUnidad)::double precision; 
+                            row_cells[ C_QUANTITY ] := round(row_cells[ C_QUANTITY ]::numeric, noDecUnidad)::double precision;
+                            cantUnidadVenta := round(cantUnidadVenta::numeric, noDecUnidad)::double precision;
 
                             -- Si el tipo de producto es diferente de 4, hay que validar existencias
                             -- tipo=4 Servicios
@@ -482,7 +482,7 @@ BEGIN
                                                 END IF;
                                             END IF;
                                         ELSE
-                                            IF incluye_modulo_produccion=true OR facpar.permitir_req_com=TRUE THEN 
+                                            IF incluye_modulo_produccion=true OR facpar.permitir_req_com=TRUE THEN
                                                 -- Si incluye modulo de produccion ó la configuracion
                                                 -- permite generar requisiciones cuando no hay exisencia
 
@@ -495,8 +495,8 @@ BEGIN
                                                     END IF;
                                                 END IF;
 
-                                                IF facpar.permitir_req_com THEN 
-                                                    IF tipo::integer = 7 THEN 
+                                                IF facpar.permitir_req_com THEN
+                                                    IF tipo::integer = 7 THEN
                                                         IF row_cells[ C_SELECT ] = '0' THEN
                                                             valor_retorno := ''||valor_retorno||'presentacion'||row_cells[ C_NOTR ]||
                                                                 ':No hay existencia en esta presentacion.___';
@@ -525,17 +525,147 @@ BEGIN
             END IF;
         END LOOP;
     END IF;
-    
+
     IF valor_retorno = '' THEN
         valor_retorno := 'true';
 	RETURN valor_retorno;
     ELSE
         RETURN valor_retorno;
     END IF;
-	
+
 END;
 
 $_$;
+
+
+
+CREATE FUNCTION public.inv_calculo_existencia_producto(
+    tipo_calculo integer,
+    incluye_reservados boolean,
+    id_prod integer,
+    id_user integer,
+    id_almacen integer
+) RETURNS double precision
+LANGUAGE plpgsql
+AS $$
+
+DECLARE
+
+    -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    -- >> Name: Calculador de existencia                                           >>
+    -- >> Version: MAZINGER                                                        >>
+    -- >> Date: 15/Dic/2020                                                        >>
+    -- >>                                                                          >>
+    -- >> Existen dos formas de calcular la existencia de el producto solicitado.  >>
+    -- >> 1 - Con respecto a un almacen en especifico                              >>
+    -- >> 2.- Con respecto a todos los almacenes de la empresa                     >>
+    -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    cadena_sql text = '';
+    subquery text = '';
+
+    fila_almacenes record;
+
+    id_almacenes character varying := '';
+    primer_registro smallint = 0;
+    ano_actual integer;
+    mes_actual integer;
+    emp_id integer;
+    suc_id integer;
+    incrementa int := 1;
+    existencia double precision;
+    descontar_reservados_transito character varying = '';
+
+    espacio_tiempo_ejecucion timestamp with time zone = now();
+
+BEGIN
+
+    SELECT EXTRACT(YEAR FROM espacio_tiempo_ejecucion) INTO ano_actual;
+    SELECT EXTRACT(MONTH FROM espacio_tiempo_ejecucion) INTO mes_actual;
+
+    SELECT gral_suc.empresa_id, gral_usr_suc.gral_suc_id
+    FROM gral_usr_suc
+    JOIN gral_suc ON gral_suc.id = gral_usr_suc.gral_suc_id
+    WHERE gral_usr_suc.gral_usr_id=id_user
+    INTO emp_id, suc_id;
+
+    -- Busqueda de Existencia por un almacen en especifico
+    IF tipo_calculo = 1 THEN
+        id_almacenes := id_almacen;
+    END IF;
+
+    -- Busqueda de Existencia en Todos los almacenes de la Empresa
+    IF tipo_calculo = 2 THEN
+
+        -- Consulta para obtener todos los alacenes de la empresa
+        cadena_sql := 'SELECT distinct inv_suc_alm.almacen_id
+                       FROM gral_suc JOIN inv_suc_alm ON inv_suc_alm.sucursal_id=gral_suc.id
+                       WHERE gral_suc.empresa_id='||emp_id||' ORDER BY inv_suc_alm.almacen_id;';
+
+        -- Variable para saber si es el primer almacen en la cadena
+        -- (Horrible approach but still working)
+        primer_registro := 0;
+
+        FOR fila_almacenes IN EXECUTE(cadena_sql) LOOP
+
+            IF primer_registro = 0 THEN
+
+                id_almacenes := id_almacenes||'';
+            ELSE
+
+                id_almacenes := id_almacenes||',';
+            END IF;
+
+            id_almacenes := id_almacenes||fila_almacenes.almacen_id;
+            primer_registro := 1;
+
+        END LOOP;
+
+    END IF;
+
+
+    -- Si el id del almacen es null,
+    -- le asignamos un cero para que no genere error al ejecutar el query
+    -- (Horrible approach but still working)
+    IF id_almacenes IS NULL OR id_almacenes = '' THEN
+        id_almacenes := '0';
+    END IF;
+
+    -- Descuenta reservados
+    -- y transito en el calculo de las existencias
+    IF incluye_reservados = FALSE THEN
+        descontar_reservados_transito :=' - transito - reservado ';
+    END IF;
+
+    -- Reusar variable
+    cadena_sql:='';
+
+    -- Crear formula para calcular la existencia actual del producto
+    cadena_sql:= 'SELECT (exi_inicial '||descontar_reservados_transito||' ';
+
+    WHILE incrementa <= mes_actual LOOP
+        cadena_sql:=cadena_sql ||' + entradas_'||incrementa||' - salidas_'||incrementa;
+        incrementa:= incrementa + 1;
+    END LOOP;
+
+    cadena_sql:= cadena_sql||') AS exi FROM inv_exi WHERE inv_prod_id='||id_prod||' AND ano='||ano_actual||' AND inv_alm_id IN ('||id_almacenes||')';
+
+    -- Obtiene existencia del producto
+    subquery := 'SELECT sum(exi) as exi FROM ('||cadena_sql||') AS sbt;';
+
+    EXECUTE subquery INTO existencia;
+
+    IF existencia IS NULL OR existencia <= 0 THEN
+
+        existencia := 0;
+    END IF;
+
+    RETURN existencia;
+
+END;
+
+$$;
+
 
 
 CREATE FUNCTION public.fac_save_xml(file_xml character varying, prefact_id integer, usr_id integer, creation_date character varying, no_id_emp character varying, serie character varying, _folio character varying, items_str character varying, traslados_str character varying, retenciones_str character varying, reg_fiscal character varying, pay_method character varying, exp_place character varying, purpose character varying, no_aprob character varying, ano_aprob character varying, rfc_custm character varying, rs_custm character varying, account_number character varying, total_tras double precision, subtotal_with_desc double precision, total double precision, refact boolean, folio_fiscal character varying) RETURNS character varying
